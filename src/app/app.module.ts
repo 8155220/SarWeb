@@ -17,7 +17,7 @@ import { VoluntarioReadComponent } from './components/usecases/voluntarios/volun
 import { VoluntarioDeleteComponent } from './components/usecases/voluntarios/voluntario-delete/voluntario-delete.component';
 import { VoluntarioUpdateComponent } from './components/usecases/voluntarios/voluntario-update/voluntario-update.component';
 import { SidenavComponent } from './components/shared/sidenav/sidenav.component';
-import { VoluntarioCardComponent, BottomSheetOverviewExampleSheet } from './components/usecases/voluntarios/voluntario-card/voluntario-card.component';
+import { VoluntarioCardComponent, BottomSheetOverviewVoluntarioSheet } from './components/usecases/voluntarios/voluntario-card/voluntario-card.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { VoluntarioCardComponent, BottomSheetOverviewExampleSheet } from './comp
     VoluntarioDeleteComponent,
     VoluntarioUpdateComponent,
     VoluntarioCardComponent,
-    SidenavComponent,BottomSheetOverviewExampleSheet
+    SidenavComponent,BottomSheetOverviewVoluntarioSheet
     
     
   ],
@@ -45,7 +45,7 @@ import { VoluntarioCardComponent, BottomSheetOverviewExampleSheet } from './comp
     FlexLayoutModule
     
   ],
-  entryComponents:[BottomSheetOverviewExampleSheet],
+  entryComponents:[BottomSheetOverviewVoluntarioSheet],
   providers: [],
   bootstrap: [AppComponent]
 })

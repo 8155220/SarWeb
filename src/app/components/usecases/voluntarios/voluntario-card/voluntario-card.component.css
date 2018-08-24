@@ -8,7 +8,17 @@
     border-radius: 50%;
 }
 
+#avatarHandset {
+    width: 60px;
+    height: auto;
+    border-radius: 50%;
+}
+
 .example-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
+}
+
+mat-action-row {
+    height: 45px;
 }

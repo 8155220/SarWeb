@@ -26,18 +26,18 @@ export class VoluntarioCardComponent implements OnInit {
   constructor(private bottomSheet: MatBottomSheet) { }
 
   openBottomSheet(): void {
-    this.bottomSheet.open(BottomSheetOverviewExampleSheet);
+    this.bottomSheet.open(BottomSheetOverviewVoluntarioSheet);
   }
   ngOnInit() {
   }
 }
 
 @Component({
-  selector: 'bottom-sheet-overview-example-sheet',
-  templateUrl: 'bottom-sheet-overview-example-sheet.html',
+  selector: 'bottom-sheet-overview-voluntario-sheet',
+  templateUrl: 'bottom-sheet-overview-voluntario-sheet.html',
 })
-export class BottomSheetOverviewExampleSheet {
-  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>) {}
+export class BottomSheetOverviewVoluntarioSheet {
+  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewVoluntarioSheet>) {}
 
   openLink(event: MouseEvent): void {
     this.bottomSheetRef.dismiss();
