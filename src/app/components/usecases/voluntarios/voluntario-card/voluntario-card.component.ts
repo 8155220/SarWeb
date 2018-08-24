@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Input } from '@angular/core';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 export interface Tile {
   color: string;
@@ -17,12 +17,7 @@ export class VoluntarioCardComponent implements OnInit {
   color:string='lightblue';
   color2:string='lightpink';
   color3:string='lightgreen';
-  // tiles: Tile[] = [
-  //   {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-  //   {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-  //   {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-  //   {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-  // ];
+  //@Input()voluntario:Voluntario;
   constructor(private bottomSheet: MatBottomSheet) { }
 
   openBottomSheet(): void {

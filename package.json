@@ -25,7 +25,8 @@
     "@angular/router": "^6.0.3",
     "angularfire2": "^5.0.0-rc.11",
     "core-js": "^2.5.4",
-    "firebase": "^5.4.0",
+    "faker": "^4.1.0",
+    "firebase": "^5.4.1",
     "hammerjs": "^2.0.8",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
