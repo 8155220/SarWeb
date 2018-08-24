@@ -1,0 +1,54 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+
+                Alfredo Chusgo Soliz
+            </mat-panel-title>
+            <mat-panel-description>
+                Voluntario 3er Año
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+
+            <div class="item item-1" fxFlex="1 1 auto" fxLayoutAlign='center center'>
+                <img id="avatar" [class.mat-elevation-z8]="true" [style.border] src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="">
+            </div>
+
+            <div class="item item-2" fxFlex="5 1 auto" [style.background]="color3">Item 2</div>
+
+
+            <div class="item item-3 " [style.background]="color" fxFlex="1 1 auto">Item 3</div>
+        </div>
+
+        <mat-action-row fxLayoutGap="5px ">
+
+            <div fxLayoutAlign="start center" fxHide.lt-sm="true">
+                <button mat-button fxFlex="wrap " color='basic' fxLayoutAlign="start "><b>Hoja de Vida</b></button>
+                <button mat-button fxFlex="wrap " color='basic' fxLayoutAlign="start "> <b>Salvo de Riesgo</b> </button>
+                <button mat-button fxFlex="wrap " color='basic' fxLayoutAlign="start "><b>Hoja de Filiacion</b></button>
+            </div>
+
+            <div fxLayoutAlign="start center" fxShow.lt-sm="true">
+                <button mat-raised-button (click)="openBottomSheet()">Open file</button>
+                <!-- <button mat-button fxFlex="wrap " color='basic' fxLayoutAlign="start "><b>Hoja de Vida</b></button>
+                <button mat-button fxFlex="wrap " color='basic' fxLayoutAlign="start "> <b>Salvo de Riesgo</b> </button>
+                <button mat-button fxFlex="wrap " color='basic' fxLayoutAlign="start "><b>Hoja de Filiacion</b></button> -->
+            </div>
+
+
+
+            <div fxLayoutAlign="center center" fxFlex='5 1 auto'>
+
+            </div>
+            <div fxLayoutAlign="end center">
+                <button mat-button fxFlex="1 1 auto " color='basic' fxLayoutAlign="end center "><b>Editar</b></button>
+                <button mat-button fxFlex="1 1 auto " color='basic' fxLayoutAlign="end center "><b>Eliminar</b></button>
+            </div>
+
+        </mat-action-row>
+
+    </mat-expansion-panel>
+
+</mat-accordion>
