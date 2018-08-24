@@ -1,5 +1,8 @@
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
+import paisesArray from '../../../../../assets/localdata/paises';
 
 @Component({
   selector: "app-voluntario-create",
@@ -8,7 +11,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 })
 export class VoluntarioCreateComponent implements OnInit {
   voluntarioForm: FormGroup;
- // sexo:string;
+  
   gruposSanguineos: any[] = [
     {value: 'oNegativo', viewValue: 'O RH negativo'},
     {value: 'oPositivo', viewValue: 'O RH positivo'},
@@ -20,13 +23,14 @@ export class VoluntarioCreateComponent implements OnInit {
     {value: 'abPositivo', viewValue: 'AB RH positivo'},
   ];
 
-
+  paisFormControl = new FormControl();
+  filteredOptions: Observable<string[]>;
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.voluntarioForm = this.fb.group({
-      nombre: "Pedro",
-      apellidoPaterno: "Pedro",
+      nombre: "Pedro",  
+      apellidoPaterno: "",
       apellidoMaterno: "",
       sexo: "",
       fechaNacimiento: "",
@@ -35,7 +39,7 @@ export class VoluntarioCreateComponent implements OnInit {
       direccion: "",
       alergias: "", //pendiente
 
-      nacionalidad:"",
+      pais: this.paisFormControl,
       departamento:"",
       provincia: "",
       capital:"",
@@ -71,5 +75,18 @@ export class VoluntarioCreateComponent implements OnInit {
       lugarNacimiento: ""
     });
     this.voluntarioForm.valueChanges.subscribe(console.log);
+
+    //this.filteredOptions = this.voluntarioForm.value('pais');
+
+    this.filteredOptions = this.paisFormControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return paisesArray.filter(option => option.toLowerCase().includes(filterValue));
   }
 }

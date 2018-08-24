@@ -39,10 +39,6 @@
         </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
-        <input matInput placeholder="Licencia de Conducir" formControlName="apellidoMaterno">
-    </mat-form-field>
-
     <section>
         <label class="label-checkbox">Licencia Conducir    :  </label>
         <mat-radio-group formControlName="licenciaConducir">
@@ -53,6 +49,15 @@
 
     <mat-form-field>
         <input matInput placeholder="direccion" formControlName="direccion">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Pais" aria-label="Number" matInput [formControl]="paisFormControl" [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let pais of filteredOptions | async" [value]="pais">
+                {{pais}}
+            </mat-option>
+        </mat-autocomplete>
     </mat-form-field>
 
 

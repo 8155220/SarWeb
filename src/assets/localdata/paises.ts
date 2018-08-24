@@ -1,3 +1,5 @@
+
+const paisesArray:string[] =  
 ["Afganistan",
     "Albania",
     "Alemania",
@@ -198,4 +200,7 @@
     "Djibouti",
     "Zambia",
     "Zimbabue"
-]
+];
+
+export default paisesArray;
+
