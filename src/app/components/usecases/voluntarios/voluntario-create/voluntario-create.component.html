@@ -1,6 +1,5 @@
 <h1>Crear Voluntario</h1>
 
-
 <form [formGroup]='voluntarioForm' fxLayout="column">
 
     Value:{{voluntarioForm.value | json}}
@@ -61,5 +60,39 @@
     </mat-form-field>
 
 
+    <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Departamento" aria-label="Number" matInput [formControl]="departamentoFormControl" [matAutocomplete]="auto2">
+        <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete">
+            <mat-option *ngFor="let departamento of getDepartamentos()" [value]="departamento">
+                {{departamento}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
 
+    <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Provincia" aria-label="Number" matInput [formControl]="provinciaFormControl" [matAutocomplete]="auto3">
+        <mat-autocomplete autoActiveFirstOption #auto3="matAutocomplete">
+            <mat-option *ngFor="let provincia of getProvincias()" [value]="provincia">
+                {{provincia}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Capital" aria-label="Number" matInput [formControl]="capitalFormControl" [matAutocomplete]="auto4">
+        <mat-autocomplete autoActiveFirstOption #auto4="matAutocomplete">
+            <mat-option *ngFor="let capital of getCapitals()" [value]="capital">
+                {{capital}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Municipio" aria-label="Number" matInput [formControl]="municipioFormControl" [matAutocomplete]="auto5">
+        <mat-autocomplete autoActiveFirstOption #auto5="matAutocomplete">
+            <mat-option *ngFor="let municipio of getMunicipios()" [value]="municipio">
+                {{municipio}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
 </form>
