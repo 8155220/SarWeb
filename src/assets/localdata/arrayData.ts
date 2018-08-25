@@ -1,14 +1,14 @@
- export const gruposSanguineos: any[] = [
-     //Ubicacion:
-       {value: 'oNegativo', viewValue: 'O RH negativo'},
-       {value: 'oPositivo', viewValue: 'O RH positivo'},
-       {value: 'aNegativo', viewValue: 'A RH negativo'},
-       {value: 'aPositivo', viewValue: 'A RH positivo'},
-      {value: 'bNegativo', viewValue: 'B RH negativo'},
-       {value: 'bPositivo', viewValue: 'B RH positivo'},
-       {value: 'abNegativo', viewValue: 'AB RH negativo'},
-       {value: 'abPositivo', viewValue: 'AB RH positivo'},
-     ];
+export const gruposSanguineos: any[] = [
+  //Ubicacion:
+  { value: "oNegativo", viewValue: "O RH negativo" },
+  { value: "oPositivo", viewValue: "O RH positivo" },
+  { value: "aNegativo", viewValue: "A RH negativo" },
+  { value: "aPositivo", viewValue: "A RH positivo" },
+  { value: "bNegativo", viewValue: "B RH negativo" },
+  { value: "bPositivo", viewValue: "B RH positivo" },
+  { value: "abNegativo", viewValue: "AB RH negativo" },
+  { value: "abPositivo", viewValue: "AB RH positivo" }
+];
 export const paisesArray: string[] = [
   "Afganistan",
   "Albania",
@@ -211,45 +211,10 @@ export const paisesArray: string[] = [
   "Zambia",
   "Zimbabue"
 ];
-export const departamentosBoliviaArray: string[] = [
-  "Beni",
-  "Chuquisaca",
-  "Cochabamba",
-  "La Paz",
-  "Oruro",
-  "Pando",
-  "Potosi",
-  "Santa Cruz",
-  "Tarija"
-];
-
 export const dataBolivia = {
   pais: "Bolivia",
   departamentos: [
-    {
-      nombreDepartamento: "Beni",
-      provincias: [
-        {
-          nombreProvincia: "Cercado",
-          capitales: [
-            {
-              nombreCapital: "Trinidad",
-              municipios: [
-                { nombreMunicipio: "Trinidad" },
-                { nombreMunicipio: "San Javier" }
-              ]
-            },
-            {
-              nombreCapital: "Magdalena",
-              municipios: [
-                { nombreMunicipio: "Trinidad" },
-                { nombreMunicipio: "San Javier" }
-              ]
-            }
-          ]
-        }
-      ]
-    },
+    { nombreDepartamento: "Beni" },
     { nombreDepartamento: "Cochabamba" },
     { nombreDepartamento: "Chuquisaca" },
     { nombreDepartamento: "La Paz" },
@@ -270,13 +235,6 @@ export const dataBolivia = {
                 { nombreMunicipio: "El Torno" },
                 { nombreMunicipio: "Cotoca" },
                 { nombreMunicipio: "Porongo (Ayacucho)" }
-              ]
-            },
-            {
-              nombreCapital: "Magdalena",
-              municipios: [
-                { nombreMunicipio: "Trinidad" },
-                { nombreMunicipio: "San Javier" }
               ]
             }
           ]

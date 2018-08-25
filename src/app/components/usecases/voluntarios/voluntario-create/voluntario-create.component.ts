@@ -1,10 +1,8 @@
-import { element } from 'protractor';
+import { VoluntarioService } from './../../../../services/voluntario.service';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
-import { paisesArray, departamentosBoliviaArray, dataBolivia, gruposSanguineos } from '../../../../../assets/localdata/arrayData';
-// import paisesArray from '../../../../../assets/localdata/arrayData';
 
 @Component({
   selector: "app-voluntario-create",
@@ -14,25 +12,31 @@ import { paisesArray, departamentosBoliviaArray, dataBolivia, gruposSanguineos }
 export class VoluntarioCreateComponent implements OnInit {
 
   voluntarioForm: FormGroup;
-  gruposSanguineos=gruposSanguineos;
   //Ubicacion
-  paisFormControl = new FormControl();
-  departamentoFormControl = new FormControl();
-  provinciaFormControl = new FormControl();
-  capitalFormControl = new FormControl();
-  municipioFormControl = new FormControl();
+  paisFormControl = new FormControl("");
+  departamentoFormControl = new FormControl("");
+  provinciaFormControl = new FormControl("");
+  capitalFormControl = new FormControl("");
+  municipioFormControl = new FormControl("");
+  //endUbicacion
 
 
-  dataBolivia=dataBolivia;
   filteredOptions: Observable<string[]>;
   filteredOptionsDepartamento: Observable<string[]>;
+  filteredOptionsProvincia: Observable<string[]>;
+  filteredOptionsMunicipio: Observable<string[]>;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private voluntarioService:VoluntarioService) {
   }
 
+  getGrupoSanguineo():any{
+    return this.voluntarioService.getGrupoSanguineo();
+  }
   ngOnInit() {
+    
+
     this.voluntarioForm = this.fb.group({
-      nombre: "Pedro",  
+      nombre: "",  
       apellidoPaterno: "",
       apellidoMaterno: "",
       sexo: "",
@@ -78,9 +82,6 @@ export class VoluntarioCreateComponent implements OnInit {
 
       lugarNacimiento: ""
     });
-    this.voluntarioForm.valueChanges.subscribe(console.log);
-
-    //this.filteredOptions = this.voluntarioForm.value('pais');
 
     this.filteredOptions = this.paisFormControl.valueChanges
     .pipe(
@@ -91,93 +92,46 @@ export class VoluntarioCreateComponent implements OnInit {
     this.filteredOptionsDepartamento = this.departamentoFormControl.valueChanges
     .pipe(
       startWith(''),
-      map(value => this._filter(value))
+      map(value => this.filtrar(value,this.getDepartamentos()))
     );
 
-    
+    this.filteredOptionsProvincia = this.provinciaFormControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this.filtrar(value,this.getProvincias()))
+    );
+
+    this.filteredOptionsMunicipio = this.municipioFormControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this.filtrar(value,this.getMunicipios()))
+    );
   }
 
+  getPaises():string[]{
+    return this.voluntarioService.getPaises();
+  }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return paisesArray.filter(option => option.toLowerCase().includes(filterValue));
+    return this.getPaises().filter(option => option.toLowerCase().includes(filterValue));
+  }
+  
+  public filtrar(value: string,array:string[]): string[] {
+    const filterValue = value.toLowerCase();
+    return array.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   getDepartamentos():string[]{
-
-    if(this.paisFormControl.value=='Bolivia')
-    {
-      let departamentos:string[] =[];
-      dataBolivia['departamentos'].forEach(element => {
-        
-        departamentos.push(element.nombreDepartamento);
-      });
-      return departamentos;
-    }
-    return [];
+    return this.voluntarioService.getDepartamentos(this.paisFormControl.value);
   }
   getProvincias():string[]{
-    let pais:string = this.paisFormControl.value;
-    let departamento:string = this.departamentoFormControl.value;
-    let provincias:string[] =[];
-    dataBolivia['departamentos'].forEach(element=>{
-      if(element.nombreDepartamento==departamento){
-        element.provincias.forEach(provincia => {
-          provincias.push(provincia.nombreProvincia); 
-        });
-      }
-    });
-    return provincias;
+    return this.voluntarioService.getProvincias(this.departamentoFormControl.value);
   }
-  
   getCapitals():string[]{
-    let pais:string = this.paisFormControl.value;
-    let departamento:string = this.departamentoFormControl.value;
-    let provincia:string = this.provinciaFormControl.value;
-
-    let capitals:string[] =[];
-    dataBolivia['departamentos'].forEach(element=>{
-      if(element.nombreDepartamento==departamento){
-        element.provincias.forEach(pro => {
-          if(pro.nombreProvincia==provincia)
-          {
-            pro.capitales.forEach(ele=>{
-              capitals.push(ele.nombreCapital);
-            });
-          }
-        });
-      }
-    });
-    return capitals;
+    return this.voluntarioService.getCapitals(this.departamentoFormControl.value,this.provinciaFormControl.value);
   }
-  
   getMunicipios():string[]{
-    let pais:string = this.paisFormControl.value;
-    let departamento:string = this.departamentoFormControl.value;
-    let provincia:string = this.provinciaFormControl.value;
-    let capital:string =this.capitalFormControl.value;
-
-    let municipios:string[] =[];
-
-    dataBolivia['departamentos'].forEach(itemDepartamento=>{
-      if(itemDepartamento.nombreDepartamento==departamento){
-        itemDepartamento.provincias.forEach(itemProvincia => {
-          if(itemProvincia.nombreProvincia==provincia)
-          {
-            itemProvincia.capitales.forEach(itemCapital=>{
-
-              if(itemCapital.nombreCapital==capital)
-              {
-                itemCapital.municipios.forEach(itemMunicipio => {
-
-                  municipios.push(itemMunicipio.nombreMunicipio);
-                });
-              }
-            });
-          }
-        });
-      }
-    });
-    return municipios;
+    return this.voluntarioService.getMunicipios(this.departamentoFormControl.value,this.provinciaFormControl.value,
+    this.capitalFormControl.value);
   }
-
 }
