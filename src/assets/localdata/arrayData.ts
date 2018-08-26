@@ -428,3 +428,12 @@ export const dataBolivia = {
     { nombreDepartamento: "Tarija" }
   ]
 };
+export const situacionLaboral:any[] = [
+  {value:"empresario",viewValue:"Empresaria con asalariadas/os"},
+  {value:"autonoma",viewValue:"Autónoma"},
+  {value:"cooperativista",viewValue:"Cooperativista"},
+  {value:"asalariado",viewValue:"Asalariada"},
+  {value:"desempleado",viewValue:"Desempleado"},
+  {value:"trabajoTiempoTotal",viewValue:"Trabajo a tiempo total"},
+  {value:"trabajoTiempoParcial",viewValue:"Trabajo a tiempo parcial"},
+];

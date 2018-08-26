@@ -1,6 +1,6 @@
 <h1>Crear Voluntario</h1>
 
-<form [formGroup]='voluntarioForm' fxLayout="column">
+<form [formGroup]='voluntarioForm' fxLayout="column" (ngSubmit)="submitHandler()" *ngIf="!success">
 
     Value:{{voluntarioForm.value | json}}
     <hr>
@@ -31,7 +31,7 @@
     </mat-form-field>
 
     <mat-form-field>
-        <mat-select placeholder="Grupo Sanguineo">
+        <mat-select placeholder="Grupo Sanguineo" formControlName="tipoSangre">
             <mat-option *ngFor="let gs of getGrupoSanguineo()" [value]="gs.value">
                 {{gs.viewValue}}
             </mat-option>
@@ -95,4 +95,74 @@
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Celular" formControlName="celular">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Telefono Fijo" formControlName="telefonoFijo">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="text" placeholder="Numero Carnet Identidad" formControlName="numeroCarnetIdentidad">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select placeholder="Estado Civil" formControlName="estadoCivil">
+            <mat-option value="soltero">
+                Soltero
+            </mat-option>
+            <mat-option value="casado">
+                Casado
+            </mat-option>
+            <mat-option value="viudo">
+                Viudo
+            </mat-option>
+            <mat-option value="divorciado">
+                Divorciado
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="text" placeholder="Correo Electronico" formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="text" placeholder="Nombre Tutor" formControlName="nombreTutor">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="text" placeholder="Celular Tutor" formControlName="celularTutor">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="text" placeholder="Profesion" formControlName="profesion">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="text" placeholder="Ocupacion" formControlName="ocupacion">
+    </mat-form-field>
+
+
+    <mat-form-field>
+        <mat-select placeholder="Situacion Laboral" formControlName="situacionLaboral">
+            <mat-option *ngFor="let situacion of getSituacionLaboral()" [value]="situacion.value">
+                {{situacion.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Numero Carnet Militar" formControlName="numeroCarnetMilitar">
+    </mat-form-field>
+
+
+    <button mat-button color="primary" type="submit" [disabled]='voluntarioForm.invalid'> Guardar</button>
+
+
 </form>
+<div *ngIf="success" class="notification is-success">
+    Yay! we received your submission
+</div>

@@ -7,11 +7,12 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { VoluntarioCreateComponent } from './components/usecases/voluntarios/voluntario-create/voluntario-create.component';
 import { VoluntarioUpdateComponent } from './components/usecases/voluntarios/voluntario-update/voluntario-update.component';
+import { VoluntarioIndexComponent } from './components/usecases/voluntarios/voluntario-index/voluntario-index.component';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
     
-    {path:'voluntarios/index',component:WelcomeComponent},
+    {path:'voluntarios/index',component:VoluntarioIndexComponent},
     {path:'voluntarios/create',component:VoluntarioCreateComponent},
     {path:'voluntarios/read',component:VoluntarioReadComponent},
     {path:'voluntarios/update',component:VoluntarioUpdateComponent},

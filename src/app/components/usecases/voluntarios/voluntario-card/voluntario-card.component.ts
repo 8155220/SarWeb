@@ -1,3 +1,4 @@
+import { VoluntarioModel } from './../../../../models/voluntario/voluntario.model';
 import { Component, OnInit , Input } from '@angular/core';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 export interface Tile {
@@ -13,6 +14,8 @@ export interface Tile {
 })
 export class VoluntarioCardComponent implements OnInit {
 
+  @Input() voluntario:VoluntarioModel;
+  
   backgroundSize:string = "cover";
   color:string='lightblue';
   color2:string='lightpink';

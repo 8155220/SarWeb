@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
@@ -23,7 +24,9 @@ import {
 
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
+import { VoluntarioService } from './services/voluntario.service';
+import { AngularFireModule } from "../../node_modules/angularfire2";
+import { AngularFirestoreModule } from "../../node_modules/angularfire2/firestore";
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,10 +51,12 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     AppRoutingModule,
     FlexLayoutModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig,'SARFAB'),
+    AngularFirestoreModule,
   ],
   entryComponents: [BottomSheetOverviewVoluntarioSheet],
-  providers: [],
+  providers: [VoluntarioService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
