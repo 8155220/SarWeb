@@ -12,7 +12,7 @@ export interface VoluntarioInterface {
 
   lugar?: string;
   provincia?: string;
-  celular?: string;
+  celular?: number;
   telefono?: string;
   numeroCarnetIdentidad?: string;
   estadoCivil?: string;
@@ -57,7 +57,7 @@ export class VoluntarioModel implements VoluntarioInterface{
 
   lugar?: string;
   provincia?: string;
-  celular?: string;
+  celular?: number;
   telefono?: string;
   numeroCarnetIdentidad?: string;
   estadoCivil?: string;
@@ -85,6 +85,14 @@ export class VoluntarioModel implements VoluntarioInterface{
   emergenciaLlamar?: string;
 
   lugarNacimiento?: string;
+
+  //elminar depsues
+  peso:string;
+  talla:string;
+  grupoSanguineo:string;
+  fecha:string;
+
+
     
 }
 

@@ -11,7 +11,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { WelcomeComponent } from "./components/welcome/welcome.component";
 import { ToolbarComponent } from "./components/shared/toolbar/toolbar.component";
 import { FooterComponent } from "./components/shared/footer/footer.component";
-import { VoluntarioIndexComponent } from "./components/usecases/voluntarios/voluntario-index/voluntario-index.component";
+import { VoluntarioIndexComponent,BottomSheetOverviewVoluntarioSheet } from "./components/usecases/voluntarios/voluntario-index/voluntario-index.component";
 import { VoluntarioCreateComponent } from "./components/usecases/voluntarios/voluntario-create/voluntario-create.component";
 import { VoluntarioReadComponent } from "./components/usecases/voluntarios/voluntario-read/voluntario-read.component";
 import { VoluntarioDeleteComponent } from "./components/usecases/voluntarios/voluntario-delete/voluntario-delete.component";
@@ -19,7 +19,7 @@ import { VoluntarioUpdateComponent } from "./components/usecases/voluntarios/vol
 import { SidenavComponent } from "./components/shared/sidenav/sidenav.component";
 import {
   VoluntarioCardComponent,
-  BottomSheetOverviewVoluntarioSheet
+  
 } from "./components/usecases/voluntarios/voluntario-card/voluntario-card.component";
 
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";

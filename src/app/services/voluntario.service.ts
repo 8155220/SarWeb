@@ -1,14 +1,2591 @@
-import { Observable } from 'rxjs';
-import { VoluntarioModel } from './../models/voluntario/voluntario.model';
-import { Injectable } from '@angular/core';
-import { paisesArray, dataBolivia, gruposSanguineos,situacionLaboral } from '../../assets/localdata/arrayData';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore'; 
-import { FormGroup } from '@angular/forms';
-import { map } from '../../../node_modules/rxjs/operators';
+import { Observable, Subscriber } from "rxjs";
+import { VoluntarioModel } from "./../models/voluntario/voluntario.model";
+import { Injectable } from "@angular/core";
+import {
+  paisesArray,
+  dataBolivia,
+  gruposSanguineos,
+  situacionLaboral
+} from "../../assets/localdata/arrayData";
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  AngularFirestoreDocument
+} from "angularfire2/firestore";
+import { FormGroup } from "@angular/forms";
+import { map } from "../../../node_modules/rxjs/operators";
+import { environment } from "../../environments/environment";
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class VoluntarioService {
+
+  voluntariosLocal:VoluntarioModel[] =[
+    {
+      "numeroCarnetIdentidad": "12414835 SC.",
+      "nombre": "Fernando",
+      "apellidoPaterno": "Veizaga",
+      "apellidoMaterno": "Burgos",
+      "fechaNacimiento": "7/25/1994",
+      "celular": 76661602,
+      "direccion": "Av. paurito  B/ 12 de octubre  C/ eden # 351",
+      "sexo": "masculino",
+      "peso": "91 kg",
+      "talla": "174 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/14/2017"
+    },
+    {
+      "numeroCarnetIdentidad": "6036285 LP.",
+      "nombre": "Erick Brayan",
+      "apellidoPaterno": "Carlo",
+      "apellidoMaterno": "Quenallata",
+      "fechaNacimiento": "5/21/1998",
+      "celular": 69185996,
+      "direccion": "Villa 1 mayo  C/ guapuru",
+      "sexo": "masculino",
+      "peso": "81 kg",
+      "talla": "177 mts",
+      "grupoSanguineo": "GS:O-RH positivo\nDx= sobre peso",
+      "fecha": "4/19/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "11327763 SC.",
+      "nombre": "Cesar Johan",
+      "apellidoPaterno": "Aluis",
+      "apellidoMaterno": "Cuchallo",
+      "fechaNacimiento": "3/17/2001",
+      "celular": 69169617,
+      "direccion": "Carretera antigua cochabamba",
+      "sexo": "masculino",
+      "peso": "62 kg",
+      "talla": "167 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "11395042 SC.",
+      "nombre": "Fabio Andres",
+      "apellidoPaterno": "Ninaja",
+      "apellidoMaterno": "Fernandez",
+      "fechaNacimiento": "9/8/2000",
+      "celular": 65012823,
+      "direccion": "El torno  B/ 6 de mayo",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "165 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= dolor en rodilla",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9653368 SC.",
+      "nombre": "Jose Eduardo",
+      "apellidoPaterno": "Chumasero",
+      "apellidoMaterno": "Chavez",
+      "fechaNacimiento": "4/14/1996",
+      "celular": 75945852,
+      "direccion": "Satelite norte Warnes",
+      "sexo": "masculino",
+      "peso": "76 kg",
+      "talla": "167 mtsq",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= anemiz leve\nDx= parasitosis\nDx= calcio bajo\nTx= mebendazol",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14436293 SC.",
+      "nombre": "Jose Luis",
+      "apellidoPaterno": "Galarza",
+      "apellidoMaterno": "Guzman",
+      "fechaNacimiento": "11/17/1996",
+      "celular": 74690430,
+      "direccion": "Villa 1 de mayo  B/ espinalito",
+      "sexo": "masculino",
+      "peso": "50 kg",
+      "talla": "160 mts",
+      "grupoSanguineo": "GS: A-RH positivo\nDx= amignalitis cronica",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9621481",
+      "nombre": "Jose Andres",
+      "apellidoPaterno": "Angulo",
+      "apellidoMaterno": "Justiniano",
+      "fechaNacimiento": "3/15/1998",
+      "celular": 70951135,
+      "direccion": "Av. mutualista 2º y 3º anillo # 8",
+      "sexo": "masculino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= sin APP de patologia",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13942694 SC.",
+      "nombre": "Luis Muguel",
+      "apellidoPaterno": "Mejia",
+      "apellidoMaterno": "De la Fuente",
+      "fechaNacimiento": "9/1/1998",
+      "celular": 60029219,
+      "direccion": "B/ amboro",
+      "sexo": "masculino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= onicomicosis\nDx= parasitosis intestinal\nTx= mebendazol",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8990103 SC.",
+      "nombre": "Ezequiel",
+      "apellidoPaterno": "Franco",
+      "apellidoMaterno": "Ortiz",
+      "fechaNacimiento": "1/18/2002",
+      "celular": 77625663,
+      "direccion": "C/ cochabamba esquina irala",
+      "sexo": "masculino",
+      "peso": "86 kg",
+      "talla": "185 mts",
+      "grupoSanguineo": "GS: A-RH positivo",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9837094 SC.",
+      "nombre": "Yohan",
+      "apellidoPaterno": "Vasquez",
+      "apellidoMaterno": "Villazon",
+      "fechaNacimiento": "12/15/2000",
+      "celular": 65285395,
+      "direccion": "La guardia C/ jose vicente",
+      "sexo": "masculino",
+      "peso": "60 kg",
+      "talla": "174 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= onocomicosis\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13014836",
+      "nombre": "Jose Enrique",
+      "apellidoPaterno": "Montellano",
+      "apellidoMaterno": "Pinto",
+      "fechaNacimiento": "10/19/1999",
+      "celular": 70079199,
+      "direccion": "Satelite",
+      "sexo": "masculino",
+      "peso": "82 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8185468",
+      "nombre": "Elian Adnian",
+      "apellidoPaterno": "Cortez",
+      "apellidoMaterno": "Paniagua",
+      "fechaNacimiento": "1/2/2001",
+      "celular": 76059430,
+      "direccion": "Av. bolivia  Los lotes",
+      "sexo": "masculino",
+      "peso": "47 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nT= memendazol",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7807930 sc.",
+      "nombre": "Elmer Jairo",
+      "apellidoPaterno": "Mamani",
+      "apellidoMaterno": "Blanco",
+      "fechaNacimiento": "3/20/1999",
+      "celular": 72336310,
+      "direccion": "B/ san antonio  Plan 3000",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "170 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= anemia leve\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8252315",
+      "nombre": "Lizet",
+      "apellidoPaterno": "Mamani",
+      "apellidoMaterno": "Ticona",
+      "fechaNacimiento": "6/8/2000",
+      "celular": 71092672,
+      "direccion": "Av. doble via la guardia entre 3º y 4º anillo #440",
+      "sexo": "femenino",
+      "peso": "57 kg",
+      "talla": "156 mts",
+      "grupoSanguineo": "GS= O-RH positivo\nDx= anemia ligera\nDx= calcio serico bajo\nDx= onicomicosis",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13140596 SC.",
+      "nombre": "Yoselin Angela",
+      "apellidoPaterno": "Aguilar",
+      "apellidoMaterno": "Copa",
+      "fechaNacimiento": "12/12/2000",
+      "celular": 73675347,
+      "direccion": "Av. fatima C/ 5 la cuchilla",
+      "sexo": "femenino",
+      "peso": "56 kg",
+      "talla": "155 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12890802",
+      "nombre": "Miguel Angel",
+      "apellidoPaterno": "Quispe",
+      "apellidoMaterno": "Merma",
+      "fechaNacimiento": "10/9/2000",
+      "celular": 76304065,
+      "direccion": "Zona el dorado  Urb/ san jorge  el bateon",
+      "sexo": "masculino",
+      "peso": "67 kg",
+      "talla": "158 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "11388856 SC.",
+      "nombre": "Jhoel",
+      "apellidoPaterno": "Benavides",
+      "apellidoMaterno": "Cossio",
+      "fechaNacimiento": "11/24/1998",
+      "celular": 78076704,
+      "direccion": "B/ alto olivo  5º anillo  C/3",
+      "sexo": "masculino",
+      "peso": "51 kg",
+      "talla": "165 mts",
+      "grupoSanguineo": "GS: A-RH positivo\nDx= gastritis",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8168232 SC.",
+      "nombre": "Edwin",
+      "apellidoPaterno": "Flores",
+      "apellidoMaterno": "Cano",
+      "fechaNacimiento": "11/20/1992",
+      "celular": 74937833,
+      "direccion": "Radial  17 1/2  5º anillo",
+      "sexo": "masculino",
+      "peso": "66 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: B-RH positivo",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13701579 SC.",
+      "nombre": "Benjamin Alexander",
+      "apellidoPaterno": "Rodriguez",
+      "apellidoMaterno": "Bustillos",
+      "fechaNacimiento": "10/20/1999",
+      "celular": 73687500,
+      "direccion": "4º anillo  B/ villa warnes",
+      "sexo": "masculino",
+      "peso": "72 kg",
+      "talla": "171 mts",
+      "grupoSanguineo": "GS: A-RH positivo\nDx= lesion  de ligamento\nTx= Traumatologia",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12872580",
+      "nombre": "Alexander",
+      "apellidoPaterno": "Rodriguez",
+      "apellidoMaterno": "Fernandez",
+      "fechaNacimiento": "2/8/2000",
+      "celular": 78326637,
+      "direccion": "Av. cherentade KM-9 doble via a la guardia",
+      "sexo": "masculino",
+      "peso": "98 kg",
+      "talla": "189 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= traumatologia",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8223385 SC.",
+      "nombre": "Neyer",
+      "apellidoPaterno": "Gutierrez",
+      "apellidoMaterno": "Cuchallo",
+      "fechaNacimiento": "2/26/2000",
+      "celular": 62798544,
+      "direccion": "La guardia  B/ jardines",
+      "sexo": "masculino",
+      "peso": "52 kg",
+      "talla": "158 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9742284",
+      "nombre": "Bella Nayda",
+      "apellidoPaterno": "Esculcer",
+      "apellidoMaterno": "Canaviri",
+      "fechaNacimiento": "5/16/1999",
+      "celular": 73194788,
+      "direccion": "Av. G77  B/ libertad",
+      "sexo": "femenino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= anemia leve\nTx= mebendazol",
+      "fecha": "4/20/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14772846",
+      "nombre": "Eibis Jesus",
+      "apellidoPaterno": "Sandoval",
+      "apellidoMaterno": "Saldaña",
+      "fechaNacimiento": "8/30/1999",
+      "celular": 1111111,
+      "direccion": "B/ 4 de octubre los lotes",
+      "sexo": "masculino",
+      "peso": "77 kg",
+      "talla": "177 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nTx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9021278",
+      "nombre": "Josue",
+      "apellidoPaterno": "Flores",
+      "apellidoMaterno": "Aguirre",
+      "fechaNacimiento": "8/26/1998",
+      "celular": 61368756,
+      "direccion": "Av. 3 pasos al frente",
+      "sexo": "masculino",
+      "peso": "57.7 kg",
+      "talla": "167 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= sin  APP patologico",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9680356 SC.",
+      "nombre": "Anibal",
+      "apellidoPaterno": "Paz",
+      "apellidoMaterno": "Cayu",
+      "fechaNacimiento": "12/18/1998",
+      "celular": 77813158,
+      "direccion": "B/ san jorgue  zona bateo",
+      "sexo": "masculino",
+      "peso": "70 kg",
+      "talla": "175 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= apendiceptomia hace 9 años\nDx= calcio serico 8.6 mg\nDx= onicomicosis",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9021278",
+      "nombre": "Josue",
+      "apellidoPaterno": "Flores",
+      "apellidoMaterno": "Aguirre",
+      "fechaNacimiento": "8/26/1998",
+      "celular": 61368756,
+      "direccion": "Av. 3 pasos al frente",
+      "sexo": "masculino",
+      "peso": "57.7 kg",
+      "talla": "167 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= sin  APP patologico",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9762568",
+      "nombre": "Lixander",
+      "apellidoPaterno": "Castro",
+      "apellidoMaterno": "Rojas",
+      "fechaNacimiento": "9/17/1999",
+      "celular": 69034538,
+      "direccion": "Doble via la guardia KM-20",
+      "sexo": "masculino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= cardiologia  EKG",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8950499 SC.",
+      "nombre": "Clinder",
+      "apellidoPaterno": "Padilla",
+      "apellidoMaterno": "Espindola",
+      "fechaNacimiento": "3/20/1995",
+      "celular": 73600722,
+      "direccion": "KM-15 doble via a la guardia",
+      "sexo": "masculino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS:AB-RH positivo\nDx: fractura en el femur hace 19 año\nD=APP de chaga por analisis HAI\nDx= cardiologo\nDx=micosis\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9758735 SC.",
+      "nombre": "Royner",
+      "apellidoPaterno": "Eguez",
+      "apellidoMaterno": "Niñez",
+      "fechaNacimiento": "2/23/2000",
+      "celular": 77319680,
+      "direccion": "Plan 3000  B/ la campana",
+      "sexo": "masculino",
+      "peso": "72 kg",
+      "talla": "174 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nTx= mebendazol\nDx= parasitosis",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9656202",
+      "nombre": "Jose Leandro",
+      "apellidoPaterno": "Cayo",
+      "apellidoMaterno": "Palacios",
+      "fechaNacimiento": "2/17/2001",
+      "celular": 7905680,
+      "direccion": "B/ valparaiso  C/ las dalias KM-9 doble via",
+      "sexo": "masculino",
+      "peso": "61 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12388540",
+      "nombre": "Maria Victoria",
+      "apellidoPaterno": "Mamani",
+      "apellidoMaterno": "Nina",
+      "fechaNacimiento": "9/14/2000",
+      "celular": 60845200,
+      "direccion": "B/ 24 de septiembre 7º anillo",
+      "sexo": "femenino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "Tx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8940209",
+      "nombre": "Anderson",
+      "apellidoPaterno": "Mercado",
+      "apellidoMaterno": "Gonzaga",
+      "fechaNacimiento": "2/24/2001",
+      "celular": 77024705,
+      "direccion": "Urb/ trapiche  C/totaises #16",
+      "sexo": "masculino",
+      "peso": "69.5 kg",
+      "talla": "190 MTS",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= Hernia hace 10 años\nDx= onicomicosis",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7812201",
+      "nombre": "Miguel",
+      "apellidoPaterno": "Serrano",
+      "apellidoMaterno": "Escobar",
+      "fechaNacimiento": "8/22/1994",
+      "celular": 71385838,
+      "direccion": "B/ la collorada #100",
+      "sexo": "masculino",
+      "peso": "93 kg",
+      "talla": "167 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "5317266 CBBA.",
+      "nombre": "Bladimir",
+      "apellidoPaterno": "Gonzales",
+      "apellidoMaterno": "Fernandez",
+      "fechaNacimiento": "11/21/1999",
+      "celular": 61329351,
+      "direccion": "B/ bicentenario  Urb/ mi rancho",
+      "sexo": "masculino",
+      "peso": "76 kg",
+      "talla": "164 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= sobre peso\nDx= anemia leve",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14588153 SC.",
+      "nombre": "Alfredo",
+      "apellidoPaterno": "Quiroz",
+      "apellidoMaterno": "Roman",
+      "fechaNacimiento": "11/3/2001",
+      "celular": 79038245,
+      "direccion": "B/ los angeles  C/las anzas zona mutualista",
+      "sexo": "masculino",
+      "peso": "60 kg",
+      "talla": "170 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8233394 SC.",
+      "nombre": "Kevin Daniel",
+      "apellidoPaterno": "Osinaga",
+      "apellidoMaterno": "Inochea",
+      "fechaNacimiento": "4/8/2001",
+      "celular": 75388631,
+      "direccion": "B/ 8 de diciembrre  zona el cambodromo",
+      "sexo": "masculino",
+      "peso": "51 kg",
+      "talla": "176 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= bajo peso",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7303015 OR.",
+      "nombre": "Rolando",
+      "apellidoPaterno": "Juaniquina",
+      "apellidoMaterno": "Lucano",
+      "fechaNacimiento": "1/15/1988",
+      "celular": 67471701,
+      "direccion": "B/ covipol  KM-6 doble via a la guardia",
+      "sexo": "masculino",
+      "peso": "71 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: A-RH positivo\nDx= SUb-luxasion en el hombro (clavicula) hace 5 años\nDx= leuicopenia",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8172973",
+      "nombre": "Jose Luis",
+      "apellidoPaterno": "Vaca",
+      "apellidoMaterno": "Quiroga",
+      "fechaNacimiento": "2/4/1993",
+      "celular": 75368207,
+      "direccion": "Zona villa 1 de mayo  B/ bolivia",
+      "sexo": "masculino",
+      "peso": "70 kg",
+      "talla": "166 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9709075",
+      "nombre": "Mario Angel",
+      "apellidoPaterno": "Viraca",
+      "apellidoMaterno": "Condori",
+      "fechaNacimiento": "7/20/1999",
+      "celular": 76611877,
+      "direccion": "Av. soberania nacional  C/5",
+      "sexo": "masculino",
+      "peso": "71 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS= O-RH positivo\nDx= con APP de ametropia\nDx= antecedente de hepatiti A y B\nTx= oftamologia",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8960368 SC.",
+      "nombre": "Daniel",
+      "apellidoPaterno": "Balcazar",
+      "apellidoMaterno": "Montero",
+      "fechaNacimiento": "2/12/1999",
+      "celular": 65930078,
+      "direccion": "B/ la monta  C/ umberto salina # 3215",
+      "sexo": "masculino",
+      "peso": "81 kg",
+      "talla": "177 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "Ninguna",
+      "nombre": "Abigail",
+      "apellidoPaterno": "Ortis",
+      "apellidoMaterno": "Llanos",
+      "fechaNacimiento": "10/25/1998",
+      "celular": 70841584,
+      "direccion": "Radial 15  4º anillo",
+      "sexo": "femenino",
+      "peso": "52.5 kg",
+      "talla": "160 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12358292 SC.",
+      "nombre": "Jairo",
+      "apellidoPaterno": "Guzman",
+      "apellidoMaterno": "Espinoza",
+      "fechaNacimiento": "8/25/1999",
+      "celular": 75503396,
+      "direccion": "Urb/ palma real 6º canillo santo dumon",
+      "sexo": "masculino",
+      "peso": "72 kg",
+      "talla": "171 mts",
+      "grupoSanguineo": "GS: B-RH positivo\nDx=  apendicectomia y empalamiento (pierna izquierda)\nDx= comn APP de amigdalitis cronica\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12758275 SC.",
+      "nombre": "Carlos Daniel",
+      "apellidoPaterno": "Basquiez",
+      "apellidoMaterno": "Apaza",
+      "fechaNacimiento": "9/30/1996",
+      "celular": 60001994,
+      "direccion": "Radial 15 4º anillo  C/ ernesto aponte",
+      "sexo": "masculino",
+      "peso": "65.5 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS:O-RH positivo\nDx=leocopenia\nDx= parasitosis\nDx= calcio bajo\nTx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8185108",
+      "nombre": "Jesus",
+      "apellidoPaterno": "Pacci",
+      "apellidoMaterno": "Quispe",
+      "fechaNacimiento": "6/30/1996",
+      "celular": 35009582,
+      "direccion": "Av. grigota  3 º anillo # 1005",
+      "sexo": "masculino",
+      "peso": "56 kg",
+      "talla": "159 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "6375418",
+      "nombre": "Rodruigo",
+      "apellidoPaterno": "Lichtenauer",
+      "apellidoMaterno": "Mancilla",
+      "fechaNacimiento": "6/17/1990",
+      "celular": 78109637,
+      "direccion": "Omar chavez ortiz # 1054",
+      "sexo": "masculino",
+      "peso": "102 Kg",
+      "talla": "173 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= obesida gado I",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8190339",
+      "nombre": "Jairo",
+      "apellidoPaterno": "Male",
+      "apellidoMaterno": "Salazar",
+      "fechaNacimiento": "12/24/1998",
+      "celular": 60824648,
+      "direccion": "3 pasos al frente B/ arca de noe",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS= O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7831962 SC.",
+      "nombre": "Erwin",
+      "apellidoPaterno": "Casies",
+      "apellidoMaterno": "Avila",
+      "fechaNacimiento": "10/26/1999",
+      "celular": 78196170,
+      "direccion": "8º anillo alemana B/ pedro cortes",
+      "sexo": "masculino",
+      "peso": "77 kg",
+      "talla": "180 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7741575 SC.",
+      "nombre": "Damian",
+      "apellidoPaterno": "Zenteno",
+      "apellidoMaterno": "Suarez",
+      "fechaNacimiento": "11/11/2000",
+      "celular": 65866943,
+      "direccion": "6º anillo Urb/ san silvestre santo dumon",
+      "sexo": "masculino",
+      "peso": "55 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "19954848",
+      "nombre": "David Alejandro",
+      "apellidoPaterno": "Franco",
+      "apellidoMaterno": "Jaimez",
+      "fechaNacimiento": "1/15/1998",
+      "celular": 70931063,
+      "direccion": "Av. prefectoi  rivas  # 401",
+      "sexo": "masculino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: A-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12757716 SC.",
+      "nombre": "Yhamil Josue",
+      "apellidoPaterno": "Padilla",
+      "apellidoMaterno": "Uriola",
+      "fechaNacimiento": "4/25/1999",
+      "celular": 60882528,
+      "direccion": "B/ el progreso 8º anillo alemana",
+      "sexo": "masculino",
+      "peso": "86 kg",
+      "talla": "175 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= onicomicosis\nDx= fractura de radio hace 4 años\nTx= Dr. Bell",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8963100 SC.",
+      "nombre": "Luis Gustavo",
+      "apellidoPaterno": "Barja",
+      "apellidoMaterno": "Torrez",
+      "fechaNacimiento": "6/25/1994",
+      "celular": 75055873,
+      "direccion": "B/ el retoño distrito # 10  C/2",
+      "sexo": "masculino",
+      "peso": "54 kg",
+      "talla": "159 mts",
+      "grupoSanguineo": "GS:O-RH positivo\nTx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "6245372 SC",
+      "nombre": "Paulo Daniel",
+      "apellidoPaterno": "Rivera",
+      "apellidoMaterno": "Portales",
+      "fechaNacimiento": "6/10/1992",
+      "celular": 67777414,
+      "direccion": "Av. Paragua calle juan de somosa",
+      "sexo": "masculino",
+      "peso": "70 kgr",
+      "talla": "170mts.",
+      "grupoSanguineo": "GS: BRH positivo \nTx: mebandazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8972214 SC",
+      "nombre": "Victor Gonzalo",
+      "apellidoPaterno": "Vaca",
+      "apellidoMaterno": "Chamani",
+      "fechaNacimiento": "6/5/1993",
+      "celular": 78081259,
+      "direccion": "B/de septiembre",
+      "sexo": "masculino",
+      "peso": "62 kgr",
+      "talla": "163mts.",
+      "grupoSanguineo": "GS: ORH positivo \nTx:  paciente con calcio sirico 8.4",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12449175",
+      "nombre": "Oscar Alfredo",
+      "apellidoPaterno": "Alce",
+      "apellidoMaterno": "Melgar",
+      "fechaNacimiento": "7/21/1997",
+      "celular": 78479811,
+      "direccion": "doble via a la guardia 3ºanillo c/tristan roca",
+      "sexo": "masculino",
+      "peso": "82 kg",
+      "talla": "187 mts.",
+      "grupoSanguineo": "GS.: O-RH positivo \nDx: paracitosis\nTx: mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13146891 SC",
+      "nombre": "Mirian Alisson",
+      "apellidoPaterno": "Chuve",
+      "apellidoMaterno": "Chuve",
+      "fechaNacimiento": "3/20/1999",
+      "celular": 77889624,
+      "direccion": "km9 doble via la guardia B/el carmen",
+      "sexo": "femenino",
+      "peso": "66 kg",
+      "talla": "158 mts.",
+      "grupoSanguineo": "GS: O-RH positivo \nDx: calcio bajo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9628821",
+      "nombre": "Joed Ezequiel",
+      "apellidoPaterno": "Perez",
+      "apellidoMaterno": "Nuñez",
+      "fechaNacimiento": "6/23/2001",
+      "celular": 77070178,
+      "direccion": "Warnes B/pil",
+      "sexo": "masculino",
+      "peso": "56 kg",
+      "talla": "169 mts.",
+      "grupoSanguineo": "GS: A-RH positivo\nDx:paracitosis \nTx: mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7771294 SC",
+      "nombre": "Diego",
+      "apellidoPaterno": "Cardona",
+      "apellidoMaterno": "Baure",
+      "fechaNacimiento": "3/17/1989",
+      "celular": 73154038,
+      "direccion": "4º anillo Av. Sudamericana C/3 #7",
+      "sexo": "masculino",
+      "peso": "Ninguna",
+      "talla": "185 mts",
+      "grupoSanguineo": "GS: O-RH positivo \nDx: parasitosis \nDx: interconsulta con dermatologia \nTx: mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12631125",
+      "nombre": "Miguel  Angel",
+      "apellidoPaterno": "Ibarbe",
+      "apellidoMaterno": "Escalante",
+      "fechaNacimiento": "11/28/1998",
+      "celular": 72152094,
+      "direccion": "Plan 3000 B/Minero",
+      "sexo": "masculino",
+      "peso": "68 kg",
+      "talla": "170 mts",
+      "grupoSanguineo": "GS: O-RH ppositivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9802593",
+      "nombre": "Alejandro",
+      "apellidoPaterno": "Lopez",
+      "apellidoMaterno": "Sejas",
+      "fechaNacimiento": "6/26/1998",
+      "celular": 72169933,
+      "direccion": "carretera alñ norte KM:28  \"WARNES ",
+      "sexo": "masculino",
+      "peso": "70 kg",
+      "talla": "170mts",
+      "grupoSanguineo": "GS:O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9679924",
+      "nombre": "Jose Luis",
+      "apellidoPaterno": "Condori",
+      "apellidoMaterno": "Sautos",
+      "fechaNacimiento": "10/14/1998",
+      "celular": 78153828,
+      "direccion": "Zona Pampa de la isla B/16 de julio",
+      "sexo": "masculino",
+      "peso": "54 kg",
+      "talla": "161 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9678626",
+      "nombre": "Victor Arturo",
+      "apellidoPaterno": "Condori",
+      "apellidoMaterno": "Alvarez",
+      "fechaNacimiento": "2/15/2001",
+      "celular": 722639507,
+      "direccion": "AV/ las campanass C/los penocos plan 3000",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "178 mts",
+      "grupoSanguineo": "GS: A-RH positivo \nDx: paracitosis \nTx: mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8984428",
+      "nombre": "Jhonatan David",
+      "apellidoPaterno": "Chino",
+      "apellidoMaterno": "Ramos",
+      "fechaNacimiento": "7/4/1994",
+      "celular": 75380163,
+      "direccion": "B/carlos la borde \" palmasola",
+      "sexo": "masculino",
+      "peso": "66 kg",
+      "talla": "170mts",
+      "grupoSanguineo": "GS: O-RH  positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8898580",
+      "nombre": "Victor",
+      "apellidoPaterno": "Cespedes",
+      "apellidoMaterno": "Sosa",
+      "fechaNacimiento": "5/27/1999",
+      "celular": 77858381,
+      "direccion": "plan 3000 B/ san agustin",
+      "sexo": "masculino",
+      "peso": "52 kg",
+      "talla": "163 mts",
+      "grupoSanguineo": "GS:O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8961429",
+      "nombre": "Rolando",
+      "apellidoPaterno": "Jaurequi",
+      "apellidoMaterno": "Ninguna",
+      "fechaNacimiento": "9/3/1995",
+      "celular": 71600299,
+      "direccion": "tutumaso 2 Av. moscu C/23 de marzo",
+      "sexo": "masculino",
+      "peso": "70 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "11338530",
+      "nombre": "Jhamy Alfredo",
+      "apellidoPaterno": "Gutierrez",
+      "apellidoMaterno": "Patty",
+      "fechaNacimiento": "2/8/1995",
+      "celular": 75676934,
+      "direccion": "zona los lotes B/24 de junio C/ eucalipto",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "167 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7807840",
+      "nombre": "Juan Carlos",
+      "apellidoPaterno": "Gutierrez",
+      "apellidoMaterno": "Fuentes",
+      "fechaNacimiento": "7/28/1990",
+      "celular": 77026768,
+      "direccion": "B/ melchor pinto C/3 zona parque industrial",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "170 mts q",
+      "grupoSanguineo": "GS: O-RH positivo \nDx: paracitosis \nTx: mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13634109",
+      "nombre": "Alizson Brenda",
+      "apellidoPaterno": "Quino",
+      "apellidoMaterno": "Gutierrez",
+      "fechaNacimiento": "10/4/1999",
+      "celular": 69012884,
+      "direccion": "Los lotes jardines del sur",
+      "sexo": "femenino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS:O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13270236",
+      "nombre": "Alejandra",
+      "apellidoPaterno": "Choque",
+      "apellidoMaterno": "Arnez",
+      "fechaNacimiento": "2/21/1997",
+      "celular": 76088285,
+      "direccion": "B/ Nva. Primavera C/ los claveles",
+      "sexo": "femenino",
+      "peso": "47 kg",
+      "talla": "144 mts",
+      "grupoSanguineo": "GS: O-RH positivo \nDx: calcio bajo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14468225",
+      "nombre": "Guillermo Rodrigo",
+      "apellidoPaterno": "Paniagua",
+      "apellidoMaterno": "Arteaga",
+      "fechaNacimiento": "1/6/1999",
+      "celular": 60008371,
+      "direccion": "B/ 4 de octubre C/ maticu",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: O-RH  positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8221226 SC.",
+      "nombre": "Walter Miguel",
+      "apellidoPaterno": "Castillo",
+      "apellidoMaterno": "Solis",
+      "fechaNacimiento": "6/22/1999",
+      "celular": 72887389,
+      "direccion": "KM-27 antigua carretera cochabanba",
+      "sexo": "masculino",
+      "peso": "61 kg",
+      "talla": "165 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13366561",
+      "nombre": "Maria Yanitza",
+      "apellidoPaterno": "Siancas",
+      "apellidoMaterno": "Rivera",
+      "fechaNacimiento": "9/15/2001",
+      "celular": 71330989,
+      "direccion": "Plan 3000 Av.la campana",
+      "sexo": "femenino",
+      "peso": "64 kg",
+      "talla": "165 mts",
+      "grupoSanguineo": "GS: O-RH positivo \nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "10811711",
+      "nombre": "Sergio Alejandro",
+      "apellidoPaterno": "Villaroel",
+      "apellidoMaterno": "Camana",
+      "fechaNacimiento": "6/18/1999",
+      "celular": 74616944,
+      "direccion": "5º anillo santos dumon",
+      "sexo": "masculino",
+      "peso": "61.4 kg",
+      "talla": "174.5 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= anemia leve",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9844068",
+      "nombre": "Carlos Mauricio",
+      "apellidoPaterno": "Ruiz",
+      "apellidoMaterno": "Mojica",
+      "fechaNacimiento": "9/30/1998",
+      "celular": 76613562,
+      "direccion": "Av. general campero",
+      "sexo": "masculino",
+      "peso": "61 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nTx= complejo B",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": ".",
+      "nombre": "Aguada Luis",
+      "apellidoPaterno": "Sebstian",
+      "apellidoMaterno": ".",
+      "fechaNacimiento": "8/25/2000",
+      "celular": 63529641,
+      "direccion": "Av.clarancita B/clorocuta",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "171.5 mts",
+      "grupoSanguineo": "GS: A-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14929750",
+      "nombre": "Ricardo",
+      "apellidoPaterno": "Rojas",
+      "apellidoMaterno": "Noe",
+      "fechaNacimiento": "10/7/2000",
+      "celular": 61345546,
+      "direccion": "8º anilla cambodromo",
+      "sexo": "masculino",
+      "peso": "99,5 kg",
+      "talla": "175 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9028915",
+      "nombre": "Milton",
+      "apellidoPaterno": "Arancibia",
+      "apellidoMaterno": "Zurita",
+      "fechaNacimiento": "6/15/1995",
+      "celular": 67749863,
+      "direccion": "B/mira flores C/lidios",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "178 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13635671",
+      "nombre": "Luz Nela",
+      "apellidoPaterno": "Solano",
+      "apellidoMaterno": "Bailada",
+      "fechaNacimiento": "5/27/2000",
+      "celular": 69040149,
+      "direccion": "Zona los lotes  B/ plan 4000",
+      "sexo": "femenino",
+      "peso": "54 kg",
+      "talla": "156 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= calcio bajo",
+      "fecha": "4/21/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14807004",
+      "nombre": "Elias Pablo",
+      "apellidoPaterno": "Guzman",
+      "apellidoMaterno": "Mirabal",
+      "fechaNacimiento": "11/13/1998",
+      "celular": 74652697,
+      "direccion": "Av. virgen de cotoca B/ el dorado",
+      "sexo": "masculino",
+      "peso": "86.8 kg",
+      "talla": "179.3 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12508203",
+      "nombre": "Isaac Samuel",
+      "apellidoPaterno": "Gil",
+      "apellidoMaterno": "Rocha",
+      "fechaNacimiento": "11/17/2001",
+      "celular": 68799846,
+      "direccion": "4º anillo doble via a la guardia",
+      "sexo": "masculino",
+      "peso": "61.6 kg",
+      "talla": "169.7 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= CARDIOLOGIA EKG",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8240402 SC.",
+      "nombre": "Yeisson",
+      "apellidoPaterno": "Zabala",
+      "apellidoMaterno": "Arauz",
+      "fechaNacimiento": "2/5/1997",
+      "celular": 60926392,
+      "direccion": "Portachuelo",
+      "sexo": "masculino",
+      "peso": "66.5 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx=parasitosis\nTx= mebendazol",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14771571",
+      "nombre": "Juan Pablo",
+      "apellidoPaterno": "Yua",
+      "apellidoMaterno": "Nouro",
+      "fechaNacimiento": "3/28/1999",
+      "celular": 65024929,
+      "direccion": "Av. rollito  B/ jausi",
+      "sexo": "masculino",
+      "peso": "48.1 kg",
+      "talla": "162.6 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= anemia leve\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "6383502",
+      "nombre": "Miguel",
+      "apellidoPaterno": "Martinez",
+      "apellidoMaterno": "Pedraza",
+      "fechaNacimiento": "4/20/2000",
+      "celular": 65949438,
+      "direccion": "Zona plan 3000  la campana",
+      "sexo": "masculino",
+      "peso": "97 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12418104",
+      "nombre": "Adalid",
+      "apellidoPaterno": "Carlo",
+      "apellidoMaterno": "Choquez",
+      "fechaNacimiento": "8/26/1996",
+      "celular": 78069435,
+      "direccion": "Villa 1º de mayo  B/ los totaises C/jasmine",
+      "sexo": "masculino",
+      "peso": "54 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12383089",
+      "nombre": "Luis Fernando",
+      "apellidoPaterno": "Fernandez",
+      "apellidoMaterno": "Ssejas",
+      "fechaNacimiento": "3/20/2000",
+      "celular": 78510831,
+      "direccion": "Radial 17 1/2 entre 4º y 5º anillo B/ los bosques",
+      "sexo": "masculino",
+      "peso": "49.5 kg",
+      "talla": "160 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9692494 SC.",
+      "nombre": "Pedro",
+      "apellidoPaterno": "Muñez",
+      "apellidoMaterno": "Carrasco",
+      "fechaNacimiento": "5/29/2001",
+      "celular": 61514485,
+      "direccion": "Plan 3000  B/ san antonio",
+      "sexo": "masculino",
+      "peso": "59 kg",
+      "talla": "164 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8188045 SC.",
+      "nombre": "Henry",
+      "apellidoPaterno": "Vidal",
+      "apellidoMaterno": "Arias",
+      "fechaNacimiento": "2/22/1999",
+      "celular": 69056995,
+      "direccion": "Av. jebecheru  B/ 24 de julio",
+      "sexo": "masculino",
+      "peso": "88 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: B-RH positivo\nDx= dermatologia",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7747263",
+      "nombre": "Jose Gabriel",
+      "apellidoPaterno": "Torrico",
+      "apellidoMaterno": "Vaca",
+      "fechaNacimiento": "5/1/2000",
+      "celular": 78502061,
+      "direccion": "Prolongacion san pablo C/ cecilio chavez",
+      "sexo": "masculino",
+      "peso": "78 kg",
+      "talla": "177 mts",
+      "grupoSanguineo": "GS: A-RH positivo",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12919033 SC.",
+      "nombre": "Junior",
+      "apellidoPaterno": "Cruz",
+      "apellidoMaterno": "Condori",
+      "fechaNacimiento": "1/16/1997",
+      "celular": 69163976,
+      "direccion": "KM-6 doble via a la guardia",
+      "sexo": "masculino",
+      "peso": "73 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12790257 SC.",
+      "nombre": "Luis Carlos",
+      "apellidoPaterno": "Antelo",
+      "apellidoMaterno": "Morales",
+      "fechaNacimiento": "5/27/1999",
+      "celular": 78048524,
+      "direccion": "KM-9  B/ los piyos",
+      "sexo": "masculino",
+      "peso": "97 kg",
+      "talla": "171 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9704223 SC.",
+      "nombre": "Josue",
+      "apellidoPaterno": "Trujillo",
+      "apellidoMaterno": "Chacuiry",
+      "fechaNacimiento": "12/6/2001",
+      "celular": 70926880,
+      "direccion": "Av. virgen de lugan  8º anillo",
+      "sexo": "masculino",
+      "peso": "59 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitisis\nTx= mebendazol",
+      "fecha": "4/22/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9008429 SC.",
+      "nombre": "Jose Alejandro",
+      "apellidoPaterno": "Ticona",
+      "apellidoMaterno": "Chipana",
+      "fechaNacimiento": "2/28/1999",
+      "celular": 709123620,
+      "direccion": "Urb/ el quior",
+      "sexo": "masculino",
+      "peso": "97 kg",
+      "talla": "168 nts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12504931 SC.",
+      "nombre": "Nayerlin Patricia",
+      "apellidoPaterno": "Fernandez",
+      "apellidoMaterno": "Quispe",
+      "fechaNacimiento": "11/24/2001",
+      "celular": 73123812,
+      "direccion": "4º anillo radial  17 1/2   B/ oriente petrolero",
+      "sexo": "femenino",
+      "peso": "73.5 kg",
+      "talla": "150 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13111008",
+      "nombre": "Veronica",
+      "apellidoPaterno": "Rocha",
+      "apellidoMaterno": "Chavez",
+      "fechaNacimiento": "9/17/2001",
+      "celular": 77048959,
+      "direccion": "3º anillo Av. alemana",
+      "sexo": "femenino",
+      "peso": "98 kg",
+      "talla": "164 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nDx= calcio bajo\nTx= mebendazol",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13541780",
+      "nombre": "Fernanda",
+      "apellidoPaterno": "Terrazas",
+      "apellidoMaterno": "Menacho",
+      "fechaNacimiento": "2/28/2000",
+      "celular": 77807768,
+      "direccion": "Zona plan 3000  C/ 7 de julio",
+      "sexo": "femenino",
+      "peso": "54 kg",
+      "talla": "147 mts",
+      "grupoSanguineo": "GS: B-RH positivo\nDx= valoracion por el cardiologia EKG",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9798672",
+      "nombre": "Alvaro",
+      "apellidoPaterno": "Zarate",
+      "apellidoMaterno": "Vaca",
+      "fechaNacimiento": "8/17/1993",
+      "celular": 79011750,
+      "direccion": "Zona plan 3000  Urb/ el recreo",
+      "sexo": "masculino",
+      "peso": "100 kg",
+      "talla": "166 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx: anemia leve",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8236847 SC.",
+      "nombre": "Gustavo",
+      "apellidoPaterno": "Apaza",
+      "apellidoMaterno": "Calderon",
+      "fechaNacimiento": "8/11/2000",
+      "celular": 61315183,
+      "direccion": "B/ jenecheru  calle 1",
+      "sexo": "masculino",
+      "peso": "116 kg",
+      "talla": "175 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14474944",
+      "nombre": "Franklin",
+      "apellidoPaterno": "Guzman",
+      "apellidoMaterno": "Rojas",
+      "fechaNacimiento": "8/13/1996",
+      "celular": 60862179,
+      "direccion": "B/ espinalito  C/ tarija",
+      "sexo": "masculino",
+      "peso": "54 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7808546 SC.",
+      "nombre": "Bruno Sebastian",
+      "apellidoPaterno": "Gutierrez",
+      "apellidoMaterno": "Mendez",
+      "fechaNacimiento": "4/3/1998",
+      "celular": 77019817,
+      "direccion": "Urb/ el palmar  C/ villaruel  #-8",
+      "sexo": "masculino",
+      "peso": "84 kg",
+      "talla": "177 mts",
+      "grupoSanguineo": "GS: E-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13302635",
+      "nombre": "Vania",
+      "apellidoPaterno": "Mamani",
+      "apellidoMaterno": "Alegria",
+      "fechaNacimiento": "6/20/2001",
+      "celular": 755509307,
+      "direccion": "8º anillo  B/ virgen de guadalupe",
+      "sexo": "femenino",
+      "peso": "76 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nTx= penberte sensibilidad a los medicamento",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "15032135",
+      "nombre": "Christian",
+      "apellidoPaterno": "Scheidel",
+      "apellidoMaterno": "Salvatierra",
+      "fechaNacimiento": "9/14/2000",
+      "celular": 77384683,
+      "direccion": "KM- 8 1/2  doble via la giardia  plaza mayor",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "172 mts",
+      "grupoSanguineo": "GS: O-RH negativo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13899991 SC",
+      "nombre": "Angel Arturo",
+      "apellidoPaterno": "Velarde",
+      "apellidoMaterno": "Maturno",
+      "fechaNacimiento": "10/1/2000",
+      "celular": 79040120,
+      "direccion": "B/ guapuro II  Z/ villa 1º de mayo",
+      "sexo": "masculino",
+      "peso": "79 kg",
+      "talla": "171 mts",
+      "grupoSanguineo": "GS: O-RH negativo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9006042 SC.",
+      "nombre": "Cesar Luis",
+      "apellidoPaterno": "Mamani",
+      "apellidoMaterno": "Alvarado",
+      "fechaNacimiento": "11/28/2000",
+      "celular": 75365212,
+      "direccion": "4º anillo santos dumon  B/ simon bolivar",
+      "sexo": "masculino",
+      "peso": "57 kg",
+      "talla": "178 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12384239 SC.",
+      "nombre": "Gabriel Benjamin",
+      "apellidoPaterno": "Campos",
+      "apellidoMaterno": "Salazar",
+      "fechaNacimiento": "11/18/1998",
+      "celular": 7463767,
+      "direccion": "8º anillo cambodromo",
+      "sexo": "masculino",
+      "peso": "81 kg",
+      "talla": "182 mts",
+      "grupoSanguineo": "GS: B-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14474942 SC.",
+      "nombre": "Luis Fernando",
+      "apellidoPaterno": "Avalos",
+      "apellidoMaterno": "Gutierrez",
+      "fechaNacimiento": "7/3/2000",
+      "celular": 69215777,
+      "direccion": "Av. virgen de lujan B/ 10 de octubre",
+      "sexo": "masculino",
+      "peso": "58 kg",
+      "talla": "165 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8246337",
+      "nombre": "Karen",
+      "apellidoPaterno": "Viera",
+      "apellidoMaterno": "Paz",
+      "fechaNacimiento": "11/29/1998",
+      "celular": 69018339,
+      "direccion": "Zona los lotes  B/ triunfo",
+      "sexo": "femenino",
+      "peso": "69 kg",
+      "talla": "153 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": ".",
+      "nombre": "Jhann Felix",
+      "apellidoPaterno": "Zambrana",
+      "apellidoMaterno": "Yucra",
+      "fechaNacimiento": "5/7/2001",
+      "celular": 61522682,
+      "direccion": "Av. banzer 6º anillo B/ bella vista",
+      "sexo": "masculino",
+      "peso": "66 kg",
+      "talla": "170 mts",
+      "grupoSanguineo": "GS: A-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "16919405",
+      "nombre": "Ariel",
+      "apellidoPaterno": "Avalos",
+      "apellidoMaterno": "Rios",
+      "fechaNacimiento": "5/8/2001",
+      "celular": 75597555,
+      "direccion": "5º anillo  B/ flamingo",
+      "sexo": "masculino",
+      "peso": "57 kg",
+      "talla": "175 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9580166 Sc",
+      "nombre": "Jesus Antonio",
+      "apellidoPaterno": "Vaca",
+      "apellidoMaterno": "Cesari",
+      "fechaNacimiento": "1/28/1993",
+      "celular": 79844401,
+      "direccion": "8º anillo Virgen de cotoca",
+      "sexo": "masculino",
+      "peso": "69 kg",
+      "talla": "175 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "12886273 SC",
+      "nombre": "Carlos Yoel",
+      "apellidoPaterno": "Prado",
+      "apellidoMaterno": "Lumbarde",
+      "fechaNacimiento": "9/10/2000",
+      "celular": 77096189,
+      "direccion": "Av. nuevo palvar  santos dumon",
+      "sexo": "masculino",
+      "peso": "72 kg",
+      "talla": "176 mts",
+      "grupoSanguineo": "GS: O-RH posititvo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": ".",
+      "nombre": "Cristian Brayan",
+      "apellidoPaterno": "LLevera",
+      "apellidoMaterno": "Herrera",
+      "fechaNacimiento": "9/11/2000",
+      "celular": 77097424,
+      "direccion": "Plan 3000  guapuru I",
+      "sexo": "masculino",
+      "peso": "71 kg",
+      "talla": "160 mts",
+      "grupoSanguineo": "GS: B-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "7474498 SC.",
+      "nombre": "Carlin Remberto",
+      "apellidoPaterno": "Herrera",
+      "apellidoMaterno": "Victoria",
+      "fechaNacimiento": "4/14/1998",
+      "celular": 61518604,
+      "direccion": "Volla amboro  B/ amboro",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9689609 SC",
+      "nombre": "Agustin Alejandro",
+      "apellidoPaterno": "Masay",
+      "apellidoMaterno": "Torrez",
+      "fechaNacimiento": "8/28/1999",
+      "celular": 75348101,
+      "direccion": "Av. suares arana  C/ santiago ortiz",
+      "sexo": "masculino",
+      "peso": "67 kg",
+      "talla": "172 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "10393816",
+      "nombre": "Diego",
+      "apellidoPaterno": "Zabala",
+      "apellidoMaterno": "Palacios",
+      "fechaNacimiento": "5/24/1999",
+      "celular": 78169512,
+      "direccion": "KM-8 1/2  B/ santiesteban",
+      "sexo": "masculino",
+      "peso": "75 kg",
+      "talla": "172 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/23/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8949671 SC.",
+      "nombre": "Jhonatan Carlos",
+      "apellidoPaterno": "Roquez",
+      "apellidoMaterno": "Velasquez",
+      "fechaNacimiento": "4/30/2000",
+      "celular": 76066254,
+      "direccion": "B/ la colorada C/ san juan",
+      "sexo": "masculino",
+      "peso": "51.5 kg",
+      "talla": "161 mts",
+      "grupoSanguineo": "GS: A-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "12794161 SC.",
+      "nombre": "Nayra Luana",
+      "apellidoPaterno": "Rivero",
+      "apellidoMaterno": "Correon",
+      "fechaNacimiento": "10/11/2001",
+      "celular": 77054941,
+      "direccion": "Av. el palmar zona los lotes",
+      "sexo": "femenino",
+      "peso": "66 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": ".",
+      "nombre": "Nataly",
+      "apellidoPaterno": "Dias",
+      "apellidoMaterno": "Arrieta",
+      "fechaNacimiento": "11/5/2000",
+      "celular": 75068479,
+      "direccion": "B/ el bateon C/ 16 de julio",
+      "sexo": "femenino",
+      "peso": "62 kg",
+      "talla": "150 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": ".",
+      "nombre": "Ricardo",
+      "apellidoPaterno": "Montres",
+      "apellidoMaterno": "Arias",
+      "fechaNacimiento": "6/11/2000",
+      "celular": 75076419,
+      "direccion": "El palmar del oratorio",
+      "sexo": "masculino",
+      "peso": "72 kg",
+      "talla": "166 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= calcio bajo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": ".",
+      "nombre": "Yoan Francisco",
+      "apellidoPaterno": "Soliz",
+      "apellidoMaterno": "Arriaga",
+      "fechaNacimiento": "2/21/2001",
+      "celular": 60029956,
+      "direccion": "KM-8 1/2 B/ guapilo Carretera  cotoca",
+      "sexo": "masculino",
+      "peso": "85.5 kg",
+      "talla": "179 mts",
+      "grupoSanguineo": "GS: B-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "13979346 SC.",
+      "nombre": "Grover Orlando",
+      "apellidoPaterno": "Nuñes",
+      "apellidoMaterno": "Mamani",
+      "fechaNacimiento": "9/16/1999",
+      "celular": 75098201,
+      "direccion": "Plan 4000",
+      "sexo": "masculino",
+      "peso": "70 kg",
+      "talla": "170 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "4920264 LP.",
+      "nombre": "Fabiola",
+      "apellidoPaterno": "Colque",
+      "apellidoMaterno": "Chavez",
+      "fechaNacimiento": "4/18/1991",
+      "celular": 73374747,
+      "direccion": "Villa 1º de mayo",
+      "sexo": "femenino",
+      "peso": "58 kg",
+      "talla": "158 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx=mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "12790786 SC.",
+      "nombre": "Oliver",
+      "apellidoPaterno": "Choque",
+      "apellidoMaterno": "de La Fuente",
+      "fechaNacimiento": "4/25/1998",
+      "celular": 67839003,
+      "direccion": "Av. el arroyito  B/ tatu",
+      "sexo": "masculino",
+      "peso": "54.5 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9781224",
+      "nombre": "Jhoan Sevastian",
+      "apellidoPaterno": "Rodriguez",
+      "apellidoMaterno": "Hitari",
+      "fechaNacimiento": "3/5/2000",
+      "celular": 75697729,
+      "direccion": "Plan 3000",
+      "sexo": "masculino",
+      "peso": "59 kg",
+      "talla": "174 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9754096 SC",
+      "nombre": "Jose Moises",
+      "apellidoPaterno": "Mariscal",
+      "apellidoMaterno": "Araquipa",
+      "fechaNacimiento": "8/17/1994",
+      "celular": 75097987,
+      "direccion": "Radial 27  C/ monseñor belardino",
+      "sexo": "masculino",
+      "peso": "75 kg",
+      "talla": "178 mts",
+      "grupoSanguineo": "GS:; ORH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "..",
+      "nombre": "Cristian Roger",
+      "apellidoPaterno": "Machaca",
+      "apellidoMaterno": "Mamani",
+      "fechaNacimiento": "1/25/1999",
+      "celular": 78141512,
+      "direccion": "9º anillo parada linea 11",
+      "sexo": "masculino",
+      "peso": "63kgrs",
+      "talla": "1.64Mts",
+      "grupoSanguineo": "GS: ORH positivo\nDx= Parasitosis\nTx= Mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "12790745 SC",
+      "nombre": "Yenifer",
+      "apellidoPaterno": "Torrez",
+      "apellidoMaterno": "Viruez",
+      "fechaNacimiento": "9/27/2001",
+      "celular": 75530983,
+      "direccion": "Av. Moscu B/Tierra Nueva",
+      "sexo": "femenino",
+      "peso": "57Kgrs",
+      "talla": "1.50Mtrs",
+      "grupoSanguineo": "GS: ORH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "6281513 SC",
+      "nombre": "Wendy",
+      "apellidoPaterno": "Viamonte",
+      "apellidoMaterno": "Crispin",
+      "fechaNacimiento": "8/23/1984",
+      "celular": 78508636,
+      "direccion": "Villa 1º de Mayo C/11 Nº 502",
+      "sexo": "femenino",
+      "peso": "71.5Kgrs",
+      "talla": "1.60Mtrs",
+      "grupoSanguineo": "GS: ORH positivo\nDx= Calcio bajo\nTx= Se indican normas de alimentación",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8958396 SC",
+      "nombre": "Kevin Luis",
+      "apellidoPaterno": "Racua",
+      "apellidoMaterno": "Añez",
+      "fechaNacimiento": "1/5/2001",
+      "celular": 77356442,
+      "direccion": "8º Anillo Virgen de Cotoca",
+      "sexo": "masculino",
+      "peso": "59Kgrs",
+      "talla": "1.73Mtrs",
+      "grupoSanguineo": "GS: ORH positivo\nDx= Parasitosis\nTx= Mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "..",
+      "nombre": "Carlo Francisco",
+      "apellidoPaterno": "Flores",
+      "apellidoMaterno": "Ramirez",
+      "fechaNacimiento": "7/16/2001",
+      "celular": 78023516,
+      "direccion": "B/El Dorado Norte",
+      "sexo": "masculino",
+      "peso": "62Kgrs",
+      "talla": "1.75Mtrs",
+      "grupoSanguineo": "GS: ARH positivo\nDx= Leucopenia\nTx= Se orienta buena alimentación",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9707383",
+      "nombre": "Nelson Alain",
+      "apellidoPaterno": "Cardenas",
+      "apellidoMaterno": "Soraire",
+      "fechaNacimiento": "8/24/2001",
+      "celular": 77608172,
+      "direccion": "Av. Paragua/3º y 4º Anillo",
+      "sexo": "masculino",
+      "peso": "66Kgrs",
+      "talla": "1.76Mtrs",
+      "grupoSanguineo": "GS: ORH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "14994444",
+      "nombre": "Cristofer Marvin",
+      "apellidoPaterno": "Sierra",
+      "apellidoMaterno": "Quispe",
+      "fechaNacimiento": "9/17/2001",
+      "celular": 69037793,
+      "direccion": "B/La Colorada C/Alma Cruceña",
+      "sexo": "masculino",
+      "peso": "67kgrs",
+      "talla": "1.67mtrs",
+      "grupoSanguineo": "GS: ORH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "14990532 Sc.",
+      "nombre": "Carlos Daniel",
+      "apellidoPaterno": "Sandoval",
+      "apellidoMaterno": "vallejos",
+      "fechaNacimiento": "7/27/2000",
+      "celular": 69169387,
+      "direccion": "Zona los lotes  B/ loma alta",
+      "sexo": "masculino",
+      "peso": "70 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "14253045 SC.",
+      "nombre": "Leonardo",
+      "apellidoPaterno": "Aguanta",
+      "apellidoMaterno": "Rodriguez",
+      "fechaNacimiento": "8/24/2000",
+      "celular": 76081696,
+      "direccion": "Av. che guevara  3 pasos al frente",
+      "sexo": "masculino",
+      "peso": "62 kg",
+      "talla": "171 mts",
+      "grupoSanguineo": "GS:O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "14707540 SC.",
+      "nombre": "David Dennis",
+      "apellidoPaterno": "Paye",
+      "apellidoMaterno": "Chambi",
+      "fechaNacimiento": "1/2/2002",
+      "celular": 77392476,
+      "direccion": "Zona plan 3000  B/ cabo pal  C/ brasil",
+      "sexo": "masculino",
+      "peso": "60 kg",
+      "talla": "164 mts",
+      "grupoSanguineo": "GS:O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8981709",
+      "nombre": "Jose Luis",
+      "apellidoPaterno": "Zeballos",
+      "apellidoMaterno": "Gonzales",
+      "fechaNacimiento": "7/7/2000",
+      "celular": 75322495,
+      "direccion": "B/ brijida  C/ 6",
+      "sexo": "masculino",
+      "peso": "59 kg",
+      "talla": "174 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "..",
+      "nombre": "Christs Aalexander",
+      "apellidoPaterno": "Alaniz",
+      "apellidoMaterno": "Yopie",
+      "fechaNacimiento": "6/21/2000",
+      "celular": 70442974,
+      "direccion": "B/  libertas",
+      "sexo": "masculino",
+      "peso": "84 kg",
+      "talla": "181 mts",
+      "grupoSanguineo": "GS: O-RH posiitivo\nDx= parasitosis\nTX mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9031759",
+      "nombre": "Oliver",
+      "apellidoPaterno": "Cabrera",
+      "apellidoMaterno": "Serrano",
+      "fechaNacimiento": "1/31/2000",
+      "celular": 76895673,
+      "direccion": "B/ jhonny fernandes",
+      "sexo": "masculino",
+      "peso": "69 kg",
+      "talla": "174 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "12414346 SC.",
+      "nombre": "Ardhison Humberto",
+      "apellidoPaterno": "Cortez",
+      "apellidoMaterno": "Suerez",
+      "fechaNacimiento": "11/29/1999",
+      "celular": 77014943,
+      "direccion": "B/ ferbo  C 31 de agosto  #5030",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "176 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9038283 SC.",
+      "nombre": "Jose Enrrique",
+      "apellidoPaterno": "Miranda",
+      "apellidoMaterno": "Camacho",
+      "fechaNacimiento": "3/3/1997",
+      "celular": 78414232,
+      "direccion": "Av. paurito  B/ santa carla",
+      "sexo": "masculino",
+      "peso": "82 kg",
+      "talla": "169 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "11309262 SC",
+      "nombre": "Johnny",
+      "apellidoPaterno": "Chipana",
+      "apellidoMaterno": "Sarniento",
+      "fechaNacimiento": "1/20/1998",
+      "celular": 75613324,
+      "direccion": "B/ san silvestre",
+      "sexo": "masculino",
+      "peso": "86 kg",
+      "talla": "173 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8221674 SC.",
+      "nombre": "Andreson",
+      "apellidoPaterno": "Menacho",
+      "apellidoMaterno": "Rebera",
+      "fechaNacimiento": "7/25/2000",
+      "celular": 76680562,
+      "direccion": "KM-8  1/2 B/ el vallesito  doblñe via la giardia",
+      "sexo": "masculino",
+      "peso": "66 kg",
+      "talla": "157 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9780669 Sc.",
+      "nombre": "Abel",
+      "apellidoPaterno": "Bartolome",
+      "apellidoMaterno": "Copa",
+      "fechaNacimiento": "3/16/1996",
+      "celular": 75553752,
+      "direccion": "Km-14 doble via la guardia",
+      "sexo": "masculino",
+      "peso": "88 kg",
+      "talla": "179 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "7712288 SC.",
+      "nombre": "Brandon Ramiros",
+      "apellidoPaterno": "Villafuerte",
+      "apellidoMaterno": "Cortez",
+      "fechaNacimiento": "5/20/2000",
+      "celular": 69088206,
+      "direccion": "B/ navidad zona norte  C/ 5",
+      "sexo": "masculino",
+      "peso": "74 kg",
+      "talla": "174 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8115377",
+      "nombre": "Miguel Antonio",
+      "apellidoPaterno": "Saavedra",
+      "apellidoMaterno": "Tacoo",
+      "fechaNacimiento": "2/3/1998",
+      "celular": 77372947,
+      "direccion": "B/ dorado C/ riveralta  #-88",
+      "sexo": "masculino",
+      "peso": "61 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "7678968",
+      "nombre": "Carlos Enrique",
+      "apellidoPaterno": "Carvalho",
+      "apellidoMaterno": "Pedraza",
+      "fechaNacimiento": "1/7/2000",
+      "celular": 75576976,
+      "direccion": "5º anillo santos dumon",
+      "sexo": "masculino",
+      "peso": "60 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9681394 SC.",
+      "nombre": "neysa",
+      "apellidoPaterno": "Suarez",
+      "apellidoMaterno": "Rico",
+      "fechaNacimiento": "12/3/2000",
+      "celular": 77802745,
+      "direccion": "Plan 3000  Av. libertadores  B/ juana asurdui",
+      "sexo": "femenino",
+      "peso": "46 kg",
+      "talla": "155 mts",
+      "grupoSanguineo": "GS: O-.RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "11301732 SC",
+      "nombre": "Edwin",
+      "apellidoPaterno": "Flores",
+      "apellidoMaterno": "Villarruel",
+      "fechaNacimiento": "7/28/1998",
+      "celular": 72601121,
+      "direccion": "av alemana 8º anillo",
+      "sexo": "masculino",
+      "peso": "64 kg",
+      "talla": "167 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9597093",
+      "nombre": "Jhosxinilda",
+      "apellidoPaterno": "Espindola",
+      "apellidoMaterno": "Padilla",
+      "fechaNacimiento": "3/24/1997",
+      "celular": 73168061,
+      "direccion": "KM-15 doble via la guardia",
+      "sexo": "femenino",
+      "peso": "53 kg",
+      "talla": "153 mts",
+      "grupoSanguineo": "GS: B-RH positivo\nDx= calcio bajo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "12858835 SC.",
+      "nombre": "Gelen Dalma",
+      "apellidoPaterno": "Chongara",
+      "apellidoMaterno": "Chavez",
+      "fechaNacimiento": "3/5/1997",
+      "celular": 65034723,
+      "direccion": "Av. virgen de lujan  B/ san jorge",
+      "sexo": "femenino",
+      "peso": "70 kg",
+      "talla": "161 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "12949269",
+      "nombre": "Nestor Bryan",
+      "apellidoPaterno": "Zabalaga",
+      "apellidoMaterno": "Amurrio",
+      "fechaNacimiento": "12/10/1999",
+      "celular": 75055512,
+      "direccion": "C/ 11 sur  B/ el quior plan 3000",
+      "sexo": "masculino",
+      "peso": "72 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: A-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "9726245 SC.",
+      "nombre": "Jaime",
+      "apellidoPaterno": "Mullisaca",
+      "apellidoMaterno": "Laura",
+      "fechaNacimiento": "5/12/1994",
+      "celular": 68800006,
+      "direccion": "Zona los lotes Av. palmar",
+      "sexo": "masculino",
+      "peso": "66 kg",
+      "talla": "171 kg",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "14503796 SC.",
+      "nombre": "Brayan",
+      "apellidoPaterno": "Galvis",
+      "apellidoMaterno": "Romero",
+      "fechaNacimiento": "4/14/2000",
+      "celular": 75562926,
+      "direccion": "6º anillo Av. moscu",
+      "sexo": "masculino",
+      "peso": "62 kg",
+      "talla": "173 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "11340173 SC.",
+      "nombre": "Brayan",
+      "apellidoPaterno": "Urachianta",
+      "apellidoMaterno": "Guasoma",
+      "fechaNacimiento": "3/6/1995",
+      "celular": 75055951,
+      "direccion": "Zona sur  Av. el paraiso  B/ amboro 2",
+      "sexo": "masculino",
+      "peso": "71 kg",
+      "talla": "164 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "7837817 SC.",
+      "nombre": "Vladimir",
+      "apellidoPaterno": "Choque",
+      "apellidoMaterno": "Cusipuma",
+      "fechaNacimiento": "8/5/1999",
+      "celular": 78166595,
+      "direccion": "Av. moscu B/ 30 de agosto",
+      "sexo": "masculino",
+      "peso": "47 kg",
+      "talla": "154 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8529465 SC",
+      "nombre": "David",
+      "apellidoPaterno": "Flores",
+      "apellidoMaterno": "Condori",
+      "fechaNacimiento": "6/30/2000",
+      "celular": 70029551,
+      "direccion": "Av. virgen de lujan B/ carmen II",
+      "sexo": "masculino",
+      "peso": "57 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "13709784",
+      "nombre": "Carlos Nayib",
+      "apellidoPaterno": "Ibañez",
+      "apellidoMaterno": "Medina",
+      "fechaNacimiento": "2/3/2001",
+      "celular": 65051925,
+      "direccion": "2º anillo Av beni  C/ ambaibo icushing",
+      "sexo": "masculino",
+      "peso": "75 kg",
+      "talla": "165 mts",
+      "grupoSanguineo": "GS: O- RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8282601 LP.",
+      "nombre": "Kevin",
+      "apellidoPaterno": "Guarachi",
+      "apellidoMaterno": "Mamani",
+      "fechaNacimiento": "10/28/1999",
+      "celular": 79160280,
+      "direccion": "Av. 3 pasos al frente B/ german alcoba",
+      "sexo": "masculino",
+      "peso": "66 kg",
+      "talla": "172 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "13603087",
+      "nombre": "Victor Hugo",
+      "apellidoPaterno": "Montaño",
+      "apellidoMaterno": "Rosel",
+      "fechaNacimiento": "9/15/1997",
+      "celular": 75088693,
+      "direccion": "B/ villa warnes C/ favian vaca chavez",
+      "sexo": "masculino",
+      "peso": "75 kg",
+      "talla": "182 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8917085 SC.",
+      "nombre": "Luis Wilfredo",
+      "apellidoPaterno": "Pereira",
+      "apellidoMaterno": "Paredes",
+      "fechaNacimiento": "3/27/1997",
+      "celular": 70976237,
+      "direccion": "Zona moscu B/ dulce hogar",
+      "sexo": "masculino",
+      "peso": "72 kg",
+      "talla": "178 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "7454809 OR",
+      "nombre": "Paul Huascar",
+      "apellidoPaterno": "Ocampo",
+      "apellidoMaterno": "Macias",
+      "fechaNacimiento": "1/26/2000",
+      "celular": 72614296,
+      "direccion": "c/freno b/rodeo del norte",
+      "sexo": "masculino",
+      "peso": "50 kg",
+      "talla": "168 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8791670",
+      "nombre": "Marco Antonio",
+      "apellidoPaterno": "Alcocer",
+      "apellidoMaterno": "Montaño",
+      "fechaNacimiento": "10/6/1994",
+      "celular": 75627467,
+      "direccion": "5º anillo prologancion mutualista",
+      "sexo": "masculino",
+      "peso": "82 kg",
+      "talla": "175 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8904959 SC",
+      "nombre": "Jose",
+      "apellidoPaterno": "Colque",
+      "apellidoMaterno": "Lopez",
+      "fechaNacimiento": "4/17/1995",
+      "celular": 78129983,
+      "direccion": "Urb/ juan pablo II Uv-2  M-212  L-5",
+      "sexo": "masculino",
+      "peso": "71.5 kg",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "11366919",
+      "nombre": "Albert",
+      "apellidoPaterno": "Cadima",
+      "apellidoMaterno": "Padilla",
+      "fechaNacimiento": "8/18/1998",
+      "celular": 78068747,
+      "direccion": "Km-13 doble via la guardia",
+      "sexo": "masculino",
+      "peso": "51 kg",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8938937 SC",
+      "nombre": "Israel Jesus",
+      "apellidoPaterno": "Paredez",
+      "apellidoMaterno": "Aguilar",
+      "fechaNacimiento": "4/26/1992",
+      "celular": 78581218,
+      "direccion": "Av. paurito B/ simon bolivar  C/ 1 #-1",
+      "sexo": "masculino",
+      "peso": "76 kg",
+      "talla": "172 kg",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/26/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "..",
+      "nombre": "Yamil Andre",
+      "apellidoPaterno": "Paye",
+      "apellidoMaterno": "Chambi",
+      "fechaNacimiento": "1/1/2001",
+      "celular": 71665234,
+      "direccion": "Plan 3000 el quior",
+      "sexo": "masculino",
+      "peso": "55.5",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/26/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "14311429",
+      "nombre": "Kevin Rafael",
+      "apellidoPaterno": "Careaga",
+      "apellidoMaterno": "Gonzales",
+      "fechaNacimiento": "9/29/1998",
+      "celular": 75506711,
+      "direccion": "Villa 1º de mayo  Av. chegevara  B/ 15 de agosto",
+      "sexo": "masculino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/26/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "13998459 SC",
+      "nombre": "Julio Cesar",
+      "apellidoPaterno": "Nemer",
+      "apellidoMaterno": "Equez",
+      "fechaNacimiento": "8/14/1995",
+      "celular": 76688662,
+      "direccion": "Fatima 1  C/4  los lotes  nuevo palmar",
+      "sexo": "masculino",
+      "peso": "95 kg",
+      "talla": "164 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/26/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9665014 SC",
+      "nombre": "Julio Cesar",
+      "apellidoPaterno": "Ezpindola",
+      "apellidoMaterno": "Aponte",
+      "fechaNacimiento": "1/25/2002",
+      "celular": 78557347,
+      "direccion": "Av. cambodromo  7º anillo",
+      "sexo": "masculino",
+      "peso": "65 kg",
+      "talla": "172 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/27/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8923233",
+      "nombre": "Felix Bernabe",
+      "apellidoPaterno": "Padilla",
+      "apellidoMaterno": "Rodriguez",
+      "fechaNacimiento": "7/17/2000",
+      "celular": 69213134,
+      "direccion": "KM-7  doble via la guardia",
+      "sexo": "masculino",
+      "peso": "64 kg",
+      "talla": "185 mts",
+      "grupoSanguineo": "GS: A-RH positivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/27/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9051954 SC",
+      "nombre": "Eduardo",
+      "apellidoPaterno": "Vaca",
+      "apellidoMaterno": "Pizarro",
+      "fechaNacimiento": "11/24/1991",
+      "celular": 60828793,
+      "direccion": "Villa 1º de mayo  C/ 9  #-62",
+      "sexo": "masculino",
+      "peso": "70 kg",
+      "talla": "173 mts",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/27/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "9622562",
+      "nombre": "Sebastian",
+      "apellidoPaterno": "Guzman",
+      "apellidoMaterno": "Torrico",
+      "fechaNacimiento": "4/27/2001",
+      "celular": 61520897,
+      "direccion": "9152   C/ paraiso",
+      "sexo": "masculino",
+      "peso": "Ninguna",
+      "talla": "Ninguna",
+      "grupoSanguineo": "GS: O-RH positivo",
+      "fecha": "4/27/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "..",
+      "nombre": "Juan Miguel",
+      "apellidoPaterno": "Barriga",
+      "apellidoMaterno": "Carrasco",
+      "fechaNacimiento": "11/14/2000",
+      "celular": 70447497,
+      "direccion": "Los lotes  B/ ribera guerrida",
+      "sexo": "masculino",
+      "peso": "69 kg",
+      "talla": "170 mts",
+      "grupoSanguineo": "GS: A-RH positivo\nDx= parasitosis\nTx=  mebendazol",
+      "fecha": "4/27/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8205695 SC",
+      "nombre": "David",
+      "apellidoPaterno": "Rocha",
+      "apellidoMaterno": "guzman",
+      "fechaNacimiento": "4/30/1998",
+      "celular": 6504963,
+      "direccion": "Portachuelo  C/ 24 de septiembre",
+      "sexo": "masculino",
+      "peso": "59 kg",
+      "talla": "170 kg",
+      "grupoSanguineo": "GS: B-RH posiotivo\nDx= parasitosis\nTx= mebendazol",
+      "fecha": "4/27/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "6364042 CBBA",
+      "nombre": "Camilo",
+      "apellidoPaterno": "Yoel",
+      "apellidoMaterno": "Guachalla",
+      "fechaNacimiento": "2/5/2001",
+      "celular": 76899811,
+      "direccion": "B/ el trompillo C/ esteban rosa  #-211",
+      "sexo": "masculino",
+      "peso": "56 kg",
+      "talla": "175 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx= calcio bajo",
+      "fecha": "4/27/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "..",
+      "nombre": "Jhoselin",
+      "apellidoPaterno": "Florez",
+      "apellidoMaterno": "Lazaro",
+      "fechaNacimiento": "8/12/2000",
+      "celular": 78177470,
+      "direccion": "B/ merchor pinto",
+      "sexo": "femenino",
+      "peso": "51 kg",
+      "talla": "153 mts",
+      "grupoSanguineo": "GS: O-RH positivo\nDx=parasitosis\nTx= mebendazol",
+      "fecha": "4/27/2018"
+    },
+    {
+      "numeroCarnetIdentidad": "8134455 sc.",
+      "nombre": "Marco Antonia",
+      "apellidoPaterno": "Mamani",
+      "apellidoMaterno": "Arce",
+      "fechaNacimiento": "6/24/1995",
+      "celular": 79891590,
+      "direccion": "Km-22 carretera norte  Zona Satelite",
+      "sexo": "masculino",
+      "peso": "70,5 kg",
+      "talla": "171 mts",
+      "grupoSanguineo": "GS: ORH (+)",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "12666601",
+      "nombre": "Ronaldinho",
+      "apellidoPaterno": "Verbo",
+      "apellidoMaterno": "Arancibia",
+      "fechaNacimiento": "1/6/1998",
+      "celular": 75604707,
+      "direccion": "B/ los chacos",
+      "sexo": "masculino",
+      "peso": "70 kg",
+      "talla": "166 mts",
+      "grupoSanguineo": "GS: ORH(+)\nDX: anemia\nTX: sulfato ferroso 200mg",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8151834 sc.",
+      "nombre": "Jose Milto",
+      "apellidoPaterno": "Romero",
+      "apellidoMaterno": "Trujillo",
+      "fechaNacimiento": "3/17/1999",
+      "celular": 78515010,
+      "direccion": "Plan 4.000  B/ aluchi",
+      "sexo": "masculino",
+      "peso": "75.5 kg",
+      "talla": "176 mts",
+      "grupoSanguineo": "GS: ARH(+)",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8911178 sc.",
+      "nombre": "Albeth",
+      "apellidoPaterno": "Torrico",
+      "apellidoMaterno": "Piza",
+      "fechaNacimiento": "8/14/1993",
+      "celular": 63540987,
+      "direccion": "AV. vingen de cotoca  C/ papeti",
+      "sexo": "masculino",
+      "peso": "63 kg",
+      "talla": "167 mts",
+      "grupoSanguineo": "GS: ORH (+)",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "12474256 sc.",
+      "nombre": "Dorcas",
+      "apellidoPaterno": "Ramos",
+      "apellidoMaterno": "Chileno",
+      "fechaNacimiento": "12/26/1995",
+      "celular": 76697653,
+      "direccion": "8º anillo  B/ julio leigue",
+      "sexo": "femenino",
+      "peso": "64 kg",
+      "talla": "153 mts",
+      "grupoSanguineo": "GS: ORH (+)\nDX: anemia\nTX: sulfato ferrozo",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8556489 pot.",
+      "nombre": "Nilda",
+      "apellidoPaterno": "Lopez",
+      "apellidoMaterno": "Martinez",
+      "fechaNacimiento": "10/25/1998",
+      "celular": 67913959,
+      "direccion": "Av. virgen de lujan  B/ los claveles",
+      "sexo": "femenino",
+      "peso": "62.5 kgh",
+      "talla": "158 mts",
+      "grupoSanguineo": "GS: ORH (+)",
+      "fecha": "4/30/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8232214 sc.",
+      "nombre": "Jose Ignacio",
+      "apellidoPaterno": "Vargas",
+      "apellidoMaterno": "Rivero",
+      "fechaNacimiento": "7/31/1991",
+      "celular": 70855903,
+      "direccion": "B/ 1º  de agosto  C/ 3",
+      "sexo": "masculino",
+      "peso": "75.3 kg",
+      "talla": "165 mts",
+      "grupoSanguineo": "GS: ORH (+)",
+      "fecha": "5/1/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "11353432",
+      "nombre": "Damir Juvenal",
+      "apellidoPaterno": "Tumiri",
+      "apellidoMaterno": "Perez",
+      "fechaNacimiento": "3/19/1995",
+      "celular": 69070170,
+      "direccion": "Plan 3000   B/ 15 junio",
+      "sexo": "masculino",
+      "peso": "82 kg",
+      "talla": "162 mts",
+      "grupoSanguineo": "GS: ORH (+)",
+      "fecha": "5/1/2010"
+    },
+    {
+      "numeroCarnetIdentidad": "8890218 sc.",
+      "nombre": "Carlo Alejandro",
+      "apellidoPaterno": "Guzman",
+      "apellidoMaterno": "Jimenez",
+      "fechaNacimiento": "10/24/1990",
+      "celular": 78158165,
+      "direccion": "C/ barron  #459",
+      "sexo": "masculino",
+      "peso": "95 kg",
+      "talla": "180 mts",
+      "grupoSanguineo": "GS: ORH (-)",
+      "fecha": "7/22/2018"
+    }
+  ];
+  
+
 
   voluntariosCollection: AngularFirestoreCollection<VoluntarioModel>;
   voluntarios: Observable<VoluntarioModel[]>;
@@ -16,8 +2593,8 @@ export class VoluntarioService {
 
   voluntariosBusqueda: VoluntarioModel[];
 
-  constructor(private afs:AngularFirestore) {
-    this.voluntariosCollection = afs.collection<VoluntarioModel>('voluntarios');
+  constructor(private afs: AngularFirestore) {
+    this.voluntariosCollection = afs.collection<VoluntarioModel>("voluntarios");
     this.voluntarios = this.voluntariosCollection.snapshotChanges().pipe(
       map(actions =>
         actions.map(a => {
@@ -27,16 +2604,15 @@ export class VoluntarioService {
         })
       )
     );
-   }
+  }
 
-  getPaises():string[]{
+  getPaises(): string[] {
     return paisesArray;
   }
-  getDepartamentos(pais:string):string[]{
-    if(pais=='Bolivia')
-    {
-      let departamentos:string[] =[];
-      dataBolivia['departamentos'].forEach(element => {
+  getDepartamentos(pais: string): string[] {
+    if (pais == "Bolivia") {
+      let departamentos: string[] = [];
+      dataBolivia["departamentos"].forEach(element => {
         departamentos.push(element.nombreDepartamento);
       });
       return departamentos;
@@ -44,30 +2620,29 @@ export class VoluntarioService {
     return [];
   }
 
-  getProvincias(departamento:string):string[]{
-    let provincias:string[] =[];
-    dataBolivia['departamentos'].forEach(itemDepartamento=>{
-      if(itemDepartamento.nombreDepartamento==departamento){ 
-        if(itemDepartamento.provincias){
+  getProvincias(departamento: string): string[] {
+    let provincias: string[] = [];
+    dataBolivia["departamentos"].forEach(itemDepartamento => {
+      if (itemDepartamento.nombreDepartamento == departamento) {
+        if (itemDepartamento.provincias) {
           itemDepartamento.provincias.forEach(itemProvincia => {
-            console.log("aqui:"+itemProvincia.nombreProvincia);
-            provincias.push(itemProvincia.nombreProvincia); 
-        });
+            console.log("aqui:" + itemProvincia.nombreProvincia);
+            provincias.push(itemProvincia.nombreProvincia);
+          });
         }
       }
     });
     return provincias;
   }
-  
-  getCapitals(departamento:string,provincia:string):string[]{
-    let capitals:string[] =[];
-    dataBolivia['departamentos'].forEach(itemDepartamento=>{
-      if(itemDepartamento.nombreDepartamento==departamento){
-        if(itemDepartamento.provincias){
+
+  getCapitals(departamento: string, provincia: string): string[] {
+    let capitals: string[] = [];
+    dataBolivia["departamentos"].forEach(itemDepartamento => {
+      if (itemDepartamento.nombreDepartamento == departamento) {
+        if (itemDepartamento.provincias) {
           itemDepartamento.provincias.forEach(pro => {
-            if(pro.nombreProvincia==provincia)
-            {
-              pro.capitales.forEach(ele=>{
+            if (pro.nombreProvincia == provincia) {
+              pro.capitales.forEach(ele => {
                 capitals.push(ele.nombreCapital);
               });
             }
@@ -77,25 +2652,32 @@ export class VoluntarioService {
     });
     return capitals;
   }
-  getGrupoSanguineo():any{
+  getGrupoSanguineo(): any {
     return gruposSanguineos;
   }
-  getMunicipios(departamento:string,provincia:string,capital:string):string[]{
+  getMunicipios(
+    departamento: string,
+    provincia: string,
+    capital: string
+  ): string[] {
+    let municipios: string[] = [];
 
-    let municipios:string[] =[];
-
-    dataBolivia['departamentos'].forEach(itemDepartamento=>{
-      if(itemDepartamento.nombreDepartamento==departamento && itemDepartamento.provincias){
+    dataBolivia["departamentos"].forEach(itemDepartamento => {
+      if (
+        itemDepartamento.nombreDepartamento == departamento &&
+        itemDepartamento.provincias
+      ) {
         itemDepartamento.provincias.forEach(itemProvincia => {
-          if(itemProvincia.nombreProvincia==provincia && itemProvincia.capitales)
-          {
-            
-            itemProvincia.capitales.forEach(itemCapital=>{
-
-              if(itemCapital.nombreCapital==capital && itemCapital.municipios)
-              {
+          if (
+            itemProvincia.nombreProvincia == provincia &&
+            itemProvincia.capitales
+          ) {
+            itemProvincia.capitales.forEach(itemCapital => {
+              if (
+                itemCapital.nombreCapital == capital &&
+                itemCapital.municipios
+              ) {
                 itemCapital.municipios.forEach(itemMunicipio => {
-
                   municipios.push(itemMunicipio.nombreMunicipio);
                 });
               }
@@ -106,25 +2688,35 @@ export class VoluntarioService {
     });
     return municipios;
   }
-  getSituacionLaboral():any[]{
+  getSituacionLaboral(): any[] {
     return situacionLaboral;
   }
 
-  async submitHandler(loading:boolean,success:boolean,voluntarioForm:FormGroup){
-    loading=true;
-    const formValue=voluntarioForm.value;
-    try{
-      await this.afs.collection('voluntarios2').add(formValue);
-      success=true;
-    }
-    catch(err){
+  async submitHandler(
+    loading: boolean,
+    success: boolean,
+    voluntarioForm: FormGroup
+  ) {
+    loading = true;
+    const formValue = voluntarioForm.value;
+    try {
+      await this.afs.collection("voluntarios2").add(formValue);
+      success = true;
+    } catch (err) {
       console.log(err);
-      
     }
-    loading=false;
+    loading = false;
   }
 
-  getVoluntarios(){
+  getVoluntarios() {
+    if (environment.production) {
       return this.voluntarios;
+    }
+    else return Observable.create(
+      (observer:Subscriber<VoluntarioModel[]>)=>{
+        observer.next(this.voluntariosLocal);
+        observer.complete();
+      }
+    );
   }
 }

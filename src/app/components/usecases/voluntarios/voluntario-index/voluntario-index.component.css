@@ -57,3 +57,15 @@ tr.example-element-row:not(.example-expanded-row):active {
     height: auto;
     border-radius: 50%;
 }
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.custom-button {
+    position: fixed;
+    right: 10%;
+    top: 90%;
+}

@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
+  titulo:string="Sar Fab Santa cruz";
   isHandset$: Observable<boolean> = 
   this.breakpointObserver.observe(Breakpoints.Handset)
   .pipe(

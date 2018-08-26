@@ -24,21 +24,23 @@ export class VoluntarioCardComponent implements OnInit {
   constructor(private bottomSheet: MatBottomSheet) { }
 
   openBottomSheet(): void {
-    this.bottomSheet.open(BottomSheetOverviewVoluntarioSheet);
+    //this.bottomSheet.open(BottomSheetOverviewVoluntarioSheet);
   }
   ngOnInit() {
   }
 }
 
-@Component({
-  selector: 'bottom-sheet-overview-voluntario-sheet',
-  templateUrl: 'bottom-sheet-overview-voluntario-sheet.html',
-})
-export class BottomSheetOverviewVoluntarioSheet {
-  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewVoluntarioSheet>) {}
+// @Component({
+//   selector: 'bottom-sheet-overview-voluntario-sheet',
+//   templateUrl: 'bottom-sheet-overview-voluntario-sheet.html',
+// })
+// export class BottomSheetOverviewVoluntarioSheet {
+//   constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewVoluntarioSheet>) {}
 
-  openLink(event: MouseEvent): void {
-    this.bottomSheetRef.dismiss();
-    event.preventDefault();
-  }
-}
+//   openLink(event: MouseEvent): void {
+//     this.bottomSheetRef.dismiss();
+//     event.preventDefault();
+//   }
+
+  
+
