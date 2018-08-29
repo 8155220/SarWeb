@@ -1,12 +1,10 @@
 <!-- <app-voluntario-card [voluntario]="voluntario" *ngFor="let voluntario of voluntarios"> </app-voluntario-card> -->
-<mat-toolbar color="primary">
-    <span>Gestionar Voluntarios</span>
-</mat-toolbar>
 
 <a mat-mini-fab color='primary' class='custom-button' routerLink="/voluntarios/create">
     <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
 </a>
 
+<!-- routerLink="/voluntarios/create" -->
 
 <div fxLayout="column" fxLayoutGap="10px">
     <form class="example-form" fxLayout="column">
@@ -15,6 +13,10 @@
         </mat-form-field>
     </form>
 
+    <div fxLayoutAlign="center center" *ngIf='loading'>
+        <mat-progress-spinner class="example-margin" color="primary" mode="indeterminate">
+        </mat-progress-spinner>
+    </div>
     <div>
 
         <table mat-table [dataSource]="dataSource " multiTemplateDataRows class="mat-elevation-z8">
@@ -73,7 +75,7 @@
                                 <div fxLayoutAlign="center center" fxFlex='5 1 auto'>
                                 </div>
                                 <div fxLayoutAlign="end center">
-                                    <button mat-button fxFlex="1 1 auto " color='basic' fxLayoutAlign="end center "><b>Editar</b></button>
+                                    <a mat-button fxFlex="1 1 auto " color='basic' fxLayoutAlign="end center "><b>Editar</b></a>
                                     <button mat-button fxFlex="1 1 auto " color='basic' fxLayoutAlign="end center "><b>Eliminar</b></button>
                                 </div>
                             </div>
@@ -88,7 +90,7 @@
             </tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" pageSize='10' showFirstLastButtons></mat-paginator>
     </div>
-
 
 </div>
