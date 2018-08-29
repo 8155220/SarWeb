@@ -2,15 +2,8 @@
 
     Value:{{voluntarioForm.value | json}}
     <!-- <hr> -->
-    <div formArrayName='alergias'>
-        <div *ngFor='let alergia of  alergiasFormArray.controls; let i=index ' [formGroupName]='i'>
-            <mat-form-field>
-                <input matInput placeholder="nombreAlergia" formControlName="nombreAlergia">
-            </mat-form-field>
-            <a mat-raised-button color='warn' (click)='deleteAlergia(i)'>Eliminar</a>
-        </div>
-    </div>
-    <a mat-raised-button color='primary' (click)='addAlergia()'> Agregar Alergia</a>
+
+
 
     <mat-form-field>
         <input matInput placeholder="nombre" formControlName="nombre">
@@ -168,11 +161,127 @@
         <input matInput type="number" placeholder="Numero Carnet Militar" formControlName="numeroCarnetMilitar">
     </mat-form-field>
 
+    <mat-form-field>
+        <input matInput type="number" placeholder="Estatura(Metros)" formControlName="estatura">
+    </mat-form-field>
+
+    <div>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Color de Piel" formControlName="colorPiel">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Color de Ojos" formControlName="colorOjos">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Cabello" formControlName="cabello">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Labios" formControlName="labios">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Nariz" formControlName="nariz">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Rasgos Particulares" formControlName="rasgosParticulares">
+        </mat-form-field>
+    </div>
+
+
+    <!-- Alergias -->
+    <div>
+        <div formArrayName='alergias'>
+            <div *ngFor='let alergia of  alergiasFormArray.controls; let i=index ' [formGroupName]='i'>
+                <mat-form-field>
+                    <input matInput placeholder="nombreAlergia" formControlName="nombreAlergia">
+                </mat-form-field>
+                <a mat-raised-button color='warn' (click)='deleteAlergia(i)'>Eliminar</a>
+            </div>
+        </div>
+        <a mat-raised-button color='primary' (click)='addAlergia()'> Agregar Alergia</a>
+    </div>
+
+    <!-- Idiomas -->
+    <div>
+        <div formArrayName='idiomas'>
+            <div *ngFor='let idioma of  idiomasFormArray.controls; let i=index ' [formGroupName]='i'>
+                <mat-form-field>
+                    <input matInput placeholder="nombreIdioma" formControlName="nombreIdioma">
+                </mat-form-field>
+                <a mat-raised-button color='warn' (click)='deleteIdioma(i)'>Eliminar</a>
+            </div>
+        </div>
+        <a mat-raised-button color='primary' (click)='addIdioma()'> Agregar Idioma</a>
+    </div>
+
+    <!-- Hoobies -->
+    <div>
+        <div formArrayName='hoobies'>
+            <div *ngFor='let hoobie of  hoobiesFormArray.controls; let i=index ' [formGroupName]='i'>
+                <mat-form-field>
+                    <input matInput placeholder="Pasatiempo" formControlName="nombreHoobie">
+                </mat-form-field>
+                <a mat-raised-button color='warn' (click)='deleteHoobie(i)'>Eliminar</a>
+            </div>
+        </div>
+        <a mat-raised-button color='primary' (click)='addHoobie()'> Agregar Hoobie</a>
+    </div>
+
+    <!-- EstudioRealizados -->
+    <div>
+        <div formArrayName='estudiosRealizados'>
+            <div *ngFor='let estudioRealizado of  estudioRealizadosFormArray.controls; let i=index ' [formGroupName]='i'>
+                <mat-form-field>
+                    <input matInput placeholder="nombreEstudioRealizado" formControlName="nombreEstudioRealizado">
+                </mat-form-field>
+                <a mat-raised-button color='warn' (click)='deleteEstudioRealizado(i)'>Eliminar</a>
+            </div>
+        </div>
+        <a mat-raised-button color='primary' (click)='addEstudioRealizado()'> Agregar Estudios Realizados</a>
+    </div>
+
+    <!-- ExperienciaCampoPrimeraRespuestas -->
+    <div>
+        <div formArrayName='experienciaCampoPrimeraRespuesta'>
+            <div *ngFor='let experienciaCampoPrimeraRespuesta of  experienciaCampoPrimeraRespuestaFormArray.controls; let i=index ' [formGroupName]='i'>
+                <mat-form-field>
+                    <input matInput placeholder="nombreExperienciaCampoPrimeraRespuesta" formControlName="nombreExperienciaCampoPrimeraRespuesta">
+                </mat-form-field>
+                <a mat-raised-button color='warn' (click)='deleteExperienciaCampoPrimeraRespuesta(i)'>Eliminar</a>
+            </div>
+        </div>
+        <a mat-raised-button color='primary' (click)='addExperienciaCampoPrimeraRespuesta()'> Agregar ExperienciaCampoPrimeraRespuesta</a>
+    </div>
+
+    <!-- Datos Familiares -->
+    <div>
+        <div formArrayName='datosFamiliares'>
+            <div *ngFor='let datoFamiliar of  datosFamiliaresFormArray.controls; let i=index ' [formGroupName]='i'>
+                <mat-form-field>
+                    <input matInput placeholder="Parentesco" formControlName="parentesco">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Nombre pariente" formControlName="nombre">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Apellidos pariente" formControlName="apellido">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Domicilio Actual" formControlName="domicilio">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type='number' placeholder="Celular" formControlName="celular">
+                </mat-form-field>
+
+                <a mat-raised-button color='warn' (click)='deleteDatoFamiliar(i)'>Eliminar</a>
+            </div>
+        </div>
+        <a mat-raised-button color='primary' (click)='addDatoFamiliar()'> Agregar familiar</a>
+    </div>
+
 
     <button mat-button color="primary" type="submit" [disabled]='voluntarioForm.invalid'> Guardar</button>
 
 
 </form>
-<div *ngIf="success" class="notification is-success">
-    Registrado Correctamente
-</div>

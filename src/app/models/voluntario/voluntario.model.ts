@@ -45,6 +45,7 @@ export interface VoluntarioInterface {
 
 export class VoluntarioModel implements VoluntarioInterface{
   id?: string;
+  timestamp?:number;
   nombre?: string;
   apellidoPaterno?: string;
   apellidoMaterno?: string;
@@ -87,10 +88,10 @@ export class VoluntarioModel implements VoluntarioInterface{
   lugarNacimiento?: string;
 
   //elminar depsues
-  peso:string;
-  talla:string;
-  grupoSanguineo:string;
-  fecha:string;
+  peso?:string;
+  talla?:string;
+  grupoSanguineo?:string;
+  fecha?:string;
 
 
     

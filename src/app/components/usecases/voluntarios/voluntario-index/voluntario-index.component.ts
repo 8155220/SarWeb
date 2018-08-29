@@ -125,6 +125,9 @@ export class VoluntarioIndexComponent implements OnInit {
       this.loading = false;
     }
   }
+  deleteVoluntario(id:string){
+    this.voluntarioService.deleteVoluntario(id);
+  }
 }
 
 @Component({

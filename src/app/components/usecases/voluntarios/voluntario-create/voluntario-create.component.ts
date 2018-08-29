@@ -6,6 +6,7 @@ import { map, startWith } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { MatSnackBar } from "../../../../../../node_modules/@angular/material";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-voluntario-create",
@@ -34,7 +35,8 @@ export class VoluntarioCreateComponent implements OnInit {
     private voluntarioService: VoluntarioService,
     private afs: AngularFirestore,
     public snackBar: MatSnackBar,
-    private uiService:UiService
+    private uiService:UiService,
+    private router:Router
   ) {}
 
   getGrupoSanguineo(): any {
@@ -52,39 +54,44 @@ export class VoluntarioCreateComponent implements OnInit {
       tipoSangre: "",
       licenciaConducir: "false",
       direccion: "",
-      alergias: this.fb.array([]), //pendiente
-      
+      alergias: this.fb.array([]), 
       pais: this.paisFormControl,
       departamento: this.departamentoFormControl,
       provincia: this.provinciaFormControl,
       capital: this.capitalFormControl,
       municipio: this.municipioFormControl,
-
+      timestamp: Date.now(),
       // lugar: "",
       celular: "", //number
       telefonoFijo: "",
       numeroCarnetIdentidad: "",
       estadoCivil: "",
       email: "",
-      idiomas: "", //pendiente
+      idiomas: this.fb.array([]),
 
-      hoobies: "", //pendiente
+      hoobies: this.fb.array([]),
 
       nombreTutor: "",
       celularTutor: "",
-      estudiosRealizados: "", //pendiente
-
+      estudiosRealizados: this.fb.array([]),
       profesion: "",
       ocupacion: "",
       situacionLaboral: "",
-      experienciaCampoPrimeraRespuesta: "", //pendiente
+      experienciaCampoPrimeraRespuesta: this.fb.array([]),
 
       grado: "",
       armaEspecialidad: "",
       numeroCarnetMilitar: "",
-      datosFamiliares: "", //pendiente
+      datosFamiliares: this.fb.array([]), //pendiente
 
-      datosFisicos: "", //pendiente
+      estatura: "", //pendiente
+      talla: "", //pendiente
+      colorPiel: "", //pendiente
+      colorOjos: "", //pendiente
+      cabello: "", //pendiente
+      labios: "", //pendiente
+      nariz: "", //pendiente
+      rasgosParticulares: "", //pendiente
 
       emergenciaLlamar: "", //pendiente
 
@@ -171,6 +178,79 @@ export class VoluntarioCreateComponent implements OnInit {
   deleteAlergia(i:number){    
     this.alergiasFormArray.removeAt(i);
   }
+  get idiomasFormArray(){
+    return this.voluntarioForm.get('idiomas') as FormArray;
+  }
+
+  addIdioma(){
+     const idioma= this.fb.group({
+       nombreIdioma:[],
+     });
+     this.idiomasFormArray.push(idioma);
+  }
+  deleteIdioma(i:number){    
+    this.idiomasFormArray.removeAt(i);
+  }
+  get hoobiesFormArray(){
+    return this.voluntarioForm.get('hoobies') as FormArray;
+  }
+
+  addHoobie(){
+     const hoobie= this.fb.group({
+       nombreHoobie:[],
+     });
+     this.hoobiesFormArray.push(hoobie);
+  }
+  deleteHoobie(i:number){    
+    this.hoobiesFormArray.removeAt(i);
+  }
+
+  get estudioRealizadosFormArray(){
+    return this.voluntarioForm.get('estudiosRealizados') as FormArray;
+  }
+
+  addEstudioRealizado(){
+     const estudioRealizado= this.fb.group({
+      nombreEstudioRealizado:[],
+     });
+     this.estudioRealizadosFormArray.push(estudioRealizado);
+  }
+  deleteEstudioRealizado(i:number){    
+    this.estudioRealizadosFormArray.removeAt(i);
+  }
+
+  get experienciaCampoPrimeraRespuestaFormArray(){
+    return this.voluntarioForm.get('experienciaCampoPrimeraRespuesta') as FormArray;
+  }
+
+  addExperienciaCampoPrimeraRespuesta(){
+     const experienciaCampoPrimeraRespuesta= this.fb.group({
+       nombreExperienciaCampoPrimeraRespuesta:[],
+     });
+     this.experienciaCampoPrimeraRespuestaFormArray.push(experienciaCampoPrimeraRespuesta);
+  }
+  deleteExperienciaCampoPrimeraRespuesta(i:number){    
+    this.experienciaCampoPrimeraRespuestaFormArray.removeAt(i);
+  }
+
+  get datosFamiliaresFormArray(){
+    return this.voluntarioForm.get('datosFamiliares') as FormArray;
+  }
+
+  addDatoFamiliar(){
+     const datoFamiliar= this.fb.group({
+       parentesco:[],
+       nombre:[],
+       apellido:[],
+       domicilio:[],
+       celular:[],
+     });
+     this.datosFamiliaresFormArray.push(datoFamiliar);
+  }
+  deleteDatoFamiliar(i:number){    
+    this.datosFamiliaresFormArray.removeAt(i);
+  }
+
 
   async submitHandler() {
     this.loading = true;
@@ -179,6 +259,8 @@ export class VoluntarioCreateComponent implements OnInit {
       await this.afs.collection("voluntarios").add(formValue);
       this.success = true;
       this.openSnackBar('Guardado','ocultar')
+      this.router.navigate(['/voluntarios/index']);
+      
     } catch (err) {
       console.log(err);
     }
