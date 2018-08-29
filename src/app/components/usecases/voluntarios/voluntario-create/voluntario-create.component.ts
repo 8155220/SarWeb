@@ -1,3 +1,4 @@
+import { UiService } from './../../../../services/ui.service';
 import { AngularFirestore } from "angularfire2/firestore";
 import { VoluntarioService } from "./../../../../services/voluntario.service";
 import { Observable } from "rxjs";
@@ -32,13 +33,16 @@ export class VoluntarioCreateComponent implements OnInit {
     private fb: FormBuilder,
     private voluntarioService: VoluntarioService,
     private afs: AngularFirestore,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    private uiService:UiService
   ) {}
 
   getGrupoSanguineo(): any {
     return this.voluntarioService.getGrupoSanguineo();
   }
   ngOnInit() {
+    this.uiService.useCaseStateChanged.next('Registrar Voluntario');
+
     this.voluntarioForm = this.fb.group({
       nombre: ["",[Validators.required]],
       apellidoPaterno: ["",[Validators.required]],

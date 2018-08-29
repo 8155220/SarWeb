@@ -19,7 +19,9 @@ import {
   MatRadioModule,
   MatAutocompleteModule,
   MatSnackBarModule,
-  MatTableModule
+  MatTableModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 
 @NgModule({
@@ -41,7 +43,7 @@ import {
     MatNativeDateModule,
     MatCheckboxModule,
     MatRadioModule,
-    MatAutocompleteModule,MatSnackBarModule,MatTableModule
+    MatAutocompleteModule,MatSnackBarModule,MatTableModule,MatPaginatorModule,MatProgressSpinnerModule
   ],
   exports: [
     MatButtonModule,
@@ -61,7 +63,7 @@ import {
     MatNativeDateModule,
     MatCheckboxModule,
     MatRadioModule,
-    MatAutocompleteModule,MatSnackBarModule,MatTableModule
+    MatAutocompleteModule,MatSnackBarModule,MatTableModule,MatPaginatorModule,MatProgressSpinnerModule
   ]
 })
 export class MaterialModule {}

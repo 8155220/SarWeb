@@ -34,17 +34,26 @@
     <mat-sidenav-content>
         <mat-toolbar color="primary">
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
-              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-            </button>
-            <span>{{titulo}}</span>
+                  <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+                </button>
 
-            <div fxFlex fxLayoutAlign="flex-end" fxHide.xs>
-                <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
+            <div fxLayout="row">
+                <div fxLayoutAlign="start start" fxHide.gt-xs>
+                    <span>{{title}}</span>
+                </div>
 
-                    <li><a routerLink="/signup">Registrarse</a></li>
+                <div fxFlex fxLayoutAlign="flex-end" fxHide.xs>
+                    <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
 
-                    <li> <a routerLink="/login">Iniciar Session</a></li>
-                </ul>
+                        <li><a routerLink="/signup">Registrarse</a></li>
+
+                        <li> <a routerLink="/login">Iniciar Session</a></li>
+
+                    </ul>
+                </div>
+                <div class='backspace-toolbar' fxHide.gt-xs>
+                    <mat-icon (click)='cancel()' size='50px'>keyboard_backspace</mat-icon>
+                </div>
             </div>
         </mat-toolbar>
         <main>
