@@ -2,6 +2,16 @@
 
     Value:{{voluntarioForm.value | json}}
     <!-- <hr> -->
+    <div formArrayName='alergias'>
+        <div *ngFor='let alergia of  alergiasFormArray.controls; let i=index ' [formGroupName]='i'>
+            <mat-form-field>
+                <input matInput placeholder="nombreAlergia" formControlName="nombreAlergia">
+            </mat-form-field>
+            <a mat-raised-button color='warn' (click)='deleteAlergia(i)'>Eliminar</a>
+        </div>
+    </div>
+    <a mat-raised-button color='primary' (click)='addAlergia()'> Agregar Alergia</a>
+
     <mat-form-field>
         <input matInput placeholder="nombre" formControlName="nombre">
     </mat-form-field>

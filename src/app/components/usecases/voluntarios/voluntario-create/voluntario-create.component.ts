@@ -4,7 +4,7 @@ import { VoluntarioService } from "./../../../../services/voluntario.service";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { MatSnackBar } from "../../../../../../node_modules/@angular/material";
 
 @Component({
@@ -52,7 +52,7 @@ export class VoluntarioCreateComponent implements OnInit {
       tipoSangre: "",
       licenciaConducir: "false",
       direccion: "",
-      alergias: "", //pendiente
+      alergias: this.fb.array([]), //pendiente
       
       pais: this.paisFormControl,
       departamento: this.departamentoFormControl,
@@ -158,6 +158,19 @@ export class VoluntarioCreateComponent implements OnInit {
   //   console.log('loading'+this.loading);
   //   console.log('succes'+this.success);
   // }
+  get alergiasFormArray(){
+    return this.voluntarioForm.get('alergias') as FormArray;
+  }
+
+  addAlergia(){
+     const alergia= this.fb.group({
+       nombreAlergia:[],
+     });
+     this.alergiasFormArray.push(alergia);
+  }
+  deleteAlergia(i:number){    
+    this.alergiasFormArray.removeAt(i);
+  }
 
   async submitHandler() {
     this.loading = true;
