@@ -22,6 +22,7 @@ import {
   NavigationCancel,
   NavigationError
 } from "../../../../../../node_modules/@angular/router";
+import { environment } from "../../../../../environments/environment";
 
 @Component({
   selector: "app-voluntario-index",
@@ -78,6 +79,9 @@ export class VoluntarioIndexComponent implements OnInit {
       this.dataSource.data = voluntarios;
       console.log(voluntarios);
     });
+    if(!environment.production){
+        this.voluntarioService.VoluntariosLocalEmmit();
+    }
     this.dataSource.paginator = this.paginator;
   }
   ngAfterViewInit() {

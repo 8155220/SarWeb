@@ -1,3 +1,5 @@
+import { environment } from './../../../../../environments/environment';
+import { VoluntarioModel } from './../../../../models/voluntario/voluntario.model';
 import { UiService } from './../../../../services/ui.service';
 import { AngularFirestore } from "angularfire2/firestore";
 import { VoluntarioService } from "./../../../../services/voluntario.service";
@@ -254,17 +256,26 @@ export class VoluntarioCreateComponent implements OnInit {
 
   async submitHandler() {
     this.loading = true;
-    const formValue = this.voluntarioForm.value;
-    try {
-      await this.afs.collection("voluntarios").add(formValue);
-      this.success = true;
+    const formValue = this.voluntarioForm.value as VoluntarioModel;
+
+    if(environment.production)
+    {
+      try {
+        await this.afs.collection("voluntarios").add(formValue);
+        this.success = true;
+        this.openSnackBar('Guardado','ocultar')
+        this.router.navigate(['/voluntarios/index']);
+        
+      } catch (err) {
+        console.log(err);
+      }
+      this.loading = false;
+    } else {
+      this.voluntarioService.addVoluntario(formValue);
       this.openSnackBar('Guardado','ocultar')
-      this.router.navigate(['/voluntarios/index']);
-      
-    } catch (err) {
-      console.log(err);
+        this.router.navigate(['/voluntarios/index']);
     }
-    this.loading = false;
+    
   }
 
 
