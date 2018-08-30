@@ -15,7 +15,7 @@ const routes:Routes = [
     {path:'voluntarios/index',component:VoluntarioIndexComponent},
     {path:'voluntarios/create',component:VoluntarioCreateComponent},
     {path:'voluntarios/read',component:VoluntarioReadComponent},
-    {path:'voluntarios/update',component:VoluntarioUpdateComponent},
+    {path:'voluntarios/update/:id',component:VoluntarioUpdateComponent},
     {path:'voluntarios/card',component:VoluntarioCardComponent},
 
     {path:'signup',component:SingupComponent},

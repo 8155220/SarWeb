@@ -92,6 +92,17 @@ export class VoluntarioService {
       });
     }
   }
+  getVoluntario(id:string){
+    let voluntario:VoluntarioModel;
+    this.voluntarios.subscribe(voluntarios=>{
+       voluntarios.forEach(e=>{
+         if(e.id==id){
+            voluntario= new VoluntarioModel(e);
+         }
+       });
+    });
+    return voluntario;
+  }
   deleteVoluntario(id: string) {
     if(environment.production)
     {
