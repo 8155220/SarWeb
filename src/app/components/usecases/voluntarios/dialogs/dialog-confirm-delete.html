@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Eliminar Voluntario: </h1>
+<div mat-dialog-content>
+    <p>Esta seguro de eliminar a {{data.nombre}}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color='primary' (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button color='warn' mat-dialog-close="yes" cdkFocusInitial>Confirmar</button>
+</div>

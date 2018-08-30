@@ -1,24 +1,13 @@
-<h1 mat-dialog-title> Agregar Alergias</h1>
-<div mat-dialog-content>
-    <div [formGroup]="voluntarioFormGroup">
-        <div formArrayName='alergiasFormArray'>
-            <div *ngFor=' let alergia of alergiaForm.controls;let i=index ' [formGroupName]='i '>
-
-                <p>Nombre de Alergia</p>
-                <mat-form-field>
-                    <input matInput formControlName='nombreAlergia '>
-                </mat-form-field>
-                <button mat-raised-button color="warn" (click)='deleteAlergia() '>Eliminar Alergia</button>
-
-            </div>
-
-
-        </div>
-    </div>
-
-</div>
-<button mat-raised-button color='primary ' (click)="addAlergia()">Agregar Alergia</button>
-<div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <!-- <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button> -->
-</div>
+<ol>
+    <li>
+        <mat-form-field>
+            <input matInput [(ngModel)]="name" placeholder="What's your name?">
+        </mat-form-field>
+    </li>
+    <li>
+        <button mat-raised-button (click)="openDialog()">Pick one</button>
+    </li>
+    <li *ngIf="animal">
+        You chose: <i>{{animal}}</i>
+    </li>
+</ol>

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { VoluntarioModel } from "../../../../models/voluntario/voluntario.model";
-import { VoluntarioService } from "../../../../services/voluntario.service";
+import { VoluntarioModel } from './../../../../models/voluntario/voluntario.model';
+import { Component, OnInit, ViewChild, Inject } from "@angular/core";
+import { VoluntarioService } from '../../../../services/voluntario.service';
 import {
   animate,
   state,
@@ -10,7 +10,10 @@ import {
 } from "@angular/animations";
 import {
   MatTableDataSource,
-  MatPaginator
+  MatPaginator,
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
 } from "../../../../../../node_modules/@angular/material";
 import { MatBottomSheetRef, MatBottomSheet } from "@angular/material";
 import { UiService } from '../../../../services/ui.service';
@@ -59,7 +62,7 @@ export class VoluntarioIndexComponent implements OnInit {
   constructor(
     private voluntarioService: VoluntarioService,
     private bottomSheet: MatBottomSheet,
-    private _router: Router,private uiService:UiService
+    private _router: Router,private uiService:UiService,public dialog: MatDialog
   ) {
   }
 
@@ -94,6 +97,24 @@ export class VoluntarioIndexComponent implements OnInit {
   deleteVoluntario(id:string){
     this.voluntarioService.deleteVoluntario(id);
   }
+
+
+  openDialog(voluntario:VoluntarioModel): void {
+    const dialogRef = this.dialog.open(DialogConfirmDelete, {
+      width: '250px',
+      data: voluntario
+    });
+    dialogRef.afterClosed().subscribe(
+      result=>{
+        if(result=='yes'){
+            this.voluntarioService.deleteVoluntario(voluntario.id);
+            this._router.navigate(['/voluntarios/index']);
+            this.ngOnInit();
+        }
+      }
+    );
+  }
+
 }
 
 @Component({
@@ -111,4 +132,20 @@ export class BottomSheetOverviewVoluntarioSheet {
     this.bottomSheetRef.dismiss();
     event.preventDefault();
   }
+}
+
+@Component({
+  selector: 'dialog-confirm-delete',
+  templateUrl: '../dialogs/dialog-confirm-delete.html',
+})
+export class DialogConfirmDelete {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogConfirmDelete>,
+    @Inject(MAT_DIALOG_DATA) public data: VoluntarioModel) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }

@@ -155,13 +155,6 @@ export class VoluntarioCreateComponent implements OnInit {
   getSituacionLaboral(): any[] {
     return this.voluntarioService.getSituacionLaboral();
   }
-  // async submitHandler(){
-  //   console.log('Clickeado');
-
-  //   this.voluntarioService.submitHandler(this.loading,this.success,this.voluntarioForm);
-  //   console.log('loading'+this.loading);
-  //   console.log('succes'+this.success);
-  // }
   get alergiasFormArray(){
     return this.voluntarioForm.get('alergias') as FormArray;
   }

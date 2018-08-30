@@ -11,7 +11,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { WelcomeComponent } from "./components/welcome/welcome.component";
 import { ToolbarComponent } from "./components/shared/toolbar/toolbar.component";
 import { FooterComponent } from "./components/shared/footer/footer.component";
-import { VoluntarioIndexComponent,BottomSheetOverviewVoluntarioSheet } from "./components/usecases/voluntarios/voluntario-index/voluntario-index.component";
+import { VoluntarioIndexComponent,BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete } from "./components/usecases/voluntarios/voluntario-index/voluntario-index.component";
 import { VoluntarioCreateComponent } from "./components/usecases/voluntarios/voluntario-create/voluntario-create.component";
 import { VoluntarioReadComponent } from "./components/usecases/voluntarios/voluntario-read/voluntario-read.component";
 import { VoluntarioDeleteComponent } from "./components/usecases/voluntarios/voluntario-delete/voluntario-delete.component";
@@ -42,7 +42,7 @@ import { AngularFirestoreModule } from "../../node_modules/angularfire2/firestor
     VoluntarioUpdateComponent,
     VoluntarioCardComponent,
     SidenavComponent,
-    BottomSheetOverviewVoluntarioSheet
+    BottomSheetOverviewVoluntarioSheet,DialogConfirmDelete
   ],
   imports: [
     BrowserModule,
@@ -55,7 +55,7 @@ import { AngularFirestoreModule } from "../../node_modules/angularfire2/firestor
     AngularFireModule.initializeApp(environment.firebaseConfig,'SARFAB'),
     AngularFirestoreModule,
   ],
-  entryComponents: [BottomSheetOverviewVoluntarioSheet],
+  entryComponents: [BottomSheetOverviewVoluntarioSheet,DialogConfirmDelete],
   providers: [VoluntarioService],
   bootstrap: [AppComponent]
 })

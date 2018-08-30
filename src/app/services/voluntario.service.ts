@@ -46,7 +46,7 @@ export class VoluntarioService {
         )
       );
     } else {
-      this.voluntarios=this.getVoluntarios();
+      this.voluntarios=this.getVoluntarios(); //Mejorar Codigo
     }
   }
 
@@ -138,9 +138,7 @@ export class VoluntarioService {
       localStorage.getItem('voluntarios') || "[]"
     );
     voluntarios.forEach((item,index)=>{
-      if(item.id==voluntario.id){
-        console.log('entra AddVoluntarioFOrech');
-        
+      if(item.id==voluntario.id){        
         voluntarios.splice(index,1);
       }
     });
