@@ -142,9 +142,41 @@ export class VoluntarioService {
       return true;
     }
   }
+  async updateVoluntario(voluntario: VoluntarioModel) {
+    if (environment.production) {
+      try {
+        await this.afs.collection("voluntarios").doc(voluntario.id).set(voluntario)
+        return true;
+      } catch (err) {
+        console.log(err);
+        return false;
+      }
+    } else {
+      this.updateVoluntarioLocal(voluntario);
+      return true;
+    }
+  }
+  
+  updateVoluntarioLocal(voluntario: VoluntarioModel) {
+
+    let voluntarios: Array<VoluntarioModel> = JSON.parse(
+      localStorage.getItem('voluntarios') || "[]"
+    );
+    voluntarios.forEach((item,index)=>{
+      if(item.id==voluntario.id){        
+        voluntarios.splice(index,1);
+      }
+    });
+    voluntarios.push(voluntario);
+    localStorage.setItem('voluntarios',JSON.stringify(voluntarios));
+    return true;
+  }
   addVoluntarioLocal(voluntario: VoluntarioModel) {
 
-    voluntario.id=voluntario.timestamp.toString();
+    if(!voluntario.id)
+    {
+      voluntario.id=voluntario.timestamp.toString();
+    }
     let voluntarios: Array<VoluntarioModel> = JSON.parse(
       localStorage.getItem('voluntarios') || "[]"
     );

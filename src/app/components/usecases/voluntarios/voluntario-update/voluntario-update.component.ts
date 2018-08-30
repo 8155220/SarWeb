@@ -58,11 +58,7 @@ export class VoluntarioUpdateComponent implements OnInit {
     });
     this.uiService.useCaseStateChanged.next("Editar Voluntario");
 
-    this.paisFormControl.setValue(this.voluntario.pais);
-    this.departamentoFormControl.setValue(this.voluntario.departamento);
-    this.provinciaFormControl.setValue(this.voluntario.provincia);
-    this.capitalFormControl.setValue(this.voluntario.capital);
-    this.municipioFormControl.setValue(this.voluntario.municipio);
+    
     this.voluntarioForm = this.fb.group({
       nombre: [this.voluntario.nombre, [Validators.required]],
       apellidoPaterno: [this.voluntario.apellidoPaterno, [Validators.required]],
@@ -126,8 +122,19 @@ export class VoluntarioUpdateComponent implements OnInit {
       startWith(""),
       map(value => this.filtrar(value, this.getMunicipios()))
     );
+
+    this.loadFormsArray();
+    this.loadFormsControl();
   }
 
+  loadFormsControl(){
+
+    if (this.voluntario.pais) this.paisFormControl.setValue(this.voluntario.pais );
+    if (this.voluntario.departamento)this.departamentoFormControl.setValue(this.voluntario.departamento);
+    if (this.voluntario.provincia)this.provinciaFormControl.setValue(this.voluntario.provincia);
+    if (this.voluntario.capital) this.capitalFormControl.setValue(this.voluntario.capital);
+    if (this.voluntario.municipio)this.municipioFormControl.setValue(this.voluntario.municipio);
+  }
   getPaises(): string[] {
     return this.voluntarioService.getPaises();
   }
@@ -167,6 +174,14 @@ export class VoluntarioUpdateComponent implements OnInit {
   getSituacionLaboral(): any[] {
     return this.voluntarioService.getSituacionLaboral();
   }
+
+  setAlergiasFormArray(){
+    if(this.voluntario.alergias){
+      this.voluntario.alergias.forEach(element => {
+        this.alergiasFormArray.push( this.fb.group({nombreAlergia:element.nombreAlergia}));
+      });
+    }
+  }
   get alergiasFormArray() {
     return this.voluntarioForm.get("alergias") as FormArray;
   }
@@ -180,7 +195,21 @@ export class VoluntarioUpdateComponent implements OnInit {
   deleteAlergia(i: number) {
     this.alergiasFormArray.removeAt(i);
   }
+  setIdiomasFormArray(){
+    if(this.voluntario.idiomas){
+      console.log('Cantidad Idiomas:'+this.voluntario.idiomas.length);
+      
+      this.voluntario.idiomas.forEach(element => {
+        this.idiomasFormArray.push( this.fb.group({nombreIdioma:element.nombreIdioma}));
+        console.log('CantidadVecesPUsh');
+        
+      });
+    }
+  }
+
   get idiomasFormArray() {
+    console.log(this.voluntarioForm.get("idiomas").value);
+    
     return this.voluntarioForm.get("idiomas") as FormArray;
   }
 
@@ -193,6 +222,15 @@ export class VoluntarioUpdateComponent implements OnInit {
   deleteIdioma(i: number) {
     this.idiomasFormArray.removeAt(i);
   }
+
+  setHoobiesFormArray(){
+    if(this.voluntario.hoobies){
+      this.voluntario.hoobies.forEach(element => {
+        this.hoobiesFormArray.push( this.fb.group({nombreHoobie:element.nombreHoobie}));
+      });
+    }
+  }
+
   get hoobiesFormArray() {
     return this.voluntarioForm.get("hoobies") as FormArray;
   }
@@ -207,6 +245,14 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.hoobiesFormArray.removeAt(i);
   }
 
+  setEstudioRealizadosFormArray(){
+    if(this.voluntario.estudiosRealizados){
+      this.voluntario.estudiosRealizados.forEach(element => {
+        this.estudioRealizadosFormArray.push( this.fb.group({nombreEstudioRealizado:element.nombreEstudioRealizado}));
+      });
+    }
+  }
+
   get estudioRealizadosFormArray() {
     return this.voluntarioForm.get("estudiosRealizados") as FormArray;
   }
@@ -219,6 +265,14 @@ export class VoluntarioUpdateComponent implements OnInit {
   }
   deleteEstudioRealizado(i: number) {
     this.estudioRealizadosFormArray.removeAt(i);
+  }
+
+  setExperienciaCampoPrimeraRespuestasFormArray(){
+    if(this.voluntario.experienciaCampoPrimeraRespuesta){
+      this.voluntario.experienciaCampoPrimeraRespuesta.forEach(element => {
+        this.experienciaCampoPrimeraRespuestaFormArray.push( this.fb.group({nombreExperienciaCampoPrimeraRespuesta:element.nombreExperienciaCampoPrimeraRespuesta}));
+      });
+    }
   }
 
   get experienciaCampoPrimeraRespuestaFormArray() {
@@ -243,6 +297,20 @@ export class VoluntarioUpdateComponent implements OnInit {
     return this.voluntarioForm.get("datosFamiliares") as FormArray;
   }
 
+  setDatoFamiliarsFormArray(){
+    if(this.voluntario.datosFamiliares){
+      this.voluntario.datosFamiliares.forEach(element => {
+        this.datosFamiliaresFormArray.push( this.fb.group({
+          parentesco: element.parentesco,
+          nombre: element.nombre,
+          apellido: element.apellido,
+          domicilio: element.domicilio,
+          celular: element.celular
+        }));
+      });
+    }
+  }
+  
   addDatoFamiliar() {
     const datoFamiliar = this.fb.group({
       parentesco: [],
@@ -257,6 +325,14 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.datosFamiliaresFormArray.removeAt(i);
   }
 
+  loadFormsArray(){
+    this.setAlergiasFormArray();
+    this.setIdiomasFormArray();
+    this.setEstudioRealizadosFormArray();
+    this.setHoobiesFormArray();
+    this.setExperienciaCampoPrimeraRespuestasFormArray();
+    this.setDatoFamiliarsFormArray();
+  }
   /* async submitHandler() {  //original
     this.loading = true;
     const formValue = this.voluntarioForm.value as VoluntarioModel;
@@ -283,9 +359,10 @@ export class VoluntarioUpdateComponent implements OnInit {
   async submitHandler() {
     this.loading = true;
     const formValue = this.voluntarioForm.value as VoluntarioModel;
-    if (await this.voluntarioService.addVoluntario(formValue)) {
+    formValue.id=this.voluntario.id;
+    if (await this.voluntarioService.updateVoluntario(formValue)) {
       this.success = true;
-      this.openSnackBar("Registrado Exitosamente", "ocultar");
+      this.openSnackBar("Actualizado Exitosamente", "ocultar");
       this.router.navigate(["/voluntarios/index"]);
     } else {
       this.success = false;
