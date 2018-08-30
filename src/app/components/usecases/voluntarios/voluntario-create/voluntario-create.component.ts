@@ -254,7 +254,7 @@ export class VoluntarioCreateComponent implements OnInit {
   }
 
 
-  async submitHandler() {
+ /* async submitHandler() {  //original
     this.loading = true;
     const formValue = this.voluntarioForm.value as VoluntarioModel;
 
@@ -276,8 +276,20 @@ export class VoluntarioCreateComponent implements OnInit {
         this.router.navigate(['/voluntarios/index']);
     }
     
+  }*/
+  async submitHandler() {
+    this.loading = true;
+    const formValue = this.voluntarioForm.value as VoluntarioModel;
+    if(await this.voluntarioService.addVoluntario(formValue)){
+      this.success = true;
+        this.openSnackBar('Registrado Exitosamente','ocultar')
+        this.router.navigate(['/voluntarios/index']);
+    }else {
+      this.success = false;
+      this.openSnackBar('Ocurrio un error...','ocultar')
+      this.router.navigate(['/voluntarios/index']);
+    }
   }
-
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {

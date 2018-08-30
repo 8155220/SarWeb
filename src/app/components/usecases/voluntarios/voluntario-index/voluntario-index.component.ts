@@ -77,6 +77,8 @@ export class VoluntarioIndexComponent implements OnInit {
     this.uiService.useCaseStateChanged.next('Gestionar Usuario');
     this.voluntarioService.getVoluntarios().subscribe(voluntarios => {
       this.dataSource.data = voluntarios;
+      console.log('Cambio');
+      
       console.log(voluntarios);
     });
     if(!environment.production){
