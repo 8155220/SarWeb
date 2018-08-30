@@ -70,7 +70,7 @@ export class VoluntarioModel {
   hoobies?: any;
 
   nombreTutor?: string;
-  celularTutor?: string;
+  celularTutor?: number;
   estudiosRealizados?: any;
   profesion?: string;
   ocupacion?: string;
@@ -121,7 +121,7 @@ export class VoluntarioModel {
     this.hoobies = voluntario.hoobies || "";
 
     this.nombreTutor = voluntario.nombreTutor || "";
-    this.celularTutor = voluntario.celularTutor || "";
+    this.celularTutor = voluntario.celularTutor || 0;
     this.estudiosRealizados = voluntario.estudiosRealizados || "";
     this.profesion = voluntario.profesion || "";
     this.ocupacion = voluntario.ocupacion;

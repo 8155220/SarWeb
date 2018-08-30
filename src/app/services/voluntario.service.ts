@@ -46,26 +46,8 @@ export class VoluntarioService {
         )
       );
     } else {
-      //this.cargarVoluntariosLocalArray();
       this.voluntarios=this.getVoluntarios();
-      //this.voluntariosLocal =
-      /*Subject.create(
-        (observer: Subscriber<VoluntarioModel[]>) => {
-          /*observer.next(this.voluntariosLocalArray);
-          console.log(observer);
-          console.log('Entro aqui');
-          
-          observer.complete();
-        }
-      );*/
-      //this.voluntariosLocal.next(this.voluntariosLocalArray);
     }
-  }
-
-  cargarVoluntariosLocalArray(){
-    voluntariosLocalArrayAny.forEach( e =>{
-      this.voluntariosLocalArray.push(e as VoluntarioModel);
-    });
   }
 
   async submitHandler(
@@ -165,14 +147,8 @@ export class VoluntarioService {
     voluntarios.push(voluntario);
     localStorage.setItem('voluntarios',JSON.stringify(voluntarios));
     return true;
-
-    //this.voluntariosLocalArray.push(voluntario);
-    //this.VoluntariosLocalEmmit();
-    //this.voluntariosLocal.next(this.voluntariosLocalArray);
   }
 
-
-  
   getPaises(): string[] {
     return paisesArray;
   }

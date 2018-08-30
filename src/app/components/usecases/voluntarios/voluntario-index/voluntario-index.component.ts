@@ -46,40 +46,27 @@ export class VoluntarioIndexComponent implements OnInit {
   voluntarios: VoluntarioModel[];
   loading: boolean = false;
   color: string = "lightblue";
-  // dataSource = ELEMENT_DATA;
-  // dataSource = this.voluntarios;
   dataSource = new MatTableDataSource<VoluntarioModel>();
-
-  // columnsToDisplay = ['name', 'weight', 'symbol', 'position'];
   columnsToDisplay = [
     "nombre",
     "apellidoPaterno",
     "apellidoMaterno",
     "celular"
   ];
-  // expandedElement: PeriodicElement;
   expandedElement: VoluntarioModel;
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
-
   constructor(
     private voluntarioService: VoluntarioService,
     private bottomSheet: MatBottomSheet,
     private _router: Router,private uiService:UiService
   ) {
-    // _router.events.subscribe((event: RouterEvent) => {
-    //   this.navigationInterceptor(event);
-    // });
   }
 
   ngOnInit() {
-      
-    this.uiService.useCaseStateChanged.next('Gestionar Usuario');
     this.voluntarioService.getVoluntarios().subscribe(voluntarios => {
       this.dataSource.data = voluntarios;
-      console.log('Cambio');
-      
-      console.log(voluntarios);
+      console.log(voluntarios); //production=false;
     });
     if(!environment.production){
         this.voluntarioService.VoluntariosLocalEmmit();
@@ -87,22 +74,13 @@ export class VoluntarioIndexComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
   ngAfterViewInit() {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    this._router.events
-            .subscribe((event) => {
-                if(event instanceof NavigationStart) {
-                    this.loading = true;
-                    console.log("Deberia cambiar");
-                    
-                }
-                else if (
-                    event instanceof NavigationEnd || 
-                    event instanceof NavigationCancel
-                    ) {
-                    this.loading = false;
-                }
-            });
+    this.uiService.useCaseStateChanged.next('Gestionar Usuario');
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.uiService.useCaseStateChanged.unsubscribe;
+    this.voluntarioService.getVoluntarios().unsubscribe;
   }
 
   applyFilter(filterValue: string) {
@@ -113,24 +91,6 @@ export class VoluntarioIndexComponent implements OnInit {
     this.bottomSheet.open(BottomSheetOverviewVoluntarioSheet);
   }
 
-  navigationInterceptor(event: RouterEvent): void {
-    console.log(event);
-
-    if (event instanceof NavigationStart) {
-      this.loading = true;
-    }
-    if (event instanceof NavigationEnd) {
-      this.loading = false;
-    }
-
-    // Set loading state to false in both of the below events to hide the spinner in case a request fails
-    if (event instanceof NavigationCancel) {
-      this.loading = false;
-    }
-    if (event instanceof NavigationError) {
-      this.loading = false;
-    }
-  }
   deleteVoluntario(id:string){
     this.voluntarioService.deleteVoluntario(id);
   }

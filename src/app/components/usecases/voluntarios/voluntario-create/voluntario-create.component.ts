@@ -63,16 +63,13 @@ export class VoluntarioCreateComponent implements OnInit {
       capital: this.capitalFormControl,
       municipio: this.municipioFormControl,
       timestamp: Date.now(),
-      // lugar: "",
-      celular: "", //number
+      celular: "", 
       telefonoFijo: "",
       numeroCarnetIdentidad: "",
       estadoCivil: "",
       email: "",
       idiomas: this.fb.array([]),
-
       hoobies: this.fb.array([]),
-
       nombreTutor: "",
       celularTutor: "",
       estudiosRealizados: this.fb.array([]),
@@ -80,22 +77,20 @@ export class VoluntarioCreateComponent implements OnInit {
       ocupacion: "",
       situacionLaboral: "",
       experienciaCampoPrimeraRespuesta: this.fb.array([]),
-
       grado: "",
       armaEspecialidad: "",
       numeroCarnetMilitar: "",
-      datosFamiliares: this.fb.array([]), //pendiente
+      datosFamiliares: this.fb.array([]), 
+      estatura: "", 
+      talla: "", 
+      colorPiel: "", 
+      colorOjos: "", 
+      cabello: "", 
+      labios: "", 
+      nariz: "", 
+      rasgosParticulares: "",
 
-      estatura: "", //pendiente
-      talla: "", //pendiente
-      colorPiel: "", //pendiente
-      colorOjos: "", //pendiente
-      cabello: "", //pendiente
-      labios: "", //pendiente
-      nariz: "", //pendiente
-      rasgosParticulares: "", //pendiente
-
-      emergenciaLlamar: "", //pendiente
+      emergenciaLlamar: "", 
 
       lugarNacimiento: ""
     });
