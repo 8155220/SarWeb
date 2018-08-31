@@ -31,7 +31,7 @@ export class VoluntarioService {
   voluntariosBusqueda: VoluntarioModel[];
 
   constructor(private afs: AngularFirestore) {
-    if (environment.production) {
+    /*if (environment.production) {
       this.voluntariosCollection = afs.collection<VoluntarioModel>(
         "voluntarios",
         ref => ref.orderBy("timestamp", "desc")
@@ -47,7 +47,8 @@ export class VoluntarioService {
       );
     } else {
       this.voluntarios=this.getVoluntarios(); //Mejorar Codigo
-    }
+    }*/
+    this.voluntarios=this.getVoluntarios();
   }
 
   async submitHandler(
@@ -68,6 +69,19 @@ export class VoluntarioService {
 
   getVoluntarios() {
     if (environment.production) {
+      this.voluntariosCollection = this.afs.collection<VoluntarioModel>(
+        "voluntarios",
+        ref => ref.orderBy("timestamp", "desc")
+      );
+      this.voluntarios = this.voluntariosCollection.snapshotChanges().pipe(
+        map(actions =>
+          actions.map(a => {
+            const data = a.payload.doc.data() as VoluntarioModel;
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        )
+      );
       return this.voluntarios;
     } else {
       let voluntarios: Array<VoluntarioModel> = JSON.parse(
@@ -96,8 +110,12 @@ export class VoluntarioService {
     let voluntario:VoluntarioModel;
     this.voluntarios.subscribe(voluntarios=>{
        voluntarios.forEach(e=>{
+         console.log('Entro getVoluntario ForeaCH');
+         
          if(e.id==id){
+
             voluntario= new VoluntarioModel(e);
+
          }
        });
     });
@@ -145,7 +163,11 @@ export class VoluntarioService {
   async updateVoluntario(voluntario: VoluntarioModel) {
     if (environment.production) {
       try {
-        await this.afs.collection("voluntarios").doc(voluntario.id).set(voluntario)
+        console.log(voluntario);
+        
+
+        await this.afs.collection("voluntarios").doc(voluntario.id).update(voluntario);
+        //await this.voluntarioDoc
         return true;
       } catch (err) {
         console.log(err);

@@ -124,7 +124,7 @@ export class VoluntarioModel {
     this.celularTutor = voluntario.celularTutor || 0;
     this.estudiosRealizados = voluntario.estudiosRealizados || "";
     this.profesion = voluntario.profesion || "";
-    this.ocupacion = voluntario.ocupacion;
+    this.ocupacion = voluntario.ocupacion || "";
     this.situacionLaboral = voluntario.situacionLaboral || "";
     this.experienciaCampoPrimeraRespuesta =
       voluntario.experienciaCampoPrimeraRespuesta || "";

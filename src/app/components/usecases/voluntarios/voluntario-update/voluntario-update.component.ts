@@ -4,7 +4,7 @@ import { UiService } from "./../../../../services/ui.service";
 import { AngularFirestore } from "angularfire2/firestore";
 import { VoluntarioService } from "./../../../../services/voluntario.service";
 import { Observable } from "rxjs";
-import { map, startWith } from "rxjs/operators";
+import { map, startWith, filter } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
@@ -53,12 +53,171 @@ export class VoluntarioUpdateComponent implements OnInit {
     return this.voluntarioService.getGrupoSanguineo();
   }
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.voluntario = this.voluntarioService.getVoluntario(params["id"]);
+    this.loadVoluntarioFormVacios();
+    this.route.params.subscribe(async params => {
+      // this.voluntario = await this.voluntarioService.getVoluntario(params["id"]);
+
+      //this.voluntarioService.getVoluntarios().pipe(filter(  e.id===params['id'])).subscribe();
+
+      this.voluntarioService.getVoluntarios().subscribe(voluntarios => {
+        voluntarios.forEach(e => {
+          console.log("Entro getVoluntario ForeaCH");
+          if (e.id == params["id"]) {
+            this.voluntario = new VoluntarioModel(e);
+            //this.loadVoluntarioFormVacios();
+            console.log("Entro getVoluntario ForeaCH2222");
+            this.loadVoluntarioForm();
+            this.loadFormsControl();
+            this.loadFormsArray();
+            this.loadFilters();
+          }
+        });
+      });
+      console.log("EntroHERERE");
     });
     this.uiService.useCaseStateChanged.next("Editar Voluntario");
 
     
+  }
+
+  loadFilters(){
+    this.filteredOptions = this.paisFormControl.valueChanges.pipe(
+      startWith(""),
+      map(value => this._filter(value))
+    );
+
+    this.filteredOptionsDepartamento = this.departamentoFormControl.valueChanges.pipe(
+      startWith(""),
+      map(value => this.filtrar(value, this.getDepartamentos()))
+    );
+
+    this.filteredOptionsProvincia = this.provinciaFormControl.valueChanges.pipe(
+      startWith(""),
+      map(value => this.filtrar(value, this.getProvincias()))
+    );
+
+    this.filteredOptionsMunicipio = this.municipioFormControl.valueChanges.pipe(
+      startWith(""),
+      map(value => this.filtrar(value, this.getMunicipios()))
+    );
+  }
+  loadVoluntarioForm() {
+    this.voluntarioForm.get("nombre").setValue(this.voluntario.nombre);
+    this.voluntarioForm
+      .get("apellidoPaterno")
+      .setValue(this.voluntario.apellidoPaterno);
+    this.voluntarioForm
+      .get("apellidoMaterno")
+      .setValue(this.voluntario.apellidoMaterno);
+    this.voluntarioForm.get("sexo").setValue(this.voluntario.sexo);
+    this.voluntarioForm
+      .get("fechaNacimiento")
+      .setValue(this.voluntario.fechaNacimiento);
+    this.voluntarioForm.get("tipoSangre").setValue(this.voluntario.tipoSangre);
+    this.voluntarioForm
+      .get("licenciaConducir")
+      .setValue(this.voluntario.licenciaConducir);
+    this.voluntarioForm.get("direccion").setValue(this.voluntario.direccion);
+    // this.voluntarioForm.get("alergias").setValue(); this.fb.array([])
+    this.voluntarioForm.get("pais").setValue(this.voluntario.pais);
+    this.voluntarioForm
+      .get("departamento")
+      .setValue(this.voluntario.departamento);
+    this.voluntarioForm.get("provincia").setValue(this.voluntario.provincia);
+    this.voluntarioForm.get("capital").setValue(this.voluntario.capital);
+    this.voluntarioForm.get("municipio").setValue(this.voluntario.municipio);
+    // this.voluntarioForm.get("timestamp").setValue(); Date.now()
+    this.voluntarioForm.get("celular").setValue(this.voluntario.celular);
+    this.voluntarioForm
+      .get("telefonoFijo")
+      .setValue(this.voluntario.telefonoFijo);
+    this.voluntarioForm
+      .get("numeroCarnetIdentidad")
+      .setValue(this.voluntario.numeroCarnetIdentidad);
+    this.voluntarioForm
+      .get("estadoCivil")
+      .setValue(this.voluntario.estadoCivil);
+    this.voluntarioForm.get("email").setValue(this.voluntario.email);
+    // this.voluntarioForm.get("idiomas").setValue(); this.fb.array([])
+    // this.voluntarioForm.get("hoobies").setValue(); this.fb.array([])
+    this.voluntarioForm
+      .get("nombreTutor")
+      .setValue(this.voluntario.nombreTutor);
+    this.voluntarioForm
+      .get("celularTutor")
+      .setValue(this.voluntario.celularTutor);
+    //this.voluntarioForm.get("estudiosRealizados").setValue(); this.fb.array([])
+    this.voluntarioForm.get("profesion").setValue(this.voluntario.profesion);
+    this.voluntarioForm.get("ocupacion").setValue(this.voluntario.ocupacion || "");
+    this.voluntarioForm
+      .get("situacionLaboral")
+      .setValue(this.voluntario.situacionLaboral);
+    //this.voluntarioForm.get("experienciaCampoPrimeraRespuesta").setValue(); this.fb.array([])
+    this.voluntarioForm.get("grado").setValue(this.voluntario.grado);
+    this.voluntarioForm
+      .get("armaEspecialidad")
+      .setValue(this.voluntario.armaEspecialidad);
+    this.voluntarioForm
+      .get("numeroCarnetMilitar")
+      .setValue(this.voluntario.numeroCarnetMilitar);
+    //this.voluntarioForm.get("datosFamiliares").setValue(); this.fb.array([])
+    this.voluntarioForm.get("estatura").setValue(this.voluntario.estatura);
+    this.voluntarioForm.get("talla").setValue(this.voluntario.talla);
+    this.voluntarioForm.get("colorPiel").setValue(this.voluntario.colorPiel);
+    this.voluntarioForm.get("colorOjos").setValue(this.voluntario.colorOjos);
+    this.voluntarioForm.get("cabello").setValue(this.voluntario.cabello);
+    this.voluntarioForm.get("labios").setValue(this.voluntario.labios);
+    this.voluntarioForm.get("nariz").setValue(this.voluntario.nariz);
+    this.voluntarioForm
+      .get("rasgosParticulares")
+      .setValue(this.voluntario.rasgosParticulares);
+  }
+  loadVoluntarioFormVacios() {
+    this.voluntarioForm = this.fb.group({
+      nombre: ["", [Validators.required]],
+      apellidoPaterno: ["", [Validators.required]],
+      apellidoMaterno: ["", [Validators.required]],
+      sexo: ["", [Validators.required]],
+      fechaNacimiento: "",
+      tipoSangre: "",
+      licenciaConducir: "",
+      direccion: "",
+      alergias: this.fb.array([]),
+      pais: "",
+      departamento: "",
+      provincia: "",
+      capital: "",
+      municipio: "",
+      timestamp: Date.now(),
+      celular: "",
+      telefonoFijo: "",
+      numeroCarnetIdentidad: "",
+      estadoCivil: "",
+      email: "",
+      idiomas: this.fb.array([]),
+      hoobies: this.fb.array([]),
+      nombreTutor: "",
+      celularTutor: "",
+      estudiosRealizados: this.fb.array([]),
+      profesion: "",
+      ocupacion: "",
+      situacionLaboral: "",
+      experienciaCampoPrimeraRespuesta: this.fb.array([]),
+      grado: "",
+      armaEspecialidad: "",
+      numeroCarnetMilitar: "",
+      datosFamiliares: this.fb.array([]),
+      estatura: "",
+      talla: "",
+      colorPiel: "",
+      colorOjos: "",
+      cabello: "",
+      labios: "",
+      nariz: "",
+      rasgosParticulares: ""
+    });
+  }
+  loadVoluntarioForm2() {
     this.voluntarioForm = this.fb.group({
       nombre: [this.voluntario.nombre, [Validators.required]],
       apellidoPaterno: [this.voluntario.apellidoPaterno, [Validators.required]],
@@ -102,38 +261,18 @@ export class VoluntarioUpdateComponent implements OnInit {
       nariz: this.voluntario.nariz,
       rasgosParticulares: this.voluntario.rasgosParticulares
     });
-
-    this.filteredOptions = this.paisFormControl.valueChanges.pipe(
-      startWith(""),
-      map(value => this._filter(value))
-    );
-
-    this.filteredOptionsDepartamento = this.departamentoFormControl.valueChanges.pipe(
-      startWith(""),
-      map(value => this.filtrar(value, this.getDepartamentos()))
-    );
-
-    this.filteredOptionsProvincia = this.provinciaFormControl.valueChanges.pipe(
-      startWith(""),
-      map(value => this.filtrar(value, this.getProvincias()))
-    );
-
-    this.filteredOptionsMunicipio = this.municipioFormControl.valueChanges.pipe(
-      startWith(""),
-      map(value => this.filtrar(value, this.getMunicipios()))
-    );
-
-    this.loadFormsArray();
-    this.loadFormsControl();
   }
-
-  loadFormsControl(){
-
-    if (this.voluntario.pais) this.paisFormControl.setValue(this.voluntario.pais );
-    if (this.voluntario.departamento)this.departamentoFormControl.setValue(this.voluntario.departamento);
-    if (this.voluntario.provincia)this.provinciaFormControl.setValue(this.voluntario.provincia);
-    if (this.voluntario.capital) this.capitalFormControl.setValue(this.voluntario.capital);
-    if (this.voluntario.municipio)this.municipioFormControl.setValue(this.voluntario.municipio);
+  loadFormsControl() {
+    if (this.voluntario.pais)
+      this.paisFormControl.setValue(this.voluntario.pais);
+    if (this.voluntario.departamento)
+      this.departamentoFormControl.setValue(this.voluntario.departamento);
+    if (this.voluntario.provincia)
+      this.provinciaFormControl.setValue(this.voluntario.provincia);
+    if (this.voluntario.capital)
+      this.capitalFormControl.setValue(this.voluntario.capital);
+    if (this.voluntario.municipio)
+      this.municipioFormControl.setValue(this.voluntario.municipio);
   }
   getPaises(): string[] {
     return this.voluntarioService.getPaises();
@@ -175,10 +314,12 @@ export class VoluntarioUpdateComponent implements OnInit {
     return this.voluntarioService.getSituacionLaboral();
   }
 
-  setAlergiasFormArray(){
-    if(this.voluntario.alergias){
+  setAlergiasFormArray() {
+    if (this.voluntario.alergias) {
       this.voluntario.alergias.forEach(element => {
-        this.alergiasFormArray.push( this.fb.group({nombreAlergia:element.nombreAlergia}));
+        this.alergiasFormArray.push(
+          this.fb.group({ nombreAlergia: element.nombreAlergia })
+        );
       });
     }
   }
@@ -195,21 +336,22 @@ export class VoluntarioUpdateComponent implements OnInit {
   deleteAlergia(i: number) {
     this.alergiasFormArray.removeAt(i);
   }
-  setIdiomasFormArray(){
-    if(this.voluntario.idiomas){
-      console.log('Cantidad Idiomas:'+this.voluntario.idiomas.length);
-      
+  setIdiomasFormArray() {
+    if (this.voluntario.idiomas) {
+      console.log("Cantidad Idiomas:" + this.voluntario.idiomas.length);
+
       this.voluntario.idiomas.forEach(element => {
-        this.idiomasFormArray.push( this.fb.group({nombreIdioma:element.nombreIdioma}));
-        console.log('CantidadVecesPUsh');
-        
+        this.idiomasFormArray.push(
+          this.fb.group({ nombreIdioma: element.nombreIdioma })
+        );
+        console.log("CantidadVecesPUsh");
       });
     }
   }
 
   get idiomasFormArray() {
     console.log(this.voluntarioForm.get("idiomas").value);
-    
+
     return this.voluntarioForm.get("idiomas") as FormArray;
   }
 
@@ -223,10 +365,12 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.idiomasFormArray.removeAt(i);
   }
 
-  setHoobiesFormArray(){
-    if(this.voluntario.hoobies){
+  setHoobiesFormArray() {
+    if (this.voluntario.hoobies) {
       this.voluntario.hoobies.forEach(element => {
-        this.hoobiesFormArray.push( this.fb.group({nombreHoobie:element.nombreHoobie}));
+        this.hoobiesFormArray.push(
+          this.fb.group({ nombreHoobie: element.nombreHoobie })
+        );
       });
     }
   }
@@ -245,10 +389,14 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.hoobiesFormArray.removeAt(i);
   }
 
-  setEstudioRealizadosFormArray(){
-    if(this.voluntario.estudiosRealizados){
+  setEstudioRealizadosFormArray() {
+    if (this.voluntario.estudiosRealizados) {
       this.voluntario.estudiosRealizados.forEach(element => {
-        this.estudioRealizadosFormArray.push( this.fb.group({nombreEstudioRealizado:element.nombreEstudioRealizado}));
+        this.estudioRealizadosFormArray.push(
+          this.fb.group({
+            nombreEstudioRealizado: element.nombreEstudioRealizado
+          })
+        );
       });
     }
   }
@@ -267,10 +415,15 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.estudioRealizadosFormArray.removeAt(i);
   }
 
-  setExperienciaCampoPrimeraRespuestasFormArray(){
-    if(this.voluntario.experienciaCampoPrimeraRespuesta){
+  setExperienciaCampoPrimeraRespuestasFormArray() {
+    if (this.voluntario.experienciaCampoPrimeraRespuesta) {
       this.voluntario.experienciaCampoPrimeraRespuesta.forEach(element => {
-        this.experienciaCampoPrimeraRespuestaFormArray.push( this.fb.group({nombreExperienciaCampoPrimeraRespuesta:element.nombreExperienciaCampoPrimeraRespuesta}));
+        this.experienciaCampoPrimeraRespuestaFormArray.push(
+          this.fb.group({
+            nombreExperienciaCampoPrimeraRespuesta:
+              element.nombreExperienciaCampoPrimeraRespuesta
+          })
+        );
       });
     }
   }
@@ -297,20 +450,22 @@ export class VoluntarioUpdateComponent implements OnInit {
     return this.voluntarioForm.get("datosFamiliares") as FormArray;
   }
 
-  setDatoFamiliarsFormArray(){
-    if(this.voluntario.datosFamiliares){
+  setDatoFamiliarsFormArray() {
+    if (this.voluntario.datosFamiliares) {
       this.voluntario.datosFamiliares.forEach(element => {
-        this.datosFamiliaresFormArray.push( this.fb.group({
-          parentesco: element.parentesco,
-          nombre: element.nombre,
-          apellido: element.apellido,
-          domicilio: element.domicilio,
-          celular: element.celular
-        }));
+        this.datosFamiliaresFormArray.push(
+          this.fb.group({
+            parentesco: element.parentesco,
+            nombre: element.nombre,
+            apellido: element.apellido,
+            domicilio: element.domicilio,
+            celular: element.celular
+          })
+        );
       });
     }
   }
-  
+
   addDatoFamiliar() {
     const datoFamiliar = this.fb.group({
       parentesco: [],
@@ -325,7 +480,7 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.datosFamiliaresFormArray.removeAt(i);
   }
 
-  loadFormsArray(){
+  loadFormsArray() {
     this.setAlergiasFormArray();
     this.setIdiomasFormArray();
     this.setEstudioRealizadosFormArray();
@@ -359,7 +514,7 @@ export class VoluntarioUpdateComponent implements OnInit {
   async submitHandler() {
     this.loading = true;
     const formValue = this.voluntarioForm.value as VoluntarioModel;
-    formValue.id=this.voluntario.id;
+    formValue.id = this.voluntario.id;
     if (await this.voluntarioService.updateVoluntario(formValue)) {
       this.success = true;
       this.openSnackBar("Actualizado Exitosamente", "ocultar");
