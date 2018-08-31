@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { VoluntarioService } from './services/voluntario.service';
 import { AngularFireModule } from "../../node_modules/angularfire2";
 import { AngularFirestoreModule } from "../../node_modules/angularfire2/firestore";
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +55,7 @@ import { AngularFirestoreModule } from "../../node_modules/angularfire2/firestor
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig,'SARFAB'),
     AngularFirestoreModule,
+    AngularFireDatabaseModule
   ],
   entryComponents: [BottomSheetOverviewVoluntarioSheet,DialogConfirmDelete],
   providers: [VoluntarioService],

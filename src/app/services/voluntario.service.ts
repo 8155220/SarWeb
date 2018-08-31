@@ -16,9 +16,17 @@ import { FormGroup } from "@angular/forms";
 import { map } from "../../../node_modules/rxjs/operators";
 import { environment } from "../../environments/environment";
 import { VoluntarioModel } from "../models/voluntario/voluntario.model";
+import { AngularFireDatabase } from "../../../node_modules/angularfire2/database";
+
+enum DatabaseType {
+  FIRESTORE,REALTIMEDATABASE    
+}
+
+
 @Injectable({
   providedIn: "root"
 })
+
 export class VoluntarioService {
   voluntariosLocalArray: VoluntarioModel[] = [];
   voluntariosCollection: AngularFirestoreCollection<VoluntarioModel>;
@@ -29,8 +37,10 @@ export class VoluntarioService {
   voluntarioDoc: AngularFirestoreDocument<VoluntarioModel>;
 
   voluntariosBusqueda: VoluntarioModel[];
+  dataBaseType:DatabaseType=DatabaseType.REALTIMEDATABASE;
+  voluntariosRef;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private db: AngularFireDatabase) {
     /*if (environment.production) {
       this.voluntariosCollection = afs.collection<VoluntarioModel>(
         "voluntarios",
@@ -48,7 +58,8 @@ export class VoluntarioService {
     } else {
       this.voluntarios=this.getVoluntarios(); //Mejorar Codigo
     }*/
-    this.voluntarios=this.getVoluntarios();
+    this.voluntariosRef= this.db.list<VoluntarioModel>("voluntarios");
+    this.voluntarios = this.getVoluntarios();
   }
 
   async submitHandler(
@@ -68,81 +79,89 @@ export class VoluntarioService {
   }
 
   getVoluntarios() {
-    if (environment.production) {
-      this.voluntariosCollection = this.afs.collection<VoluntarioModel>(
-        "voluntarios",
-        ref => ref.orderBy("timestamp", "desc")
-      );
-      this.voluntarios = this.voluntariosCollection.snapshotChanges().pipe(
-        map(actions =>
-          actions.map(a => {
-            const data = a.payload.doc.data() as VoluntarioModel;
-            const id = a.payload.doc.id;
-            return { id, ...data };
-          })
-        )
-      );
-      return this.voluntarios;
-    } else {
-      let voluntarios: Array<VoluntarioModel> = JSON.parse(
-        localStorage.getItem("voluntarios") || "[]");
-      if(voluntarios.length<10){
-        voluntariosLocalArrayAny.forEach(e =>{
-          voluntarios.push(e as VoluntarioModel);
+    if (this.dataBaseType==DatabaseType.FIRESTORE) {
+      if (environment.production) {
+        this.voluntariosCollection = this.afs.collection<VoluntarioModel>(
+          "voluntarios",
+          ref => ref.orderBy("timestamp", "desc")
+        );
+        this.voluntarios = this.voluntariosCollection.snapshotChanges().pipe(
+          map(actions =>
+            actions.map(a => {
+              const data = a.payload.doc.data() as VoluntarioModel;
+              const id = a.payload.doc.id;
+              return { id, ...data };
+            })
+          )
+        );
+        return this.voluntarios;
+      } else {
+        let voluntarios: Array<VoluntarioModel> = JSON.parse(
+          localStorage.getItem("voluntarios") || "[]"
+        );
+        if (voluntarios.length < 10) {
+          voluntariosLocalArrayAny.forEach(e => {
+            voluntarios.push(e as VoluntarioModel);
+          });
+          localStorage.setItem("voluntarios", JSON.stringify(voluntarios));
+        }
+        let voluntariosModel: VoluntarioModel[] = [];
+        for (let voluntario of voluntarios) {
+          voluntariosModel.push(new VoluntarioModel(voluntario));
+        }
+        voluntariosModel.sort((a, b) => {
+          return b.timestamp - a.timestamp;
         });
-      localStorage.setItem('voluntarios',JSON.stringify(voluntarios));
-      }
-      let voluntariosModel: VoluntarioModel[] = [];
-      for (let voluntario of voluntarios) {
-        voluntariosModel.push(new VoluntarioModel(voluntario));
-      }
-      voluntariosModel.sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
 
-      return Observable.create((observer:Subscriber<VoluntarioModel[]>)=>{
-        observer.next(voluntariosModel);
-        observer.complete();
-      });
+        return Observable.create((observer: Subscriber<VoluntarioModel[]>) => {
+          observer.next(voluntariosModel);
+          observer.complete();
+        });
+      }
+    } else if(this.dataBaseType==DatabaseType.REALTIMEDATABASE) {
+      const data = this.db.list<VoluntarioModel>("voluntarios").valueChanges();
+      console.log(data);
+
+      return data;
     }
   }
-  getVoluntario(id:string){
-    let voluntario:VoluntarioModel;
-    this.voluntarios.subscribe(voluntarios=>{
-       voluntarios.forEach(e=>{
-         console.log('Entro getVoluntario ForeaCH');
-         
-         if(e.id==id){
+  getVoluntario(id: string) {
+    let voluntario: VoluntarioModel;
+    this.voluntarios.subscribe(voluntarios => {
+      voluntarios.forEach(e => {
+        console.log("Entro getVoluntario ForeaCH");
 
-            voluntario= new VoluntarioModel(e);
-
-         }
-       });
+        if (e.id == id) {
+          voluntario = new VoluntarioModel(e);
+        }
+      });
     });
     return voluntario;
   }
   deleteVoluntario(id: string) {
-    if(environment.production)
-    {
-      this.afs
-      .collection("voluntarios")
-      .doc(id)
-      .delete();
-    } else {
-      this.deleteVoluntarioLocal(id);
+    if (this.dataBaseType==DatabaseType.FIRESTORE)  {
+      if (environment.production) {
+        this.afs
+          .collection("voluntarios")
+          .doc(id)
+          .delete();
+      } else {
+        this.deleteVoluntarioLocal(id);
+      }
+    }else if(this.dataBaseType==DatabaseType.REALTIMEDATABASE) {
+      this.voluntariosRef.remove(id);
     }
-    
   }
-  deleteVoluntarioLocal(id:string){
+  deleteVoluntarioLocal(id: string) {
     let voluntarios: Array<VoluntarioModel> = JSON.parse(
-      localStorage.getItem('voluntarios') || "[]"
+      localStorage.getItem("voluntarios") || "[]"
     );
-    voluntarios.forEach((item,index)=>{
-      if(item.id==id){        
-        voluntarios.splice(index,1);
+    voluntarios.forEach((item, index) => {
+      if (item.id == id) {
+        voluntarios.splice(index, 1);
       }
     });
-    localStorage.setItem('voluntarios',JSON.stringify(voluntarios));
+    localStorage.setItem("voluntarios", JSON.stringify(voluntarios));
     return true;
   }
 
@@ -161,54 +180,57 @@ export class VoluntarioService {
     }
   }
   async updateVoluntario(voluntario: VoluntarioModel) {
-    if (environment.production) {
-      try {
-        console.log(voluntario);
-        
-
-        await this.afs.collection("voluntarios").doc(voluntario.id).update(voluntario);
-        //await this.voluntarioDoc
+    if(this.dataBaseType==DatabaseType.FIRESTORE){
+      if (environment.production) {
+        try {
+          console.log(voluntario);
+  
+          await this.afs
+            .collection("voluntarios")
+            .doc(voluntario.id)
+            .update(voluntario);
+          //await this.voluntarioDoc
+          return true;
+        } catch (err) {
+          console.log(err);
+          return false;
+        }
+      } else {
+        this.updateVoluntarioLocal(voluntario);
         return true;
-      } catch (err) {
-        console.log(err);
-        return false;
       }
-    } else {
-      this.updateVoluntarioLocal(voluntario);
-      return true;
+    } else if(this.dataBaseType==DatabaseType.REALTIMEDATABASE){
+        this.voluntariosRef.update(voluntario.id,voluntario);
     }
   }
-  
-  updateVoluntarioLocal(voluntario: VoluntarioModel) {
 
+  updateVoluntarioLocal(voluntario: VoluntarioModel) {
     let voluntarios: Array<VoluntarioModel> = JSON.parse(
-      localStorage.getItem('voluntarios') || "[]"
+      localStorage.getItem("voluntarios") || "[]"
     );
-    voluntarios.forEach((item,index)=>{
-      if(item.id==voluntario.id){        
-        voluntarios.splice(index,1);
+    voluntarios.forEach((item, index) => {
+      if (item.id == voluntario.id) {
+        voluntarios.splice(index, 1);
       }
     });
     voluntarios.push(voluntario);
-    localStorage.setItem('voluntarios',JSON.stringify(voluntarios));
+    localStorage.setItem("voluntarios", JSON.stringify(voluntarios));
     return true;
   }
   addVoluntarioLocal(voluntario: VoluntarioModel) {
-
-    if(!voluntario.id)
-    {
-      voluntario.id=voluntario.timestamp.toString();
+    if (!voluntario.id) {
+      voluntario.id = voluntario.timestamp.toString();
     }
     let voluntarios: Array<VoluntarioModel> = JSON.parse(
-      localStorage.getItem('voluntarios') || "[]"
+      localStorage.getItem("voluntarios") || "[]"
     );
-    voluntarios.forEach((item,index)=>{
-      if(item.id==voluntario.id){        
-        voluntarios.splice(index,1);
+    voluntarios.forEach((item, index) => {
+      if (item.id == voluntario.id) {
+        voluntarios.splice(index, 1);
       }
     });
     voluntarios.push(voluntario);
-    localStorage.setItem('voluntarios',JSON.stringify(voluntarios));
+    localStorage.setItem("voluntarios", JSON.stringify(voluntarios));
     return true;
   }
 
