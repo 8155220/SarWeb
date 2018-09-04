@@ -2636,3 +2636,17 @@ export const voluntariosLocalArrayAny: any[] = [
     timestamp: 1535558609246
   }
 ];
+
+export const gradosSAR:any[] = [
+  {value:"voluntario_raso",viewValue:"Voluntario Raso"},
+  {value:"voluntario_primer_anio",viewValue:"Voluntario de Primer Anio"},
+  {value:"voluntario_segundo_anio",viewValue:"Voluntario de Segundo Anio"},
+  {value:"voluntario_tercer_anio",viewValue:"Voluntario de Tercer Anio"},
+  {value:"rescatista_inicial",viewValue:"Rescatista Inicial"},
+  {value:"rescatista_segundo",viewValue:"Rescatista Segundo"},
+  {value:"rescatista_primero",viewValue:"Rescatista Primero"},
+  {value:"rescatista_especialista",viewValue:"Rescatista Especialista"},
+  {value:"rescatista_master",viewValue:"Rescatista Master"},
+  {value:"rescatista_comando",viewValue:"Rescatista Comando"},
+]
+  

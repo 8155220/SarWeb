@@ -1,8 +1,7 @@
 <form [formGroup]='voluntarioForm' fxLayout="column" (ngSubmit)="submitHandler()" *ngIf="!success">
 
-    Value:{{voluntarioForm.value | json}}
+    <!-- Value:{{voluntarioForm.value | json}} -->
     <!-- <hr> -->
-
 
 
     <mat-form-field>
@@ -279,9 +278,6 @@
         </div>
         <a mat-raised-button color='primary' (click)='addDatoFamiliar()'> Agregar familiar</a>
     </div>
-
-
     <button mat-button color="primary" type="submit" [disabled]='voluntarioForm.invalid'> Guardar</button>
-
 
 </form>

@@ -22,7 +22,8 @@ import {
   MatTableModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
-  MatDialogModule
+  MatDialogModule,
+
 } from "@angular/material";
 
 @NgModule({

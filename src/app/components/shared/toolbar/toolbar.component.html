@@ -30,13 +30,30 @@
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
         <mat-toolbar color="primary">Menu</mat-toolbar>
+
+        <mat-list>
+            <mat-list-item>
+                <h3 matLine> message.from </h3>
+                <p matLine> message.subject </p>
+                <p matLine class="demo-2"> message.content </p>
+            </mat-list-item>
+            <mat-list-item>
+                <h3 matLine> message.from </h3>
+                <p matLine> message.subject </p>
+                <p matLine class="demo-2"> message.content </p>
+            </mat-list-item>
+            <mat-list-item>
+                <h3 matLine> message.from </h3>
+                <p matLine> message.subject </p>
+                <p matLine class="demo-2"> message.content </p>
+            </mat-list-item>
+        </mat-list>
     </mat-sidenav>
     <mat-sidenav-content>
         <mat-toolbar color="primary">
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
                   <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
                 </button>
-
             <div fxLayout="row">
                 <div fxLayoutAlign="start start" fxHide.gt-xs>
                     <span>{{title}}</span>
@@ -56,6 +73,9 @@
                 </div>
             </div>
         </mat-toolbar>
+
+
+
         <main>
             <router-outlet></router-outlet>
 

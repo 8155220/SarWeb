@@ -19,14 +19,13 @@ import { VoluntarioModel } from "../models/voluntario/voluntario.model";
 import { AngularFireDatabase } from "../../../node_modules/angularfire2/database";
 
 enum DatabaseType {
-  FIRESTORE,REALTIMEDATABASE    
+  FIRESTORE,
+  REALTIMEDATABASE
 }
-
 
 @Injectable({
   providedIn: "root"
 })
-
 export class VoluntarioService {
   voluntariosLocalArray: VoluntarioModel[] = [];
   voluntariosCollection: AngularFirestoreCollection<VoluntarioModel>;
@@ -37,7 +36,7 @@ export class VoluntarioService {
   voluntarioDoc: AngularFirestoreDocument<VoluntarioModel>;
 
   voluntariosBusqueda: VoluntarioModel[];
-  dataBaseType:DatabaseType=DatabaseType.REALTIMEDATABASE;
+  dataBaseType: DatabaseType = DatabaseType.REALTIMEDATABASE;
   voluntariosRef;
 
   constructor(private afs: AngularFirestore, private db: AngularFireDatabase) {
@@ -58,7 +57,7 @@ export class VoluntarioService {
     } else {
       this.voluntarios=this.getVoluntarios(); //Mejorar Codigo
     }*/
-    this.voluntariosRef= this.db.list<VoluntarioModel>("voluntarios");
+    this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios");
     this.voluntarios = this.getVoluntarios();
   }
 
@@ -79,7 +78,7 @@ export class VoluntarioService {
   }
 
   getVoluntarios() {
-    if (this.dataBaseType==DatabaseType.FIRESTORE) {
+    if (this.dataBaseType == DatabaseType.FIRESTORE) {
       if (environment.production) {
         this.voluntariosCollection = this.afs.collection<VoluntarioModel>(
           "voluntarios",
@@ -118,9 +117,14 @@ export class VoluntarioService {
           observer.complete();
         });
       }
-    } else if(this.dataBaseType==DatabaseType.REALTIMEDATABASE) {
-      const data = this.db.list<VoluntarioModel>("voluntarios").valueChanges();
-      console.log(data);
+    } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
+      //this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios");
+
+      const data = this.db.list<VoluntarioModel>("voluntarios").snapshotChanges()
+      .pipe(
+        map(changes=>
+        changes.map(c=> ({id:c.payload.key,...c.payload.val()})))
+      );
 
       return data;
     }
@@ -139,7 +143,7 @@ export class VoluntarioService {
     return voluntario;
   }
   deleteVoluntario(id: string) {
-    if (this.dataBaseType==DatabaseType.FIRESTORE)  {
+    if (this.dataBaseType == DatabaseType.FIRESTORE) {
       if (environment.production) {
         this.afs
           .collection("voluntarios")
@@ -148,7 +152,7 @@ export class VoluntarioService {
       } else {
         this.deleteVoluntarioLocal(id);
       }
-    }else if(this.dataBaseType==DatabaseType.REALTIMEDATABASE) {
+    } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
       this.voluntariosRef.remove(id);
     }
   }
@@ -166,25 +170,36 @@ export class VoluntarioService {
   }
 
   async addVoluntario(voluntario: VoluntarioModel) {
-    if (environment.production) {
-      try {
-        await this.afs.collection("voluntarios").add(voluntario);
+    if (this.dataBaseType == DatabaseType.FIRESTORE) {
+      if (environment.production) {
+        try {
+          await this.afs.collection("voluntarios").add(voluntario);
+          console.log("EExito");
+          return true;
+        } catch (err) {
+          console.log("Error");
+          console.log(err);
+          return false;
+        }
+      } else {
+        this.addVoluntarioLocal(voluntario);
         return true;
-      } catch (err) {
-        console.log(err);
-        return false;
       }
-    } else {
-      this.addVoluntarioLocal(voluntario);
+    } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
+      console.log('entro addVoluntario');
+     // const ref= this.db.push();
+      //const voluntariosRef = this.db.object('voluntarios');
+      this.voluntariosRef.push( voluntario);
+      
       return true;
     }
   }
   async updateVoluntario(voluntario: VoluntarioModel) {
-    if(this.dataBaseType==DatabaseType.FIRESTORE){
+    if (this.dataBaseType == DatabaseType.FIRESTORE) {
       if (environment.production) {
         try {
           console.log(voluntario);
-  
+
           await this.afs
             .collection("voluntarios")
             .doc(voluntario.id)
@@ -199,8 +214,9 @@ export class VoluntarioService {
         this.updateVoluntarioLocal(voluntario);
         return true;
       }
-    } else if(this.dataBaseType==DatabaseType.REALTIMEDATABASE){
-        this.voluntariosRef.update(voluntario.id,voluntario);
+    } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
+      this.voluntariosRef.update(voluntario.id, voluntario);
+      return true;
     }
   }
 
@@ -325,4 +341,9 @@ export class VoluntarioService {
   getSituacionLaboral(): any[] {
     return situacionLaboral;
   }
+
+  // getGrados():any[]{
+    
+    
+  // }
 }
