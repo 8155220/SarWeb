@@ -1,13 +1,13 @@
-import { environment } from './../../../../../environments/environment';
-import { VoluntarioModel } from './../../../../models/voluntario/voluntario.model';
-import { UiService } from './../../../../services/ui.service';
+import { environment } from '../../../../../environments/environment';
+import { VoluntarioModel } from '../../../../models/voluntario/voluntario.model';
+import { UiService } from '../../../../services/ui.service';
 import { AngularFirestore } from "angularfire2/firestore";
-import { VoluntarioService } from "./../../../../services/voluntario.service";
+import { VoluntarioService } from "../../../../services/voluntario.service";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { MatSnackBar } from "../../../../../../node_modules/@angular/material";
+import { MatSnackBar } from "@angular/material";
 import { Router } from '@angular/router';
 
 @Component({

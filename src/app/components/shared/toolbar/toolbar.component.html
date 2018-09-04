@@ -1,53 +1,25 @@
-<!-- <mat-sidenav-container>
-    <mat-sidenav #sidenav role="navigation">
-        <p>I am the side nav</p>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <mat-toolbar color="primary">
-            <div>
-                <button mat-icon-button (click)='sidenav.toggle()'><mat-icon>menu</mat-icon></button>
-            </div>
-            <div><a routerLink="/">LOGO</a></div>
-            <div fxFlex fxLayoutAlign="flex-end" fxHide.xs>
-                <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
-
-                    <li><a routerLink="/signup">Registrarse</a></li>
-
-                    <li> <a routerLink="/login">Iniciar Session</a></li>
-                </ul>
-            </div>
-        </mat-toolbar>
-        <main>
-            <router-outlet></router-outlet>
-
-        </main>
-    </mat-sidenav-content>
-</mat-sidenav-container> -->
+<mat-toolbar color="primary" class="mat-elevation-z1">
+    <div fxHide.lt-sm>
+        <button mat-icon-button id="menu" (click)="uiService.openNav()">
+        <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div fxHide.gt-xs>
+        <button mat-icon-button id="menu" (click)="uiService.toggleNav()">
+        <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <span>Dynamic Expanding Nav Drawer Example</span>
+</mat-toolbar>
 
 
 
 
-<mat-sidenav-container class="sidenav-container">
+<!-- <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
         <mat-toolbar color="primary">Menu</mat-toolbar>
 
-        <mat-list>
-            <mat-list-item>
-                <h3 matLine> message.from </h3>
-                <p matLine> message.subject </p>
-                <p matLine class="demo-2"> message.content </p>
-            </mat-list-item>
-            <mat-list-item>
-                <h3 matLine> message.from </h3>
-                <p matLine> message.subject </p>
-                <p matLine class="demo-2"> message.content </p>
-            </mat-list-item>
-            <mat-list-item>
-                <h3 matLine> message.from </h3>
-                <p matLine> message.subject </p>
-                <p matLine class="demo-2"> message.content </p>
-            </mat-list-item>
-        </mat-list>
+
     </mat-sidenav>
     <mat-sidenav-content>
         <mat-toolbar color="primary">
@@ -81,4 +53,9 @@
 
         </main>
     </mat-sidenav-content>
-</mat-sidenav-container>
+
+
+
+
+
+</mat-sidenav-container> -->

@@ -1,4 +1,4 @@
-import { environment } from './../environments/environment';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
@@ -25,9 +25,10 @@ import {
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { VoluntarioService } from './services/voluntario.service';
-import { AngularFireModule } from "../../node_modules/angularfire2";
-import { AngularFirestoreModule } from "../../node_modules/angularfire2/firestore";
+import { AngularFireModule } from "angularfire2";
+import { AngularFirestoreModule } from "angularfire2/firestore";
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { MenuListItemComponent } from './components/shared/sidenav/menu-list-item-component/menu-list-item.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +44,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
     VoluntarioUpdateComponent,
     VoluntarioCardComponent,
     SidenavComponent,
-    BottomSheetOverviewVoluntarioSheet,DialogConfirmDelete
+    BottomSheetOverviewVoluntarioSheet,DialogConfirmDelete, MenuListItemComponent
   ],
   imports: [
     BrowserModule,

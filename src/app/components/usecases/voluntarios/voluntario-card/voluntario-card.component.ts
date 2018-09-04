@@ -1,4 +1,4 @@
-import { VoluntarioModel } from './../../../../models/voluntario/voluntario.model';
+import { VoluntarioModel } from '../../../../models/voluntario/voluntario.model';
 import { Component, OnInit , Input } from '@angular/core';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 export interface Tile {

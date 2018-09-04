@@ -13,10 +13,10 @@ import {
   AngularFirestoreDocument
 } from "angularfire2/firestore";
 import { FormGroup } from "@angular/forms";
-import { map } from "../../../node_modules/rxjs/operators";
+import { map } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 import { VoluntarioModel } from "../models/voluntario/voluntario.model";
-import { AngularFireDatabase } from "../../../node_modules/angularfire2/database";
+import { AngularFireDatabase } from "angularfire2/database";
 
 enum DatabaseType {
   FIRESTORE,

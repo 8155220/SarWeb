@@ -1,4 +1,4 @@
-import { VoluntarioModel } from "./../../../../models/voluntario/voluntario.model";
+import { VoluntarioModel } from "../../../../models/voluntario/voluntario.model";
 import { Component, OnInit, ViewChild, Inject, OnDestroy } from "@angular/core";
 import { VoluntarioService } from "../../../../services/voluntario.service";
 import {
@@ -14,10 +14,10 @@ import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA
-} from "../../../../../../node_modules/@angular/material";
+} from "@angular/material";
 import { MatBottomSheetRef, MatBottomSheet } from "@angular/material";
 import { UiService } from "../../../../services/ui.service";
-import { Router } from "../../../../../../node_modules/@angular/router";
+import { Router } from "@angular/router";
 import { environment } from "../../../../../environments/environment";
 
 @Component({

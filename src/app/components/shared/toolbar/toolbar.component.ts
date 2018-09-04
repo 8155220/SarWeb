@@ -7,12 +7,12 @@ import {
 import { Observable, Subject, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import { UiService } from "../../../services/ui.service";
-import { Location } from "../../../../../node_modules/@angular/common";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-toolbar",
   templateUrl: "./toolbar.component.html",
-  styleUrls: ["./toolbar.component.css"]
+  styleUrls: ["./toolbar.component.scss"]
 })
 export class ToolbarComponent implements OnInit {
   useCaseTitle = new Subject<string>();
@@ -31,7 +31,7 @@ export class ToolbarComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private uiService: UiService,private location:Location
+    public uiService: UiService,private location:Location
   ) {}
 
   ngOnInit() {
