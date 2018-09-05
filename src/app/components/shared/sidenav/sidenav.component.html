@@ -1,11 +1,13 @@
 <mat-sidenav-container>
     <!-- <mat-sidenav #appDrawer mode="push" opened="false"> -->
-    <mat-sidenav #appDrawer fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+    <!-- <mat-sidenav #appDrawer fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'push'" [opened]="!(isHandset$ | async)"> -->
+    <mat-sidenav #appDrawer fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'push'" [opened]="!(isHandset$ | async)">
         <mat-nav-list>
             <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item>
 
         </mat-nav-list>
     </mat-sidenav>
-    <app-toolbar></app-toolbar>
+
+    <!-- <app-toolbar></app-toolbar> -->
     <router-outlet></router-outlet>
 </mat-sidenav-container>
