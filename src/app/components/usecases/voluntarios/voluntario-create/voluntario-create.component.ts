@@ -1,14 +1,20 @@
-import { environment } from '../../../../../environments/environment';
-import { VoluntarioModel } from '../../../../models/voluntario/voluntario.model';
-import { UiService } from '../../../../services/ui.service';
+import { environment } from "../../../../../environments/environment";
+import { VoluntarioModel } from "../../../../models/voluntario/voluntario.model";
+import { UiService } from "../../../../services/ui.service";
 import { AngularFirestore } from "angularfire2/firestore";
 import { VoluntarioService } from "../../../../services/voluntario.service";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+  FormArray
+} from "@angular/forms";
 import { MatSnackBar } from "@angular/material";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-voluntario-create",
@@ -32,38 +38,40 @@ export class VoluntarioCreateComponent implements OnInit {
 
   loading = false;
   success = false;
+  imagenPerfil = "";
+  fileReader = new FileReader();
   constructor(
     private fb: FormBuilder,
     private voluntarioService: VoluntarioService,
     private afs: AngularFirestore,
     public snackBar: MatSnackBar,
-    private uiService:UiService,
-    private router:Router
+    private uiService: UiService,
+    private router: Router
   ) {}
 
   getGrupoSanguineo(): any {
     return this.voluntarioService.getGrupoSanguineo();
   }
   ngOnInit() {
-    this.uiService.useCaseStateChanged.next('Registrar Voluntario');
+    this.uiService.useCaseStateChanged.next("Registrar Voluntario");
 
     this.voluntarioForm = this.fb.group({
-      nombre: ["",[Validators.required]],
-      apellidoPaterno: ["",[Validators.required]],
-      apellidoMaterno: ["",[Validators.required]],
-      sexo: ["",[Validators.required]],
+      nombre: ["", [Validators.required]],
+      apellidoPaterno: ["", [Validators.required]],
+      apellidoMaterno: ["", [Validators.required]],
+      sexo: ["", [Validators.required]],
       fechaNacimiento: "",
       tipoSangre: "",
       licenciaConducir: "false",
       direccion: "",
-      alergias: this.fb.array([]), 
+      alergias: this.fb.array([]),
       pais: this.paisFormControl,
       departamento: this.departamentoFormControl,
       provincia: this.provinciaFormControl,
       capital: this.capitalFormControl,
       municipio: this.municipioFormControl,
       timestamp: Date.now(),
-      celular: "", 
+      celular: "",
       telefonoFijo: "",
       numeroCarnetIdentidad: "",
       estadoCivil: "",
@@ -80,17 +88,17 @@ export class VoluntarioCreateComponent implements OnInit {
       grado: "",
       armaEspecialidad: "",
       numeroCarnetMilitar: "",
-      datosFamiliares: this.fb.array([]), 
-      estatura: "", 
-      talla: "", 
-      colorPiel: "", 
-      colorOjos: "", 
-      cabello: "", 
-      labios: "", 
-      nariz: "", 
+      datosFamiliares: this.fb.array([]),
+      estatura: "",
+      talla: "",
+      colorPiel: "",
+      colorOjos: "",
+      cabello: "",
+      labios: "",
+      nariz: "",
       rasgosParticulares: "",
 
-      emergenciaLlamar: "", 
+      emergenciaLlamar: "",
 
       lugarNacimiento: ""
     });
@@ -155,94 +163,175 @@ export class VoluntarioCreateComponent implements OnInit {
   getSituacionLaboral(): any[] {
     return this.voluntarioService.getSituacionLaboral();
   }
-  get alergiasFormArray(){
-    return this.voluntarioForm.get('alergias') as FormArray;
+  get alergiasFormArray() {
+    return this.voluntarioForm.get("alergias") as FormArray;
   }
 
-  addAlergia(){
-     const alergia= this.fb.group({
-       nombreAlergia:[],
-     });
-     this.alergiasFormArray.push(alergia);
+  addAlergia() {
+    const alergia = this.fb.group({
+      nombreAlergia: []
+    });
+    this.alergiasFormArray.push(alergia);
   }
-  deleteAlergia(i:number){    
+  deleteAlergia(i: number) {
     this.alergiasFormArray.removeAt(i);
   }
-  get idiomasFormArray(){
-    return this.voluntarioForm.get('idiomas') as FormArray;
+  get idiomasFormArray() {
+    return this.voluntarioForm.get("idiomas") as FormArray;
   }
 
-  addIdioma(){
-     const idioma= this.fb.group({
-       nombreIdioma:[],
-     });
-     this.idiomasFormArray.push(idioma);
+  addIdioma() {
+    const idioma = this.fb.group({
+      nombreIdioma: []
+    });
+    this.idiomasFormArray.push(idioma);
   }
-  deleteIdioma(i:number){    
+  deleteIdioma(i: number) {
     this.idiomasFormArray.removeAt(i);
   }
-  get hoobiesFormArray(){
-    return this.voluntarioForm.get('hoobies') as FormArray;
+  get hoobiesFormArray() {
+    return this.voluntarioForm.get("hoobies") as FormArray;
   }
 
-  addHoobie(){
-     const hoobie= this.fb.group({
-       nombreHoobie:[],
-     });
-     this.hoobiesFormArray.push(hoobie);
+  addHoobie() {
+    const hoobie = this.fb.group({
+      nombreHoobie: []
+    });
+    this.hoobiesFormArray.push(hoobie);
   }
-  deleteHoobie(i:number){    
+  deleteHoobie(i: number) {
     this.hoobiesFormArray.removeAt(i);
   }
 
-  get estudioRealizadosFormArray(){
-    return this.voluntarioForm.get('estudiosRealizados') as FormArray;
+  get estudioRealizadosFormArray() {
+    return this.voluntarioForm.get("estudiosRealizados") as FormArray;
   }
 
-  addEstudioRealizado(){
-     const estudioRealizado= this.fb.group({
-      nombreEstudioRealizado:[],
-     });
-     this.estudioRealizadosFormArray.push(estudioRealizado);
+  addEstudioRealizado() {
+    const estudioRealizado = this.fb.group({
+      nombreEstudioRealizado: []
+    });
+    this.estudioRealizadosFormArray.push(estudioRealizado);
   }
-  deleteEstudioRealizado(i:number){    
+  deleteEstudioRealizado(i: number) {
     this.estudioRealizadosFormArray.removeAt(i);
   }
 
-  get experienciaCampoPrimeraRespuestaFormArray(){
-    return this.voluntarioForm.get('experienciaCampoPrimeraRespuesta') as FormArray;
+  get experienciaCampoPrimeraRespuestaFormArray() {
+    return this.voluntarioForm.get(
+      "experienciaCampoPrimeraRespuesta"
+    ) as FormArray;
   }
 
-  addExperienciaCampoPrimeraRespuesta(){
-     const experienciaCampoPrimeraRespuesta= this.fb.group({
-       nombreExperienciaCampoPrimeraRespuesta:[],
-     });
-     this.experienciaCampoPrimeraRespuestaFormArray.push(experienciaCampoPrimeraRespuesta);
+  addExperienciaCampoPrimeraRespuesta() {
+    const experienciaCampoPrimeraRespuesta = this.fb.group({
+      nombreExperienciaCampoPrimeraRespuesta: []
+    });
+    this.experienciaCampoPrimeraRespuestaFormArray.push(
+      experienciaCampoPrimeraRespuesta
+    );
   }
-  deleteExperienciaCampoPrimeraRespuesta(i:number){    
+  deleteExperienciaCampoPrimeraRespuesta(i: number) {
     this.experienciaCampoPrimeraRespuestaFormArray.removeAt(i);
   }
 
-  get datosFamiliaresFormArray(){
-    return this.voluntarioForm.get('datosFamiliares') as FormArray;
+  get datosFamiliaresFormArray() {
+    return this.voluntarioForm.get("datosFamiliares") as FormArray;
   }
 
-  addDatoFamiliar(){
-     const datoFamiliar= this.fb.group({
-       parentesco:[],
-       nombre:[],
-       apellido:[],
-       domicilio:[],
-       celular:[],
-     });
-     this.datosFamiliaresFormArray.push(datoFamiliar);
+  addDatoFamiliar() {
+    const datoFamiliar = this.fb.group({
+      parentesco: [],
+      nombre: [],
+      apellido: [],
+      domicilio: [],
+      celular: []
+    });
+    this.datosFamiliaresFormArray.push(datoFamiliar);
   }
-  deleteDatoFamiliar(i:number){    
+  deleteDatoFamiliar(i: number) {
     this.datosFamiliaresFormArray.removeAt(i);
   }
 
+  preview_image(event) {
+    console.log("EntroPreview_Image");
 
- /* async submitHandler() {  //original
+    let reader = new FileReader();
+    reader.onload = (eventReader: any) => {
+      //let output = document.getElementById('output_image');   //esta linea genera error en typescript solucion abajo
+      let output = <HTMLInputElement>document.getElementById("output_image");
+      output.src = reader.result;
+      //
+      let image = new Image();
+      image.onload = event => {
+        console.log("EntroPreview_Image2");
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d");
+        canvas.width = 400;
+        canvas.height = 400;
+        context.drawImage(
+          image,
+          0,
+          0,
+          image.width,
+          image.height,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+        output.src = canvas.toDataURL();
+        this.imagenPerfil = canvas.toDataURL();
+        console.log("Entro aqui 2232");
+      };
+      image.src = event.target.result;
+      /*image.onload = function() {
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d");
+        canvas.width = image.width / 4;
+        canvas.height = image.height / 4;
+        context.drawImage(
+          image,
+          0,
+          0,
+          image.width,
+          image.height,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+        output.src =  canvas.toDataURL();
+        //this.imagenPerfil =  canvas.toDataURL();
+        //this.setImagenPerfil(canvas.toDataURL());
+      };*/
+      //
+    };
+
+    //this.imagenPerfil = event.target.files[0];
+    reader.readAsDataURL(event.target.files[0]);
+  }
+
+  loadImageFile() {
+    var uploadImage = <HTMLInputElement>document.getElementById("upload-Image");
+
+    //check and retuns the length of uploded file.
+    if (uploadImage.files.length === 0) {
+      return;
+    }
+
+    //Is Used for validate a valid file.
+    var uploadFile = (<HTMLInputElement>document.getElementById("upload-Image"))
+      .files[0];
+    /*if (!filterType.test(uploadFile.type)) {
+      alert("Please select a valid image.");
+      return;
+    }*/
+
+    this.fileReader.readAsDataURL(uploadFile);
+  }
+
+  /* async submitHandler() {  //original
     this.loading = true;
     const formValue = this.voluntarioForm.value as VoluntarioModel;
 
@@ -268,20 +357,21 @@ export class VoluntarioCreateComponent implements OnInit {
   async submitHandler() {
     this.loading = true;
     const formValue = this.voluntarioForm.value as VoluntarioModel;
-    if(await this.voluntarioService.addVoluntario(formValue)){
+    formValue.fotoURL = this.imagenPerfil;
+    if (await this.voluntarioService.addVoluntario(formValue)) {
       this.success = true;
-        this.openSnackBar('Registrado Exitosamente','ocultar')
-        this.router.navigate(['/voluntarios/index']);
-    }else {
+      this.openSnackBar("Registrado Exitosamente", "ocultar");
+      this.router.navigate(["/voluntarios/index"]);
+    } else {
       this.success = false;
-      this.openSnackBar('Ocurrio un error...','ocultar')
-      this.router.navigate(['/voluntarios/index']);
+      this.openSnackBar("Ocurrio un error...", "ocultar");
+      this.router.navigate(["/voluntarios/index"]);
     }
   }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 2000,
+      duration: 2000
     });
   }
 }

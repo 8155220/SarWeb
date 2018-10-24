@@ -3,6 +3,16 @@
     <!-- Value:{{voluntarioForm.value | json}} -->
     <!-- <hr> -->
 
+    <app-upload-image></app-upload-image>
+    <div (load)="loadImageFile()">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <img id="output_image" class="card-img-top" [src]="imagenPerfil | noimage" alt="Card image cap">
+            <!-- <input type='file' accept='image/*' (change)='preview_image($event)'> -->
+            <input id="upload-Image" type='file' accept='image/*' (change)='loadImageFile()'>
+        </div>
+    </div>
+
+    <!-- <input type='image'> -->
 
     <mat-form-field>
         <input matInput placeholder="nombre" formControlName="nombre">

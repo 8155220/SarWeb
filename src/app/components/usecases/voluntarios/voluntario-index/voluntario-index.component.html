@@ -1,12 +1,18 @@
 <!-- <app-voluntario-card [voluntario]="voluntario" *ngFor="let voluntario of voluntarios"> </app-voluntario-card> -->
 
-<a mat-mini-fab color='primary' class='custom-button' routerLink="/voluntarios/create">
+
+
+
+<a mat-mini-fab color='accent' class='custom-button' routerLink="/voluntarios/create">
     <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
 </a>
+<!-- <a mat-mini-fab color='primary' class='custom-button' (click)='voluntarioService.cargarVoluntariosFirebaseDatabase()'>
+    CargarVoluntarios
+</a> -->
 
 <!-- routerLink="/voluntarios/create" -->
 
-<div fxLayout="column" fxLayoutGap="10px">
+<div fxLayout="column" fxLayoutAlign="center center">
     <form class="example-form" fxLayout="column">
         <mat-form-field class="example-full-width">
             <input matInput matAutosize (keyup)="applyFilter($event.target.value)" placeholder="Buscar">

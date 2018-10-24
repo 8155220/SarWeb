@@ -1,3 +1,32 @@
+<!-- <mat-toolbar fxLayout="column" color="primary" class="mat-elevation-z1">
+    <div fxLayout="row" fxLayoutAlign="end  center" fxFill>
+        <div fxHide.lt-sm fxFlex='20'>
+            <button mat-icon-button id="menu" (click)="uiService.openNav()">
+                    <mat-icon>menu</mat-icon>
+                    </button>
+        </div>
+        <div fxHide.gt-xs fxFlex='20'>
+            <button mat-icon-button id="menu" (click)="uiService.toggleNav()">
+                    <mat-icon>menu</mat-icon>
+                    </button>
+        </div>
+        <span fxFlex='20'>{{title}}</span>
+
+        <div fxFlex fxLayoutAlign="flex-end" fxHide.xs>
+            <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
+
+                <li><a routerLink="/signup">Registrarse</a></li>
+
+                <li> <a routerLink="/login">Iniciar Session</a></li>
+
+            </ul>
+        </div>
+        <div class='backspace-toolbar' fxHide.gt-xs>
+            <mat-icon (click)='cancel()' size='50px'>keyboard_backspace</mat-icon>
+        </div>
+    </div>
+</mat-toolbar> -->
+
 <mat-toolbar color="primary" class="mat-elevation-z1">
     <div fxHide.lt-sm>
         <button mat-icon-button id="menu" (click)="uiService.openNav()">
@@ -9,7 +38,24 @@
         <mat-icon>menu</mat-icon>
         </button>
     </div>
-    <span>Dynamic Expanding Nav Drawer Example</span>
+    <div fxLayout="row">
+        <div fxLayoutAlign="start start" fxHide.gt-xs>
+            <span>{{title}}</span>
+        </div>
+
+        <div fxFlex fxLayoutAlign="flex-end" fxHide.xs>
+            <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
+
+                <li><a routerLink="/signup">Registrarse</a></li>
+
+                <li> <a routerLink="/login">Iniciar Session</a></li>
+
+            </ul>
+        </div>
+        <div class='backspace-toolbar' fxHide.gt-xs>
+            <mat-icon (click)='cancel()' size='50px'>keyboard_backspace</mat-icon>
+        </div>
+    </div>
 </mat-toolbar>
 
 

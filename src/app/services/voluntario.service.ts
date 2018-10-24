@@ -13,10 +13,11 @@ import {
   AngularFirestoreDocument
 } from "angularfire2/firestore";
 import { FormGroup } from "@angular/forms";
-import { map } from "rxjs/operators";
+import { map, finalize } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 import { VoluntarioModel } from "../models/voluntario/voluntario.model";
 import { AngularFireDatabase } from "angularfire2/database";
+import { AngularFireStorage } from "angularfire2/storage";
 
 enum DatabaseType {
   FIRESTORE,
@@ -39,7 +40,11 @@ export class VoluntarioService {
   dataBaseType: DatabaseType = DatabaseType.REALTIMEDATABASE;
   voluntariosRef;
 
-  constructor(private afs: AngularFirestore, private db: AngularFireDatabase) {
+  constructor(
+    private afs: AngularFirestore,
+    private db: AngularFireDatabase,
+    private storage: AngularFireStorage
+  ) {
     /*if (environment.production) {
       this.voluntariosCollection = afs.collection<VoluntarioModel>(
         "voluntarios",
@@ -57,7 +62,8 @@ export class VoluntarioService {
     } else {
       this.voluntarios=this.getVoluntarios(); //Mejorar Codigo
     }*/
-    this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios");
+    //this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios");
+    this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios2");
     this.voluntarios = this.getVoluntarios();
   }
 
@@ -120,11 +126,14 @@ export class VoluntarioService {
     } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
       //this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios");
 
-      const data = this.db.list<VoluntarioModel>("voluntarios").snapshotChanges()
-      .pipe(
-        map(changes=>
-        changes.map(c=> ({id:c.payload.key,...c.payload.val()})))
-      );
+      const data = this.db
+        .list<VoluntarioModel>("voluntarios")
+        .snapshotChanges()
+        .pipe(
+          map(changes =>
+            changes.map(c => ({ id: c.payload.key, ...c.payload.val() }))
+          )
+        );
 
       return data;
     }
@@ -169,6 +178,11 @@ export class VoluntarioService {
     return true;
   }
 
+  cargarVoluntariosFirebaseDatabase() {
+    voluntariosLocalArrayAny.forEach(e => {
+      this.voluntariosRef.set(e.id, e);
+    });
+  }
   async addVoluntario(voluntario: VoluntarioModel) {
     if (this.dataBaseType == DatabaseType.FIRESTORE) {
       if (environment.production) {
@@ -186,11 +200,28 @@ export class VoluntarioService {
         return true;
       }
     } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
-      console.log('entro addVoluntario');
-     // const ref= this.db.push();
+      console.log(voluntario.fotoURL);
+      // const ref= this.db.push();
       //const voluntariosRef = this.db.object('voluntarios');
-      this.voluntariosRef.push( voluntario);
-      
+      const filePath = "/usuarios/dsds"+voluntario.numeroCarnetIdentidad;
+      const fileRef = this.storage.ref(filePath);
+      const task = this.storage.upload(filePath, voluntario.fotoURL);
+      //return task;
+
+      task.snapshotChanges().pipe(
+        finalize(()=>{
+          console.log('ENVIADO2 ');
+          fileRef.getDownloadURL().subscribe(item=>{
+            voluntario.fotoURL=item;
+            console.log(item);
+            this.voluntariosRef.push(voluntario);
+            console.log('ENVIADO ');
+          
+          });
+
+        } )
+      ).subscribe();
+
       return true;
     }
   }
@@ -343,7 +374,13 @@ export class VoluntarioService {
   }
 
   // getGrados():any[]{
-    
-    
+
   // }
+
+  uploadFile(file) {
+    const filePath = "/root";
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    return task;
+  }
 }

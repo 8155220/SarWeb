@@ -53,12 +53,13 @@ export class VoluntarioIndexComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
   constructor(
-    private voluntarioService: VoluntarioService,
+    public voluntarioService: VoluntarioService,
     private bottomSheet: MatBottomSheet,
     private _router: Router,
     private uiService: UiService,
     public dialog: MatDialog
   ) {}
+
 
   ngOnInit() {
     console.log("VoluntarioIndex OnInit");

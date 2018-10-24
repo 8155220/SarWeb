@@ -90,7 +90,7 @@ export class VoluntarioModel {
   labios?: string; //pendiente
   nariz?: string; //pendiente
   rasgosParticulares?: string; //pendiente
-
+  fotoURL?:string;
   constructor(voluntario: VoluntarioModel) {
     if (voluntario.id == "") {
       this.id = voluntario.timestamp.toString();

@@ -1,0 +1,32 @@
+<!-- <div *ngIf="currentUpload">
+    <div class="progress">
+        <div class="progress-bar progress-bar-animated" [ngStyle]="{ 'width': currentUpload?.progress + '%' }"></div>
+    </div>
+    Progress: {{currentUpload?.name}} | {{currentUpload?.progress}}% Complete
+</div>
+
+<label>
+       <input type="file" (change)="detectFiles($event)">
+    </label>
+
+<button [disabled]="!selectedFiles" (click)="uploadSingle()">
+
+      Upload Single
+    </button> -->
+
+<!-- <label>
+       <input type="file" (change)="detectFiles($event)" multiple>
+    </label>
+
+<button [disabled]="!selectedFiles" (click)="uploadMulti()">
+
+        Upload Multiple
+      </button> -->
+
+<div (load)="loadImageFile()">
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <img id="output_image" class="card-img-top" [src]="imagenPerfil | noimage" alt="Card image cap">
+        <!-- <input type='file' accept='image/*' (change)='preview_image($event)'> -->
+        <input id="upload-Image" type='file' accept='image/*' (change)='loadImageFile()'>
+    </div>
+</div>

@@ -1,4 +1,5 @@
-import { environment } from '../environments/environment';
+import { AngularFireStorage, AngularFireStorageModule } from "angularfire2/storage";
+import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
@@ -11,24 +12,30 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { WelcomeComponent } from "./components/welcome/welcome.component";
 import { ToolbarComponent } from "./components/shared/toolbar/toolbar.component";
 import { FooterComponent } from "./components/shared/footer/footer.component";
-import { VoluntarioIndexComponent,BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete } from "./components/usecases/voluntarios/voluntario-index/voluntario-index.component";
+import {
+  VoluntarioIndexComponent,
+  BottomSheetOverviewVoluntarioSheet,
+  DialogConfirmDelete
+} from "./components/usecases/voluntarios/voluntario-index/voluntario-index.component";
 import { VoluntarioCreateComponent } from "./components/usecases/voluntarios/voluntario-create/voluntario-create.component";
 import { VoluntarioReadComponent } from "./components/usecases/voluntarios/voluntario-read/voluntario-read.component";
 import { VoluntarioDeleteComponent } from "./components/usecases/voluntarios/voluntario-delete/voluntario-delete.component";
 import { VoluntarioUpdateComponent } from "./components/usecases/voluntarios/voluntario-update/voluntario-update.component";
 import { SidenavComponent } from "./components/shared/sidenav/sidenav.component";
-import {
-  VoluntarioCardComponent,
-  
-} from "./components/usecases/voluntarios/voluntario-card/voluntario-card.component";
+import { VoluntarioCardComponent } from "./components/usecases/voluntarios/voluntario-card/voluntario-card.component";
 
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { VoluntarioService } from './services/voluntario.service';
+import { VoluntarioService } from "./services/voluntario.service";
 import { AngularFireModule } from "angularfire2";
 import { AngularFirestoreModule } from "angularfire2/firestore";
-import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { MenuListItemComponent } from './components/shared/sidenav/menu-list-item-component/menu-list-item.component';
+import { AngularFireDatabaseModule } from "angularfire2/database";
+import { MenuListItemComponent } from "./components/shared/sidenav/menu-list-item-component/menu-list-item.component";
+import { UploadImageComponent } from "./components/shared/upload-image/upload-image.component";
+import { UploadService } from "./services/upload/upload.service";
+
+import { NoimagePipe } from './pipes/noimage.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +51,12 @@ import { MenuListItemComponent } from './components/shared/sidenav/menu-list-ite
     VoluntarioUpdateComponent,
     VoluntarioCardComponent,
     SidenavComponent,
-    BottomSheetOverviewVoluntarioSheet,DialogConfirmDelete, MenuListItemComponent
+    BottomSheetOverviewVoluntarioSheet,
+    DialogConfirmDelete,
+    MenuListItemComponent,
+    UploadImageComponent,
+    //Pipes
+    NoimagePipe
   ],
   imports: [
     BrowserModule,
@@ -54,12 +66,13 @@ import { MenuListItemComponent } from './components/shared/sidenav/menu-list-ite
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig,'SARFAB'),
+    AngularFireModule.initializeApp(environment.firebaseConfig, "SARFAB"),
     AngularFirestoreModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireStorageModule
   ],
-  entryComponents: [BottomSheetOverviewVoluntarioSheet,DialogConfirmDelete],
-  providers: [VoluntarioService],
+  entryComponents: [BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete],
+  providers: [VoluntarioService, UploadService, AngularFireStorage],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
