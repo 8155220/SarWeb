@@ -1,5 +1,5 @@
 import { Upload } from "./../../../services/upload/upload";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
 import { UploadService } from "../../../services/upload/upload.service";
 import * as _ from "lodash";
 @Component({
@@ -8,9 +8,14 @@ import * as _ from "lodash";
   styleUrls: ["./upload-image.component.scss"]
 })
 export class UploadImageComponent implements OnInit {
+  @Output() imageBase64:EventEmitter<string> = new EventEmitter();
+  @Input('fotoURL') fotoURL:string="";
+
+  
   ngOnInit(): void {
     //throw new Error("Method not implemented.");
   }
+
 
   selectedFiles: FileList;
   currentUpload: Upload;
@@ -18,36 +23,23 @@ export class UploadImageComponent implements OnInit {
   fileReader = new FileReader();
   constructor(private upSvc: UploadService) {
     this.test();
+    console.log('fotoURL');
+    if(this.fotoURL)     
+    console.log(this.fotoURL);
+    
   }
 
   uploadFile(event) {
     this.upSvc.uploadFile(event.target.files[0]);
   }
 
-  // detectFiles(event) {
-  //     this.selectedFiles = event.target.files;
-  // }
-
-  // uploadSingle() {
-  //   let file = this.selectedFiles.item(0)
-  //   this.currentUpload = new Upload(file);
-  //   this.upSvc.pushUpload(this.currentUpload)
-  // }
-
-  // uploadMulti() {
-  //   let files = this.selectedFiles
-  //   let filesIndex = _.range(files.length)
-  //   _.each(filesIndex, (idx) => {
-  //     this.currentUpload = new Upload(files[idx]);
-  //     this.upSvc.pushUpload(this.currentUpload)}
-  //   )
-  // }
 
   test() {
-    this.fileReader.onload = function(event:any) {
+    this.fileReader.onload = (event:any) => {
       let output = <HTMLInputElement>document.getElementById("output_image");
       let image = new Image();
-      image.onload = function() {
+      image.onload = (imgsrc:any) => {
+        
         //document.getElementById("original-Img").src = image.src;
         var canvas = document.createElement("canvas");
         var context = canvas.getContext("2d");
@@ -66,13 +58,14 @@ export class UploadImageComponent implements OnInit {
         );
 
         output.src = canvas.toDataURL();
-        console.log(canvas.toDataURL());
+        this.imageBase64.emit(canvas.toDataURL());
       };
       image.src = event.target.result;
+      
     };
     //this.fileReader.readAsDataURL(event.target.files[0]);
   }
-
+/*
   preview_image(event) {
     let reader = new FileReader();
     reader.onload = (eventReader: any) => {
@@ -106,7 +99,7 @@ export class UploadImageComponent implements OnInit {
     };
 
     reader.readAsDataURL(event.target.files[0]);
-  }
+  }*/
 
   loadImageFile() {
     var uploadImage = <HTMLInputElement>document.getElementById("upload-Image");
@@ -119,6 +112,7 @@ export class UploadImageComponent implements OnInit {
     //Is Used for validate a valid file.
     var uploadFile = (<HTMLInputElement>document.getElementById("upload-Image"))
       .files[0];
+     
     /*if (!filterType.test(uploadFile.type)) {
       alert("Please select a valid image.");
       return;

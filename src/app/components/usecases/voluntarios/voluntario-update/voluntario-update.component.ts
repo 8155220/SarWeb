@@ -3,7 +3,7 @@ import { VoluntarioModel } from "../../../../models/voluntario/voluntario.model"
 import { UiService } from "../../../../services/ui.service";
 import { AngularFirestore } from "angularfire2/firestore";
 import { VoluntarioService } from "../../../../services/voluntario.service";
-import { Observable } from "rxjs";
+import { Observable ,Subscriber} from "rxjs";
 import { map, startWith, filter } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
 import {
@@ -37,8 +37,11 @@ export class VoluntarioUpdateComponent implements OnInit {
   filteredOptionsProvincia: Observable<string[]>;
   filteredOptionsMunicipio: Observable<string[]>;
 
-  loading = false;
+  loading = true;
   success = false;
+  imagenPerfil = "";
+
+  voluntarioId:string='';
   constructor(
     private fb: FormBuilder,
     private voluntarioService: VoluntarioService,
@@ -55,25 +58,16 @@ export class VoluntarioUpdateComponent implements OnInit {
   ngOnInit() {
     this.loadVoluntarioFormVacios();
     this.route.params.subscribe(async params => {
-      // this.voluntario = await this.voluntarioService.getVoluntario(params["id"]);
+      this.voluntarioService.getVoluntario(params['id']).subscribe((e:VoluntarioModel)=>{
 
-      //this.voluntarioService.getVoluntarios().pipe(filter(  e.id===params['id'])).subscribe();
-
-      this.voluntarioService.getVoluntarios().subscribe(voluntarios => {
-        voluntarios.forEach(e => {
-          console.log("Entro getVoluntario ForeaCH");
-          if (e.id == params["id"]) {
-            this.voluntario = new VoluntarioModel(e);
-            //this.loadVoluntarioFormVacios();
-            console.log("Entro getVoluntario ForeaCH2222");
+        this.voluntarioId=params['id'];
+        this.voluntario = e as VoluntarioModel;
             this.loadVoluntarioForm();
             this.loadFormsControl();
             this.loadFormsArray();
             this.loadFilters();
-          }
-        });
+            this.loading=false;
       });
-      console.log("EntroHERERE");
     });
     this.uiService.useCaseStateChanged.next("Editar Voluntario");
 
@@ -178,9 +172,9 @@ export class VoluntarioUpdateComponent implements OnInit {
       apellidoPaterno: ["", [Validators.required]],
       apellidoMaterno: ["", [Validators.required]],
       sexo: ["", [Validators.required]],
-      fechaNacimiento: "",
+      fechaNacimiento: ["", [Validators.required]],
       tipoSangre: "",
-      licenciaConducir: "",
+      licenciaConducir: "false",
       direccion: "",
       alergias: this.fb.array([]),
       pais: "",
@@ -189,9 +183,9 @@ export class VoluntarioUpdateComponent implements OnInit {
       capital: "",
       municipio: "",
       timestamp: Date.now(),
-      celular: "",
+      celular: ["", [Validators.required]],
       telefonoFijo: "",
-      numeroCarnetIdentidad: "",
+      numeroCarnetIdentidad: ["", [Validators.required]],
       estadoCivil: "",
       email: "",
       idiomas: this.fb.array([]),
@@ -488,31 +482,9 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.setExperienciaCampoPrimeraRespuestasFormArray();
     this.setDatoFamiliarsFormArray();
   }
-  /* async submitHandler() {  //original
-    this.loading = true;
-    const formValue = this.voluntarioForm.value as VoluntarioModel;
 
-    if(environment.production)
-    {
-      try {
-        await this.afs.collection("voluntarios").add(formValue);
-        this.success = true;
-        this.openSnackBar('Guardado','ocultar')
-        this.router.navigate(['/voluntarios/index']);
-        
-      } catch (err) {
-        console.log(err);
-      }
-      this.loading = false;
-    } else {
-      this.voluntarioService.addVoluntario(formValue);
-      this.openSnackBar('Guardado','ocultar')
-        this.router.navigate(['/voluntarios/index']);
-    }
-    
-  }*/
-  async submitHandler() {
-    this.loading = true;
+  submitHandler() {
+    /*this.loading = true;
     const formValue = this.voluntarioForm.value as VoluntarioModel;
     formValue.id = this.voluntario.id;
     if (await this.voluntarioService.updateVoluntario(formValue)) {
@@ -523,12 +495,53 @@ export class VoluntarioUpdateComponent implements OnInit {
       this.success = false;
       this.openSnackBar("Ocurrio un error...", "ocultar");
       this.router.navigate(["/voluntarios/index"]);
+    }*/
+
+    if(this.voluntarioForm.invalid){
+      this.openSnackBar("Complete los Campos requeridos antes de continuar", "ocultar");
+      return;
+    }
+    
+    this.loading = true;
+    const formValue = this.voluntarioForm.value as VoluntarioModel;
+    formValue.id = this.voluntarioId;
+    console.log('fechaNacimineto:'+ formValue.fechaNacimiento);
+    if ( this.imagenPerfil || this.imagenPerfil != "") {
+      formValue.fotoURL = this.imagenPerfil;
+      this.voluntarioService.updateVoluntario(formValue).subscribe(
+        e => {
+          console.log(e);
+          if (e.bytesTransferred == e.totalBytes) {
+            this.loading = false;
+            this.openSnackBar("Actualizado Exitosamente", "ocultar");
+            this.router.navigate(["/voluntarios/index"]);
+          }
+        },
+        e => {
+          console.log(e);
+          this.loading = false;
+          this.openSnackBar("Ocurrio un error intente mas tarde", "ocultar");
+        }
+      );
+    } else {
+
+      this.loading = false;
+      formValue.fotoURL=this.voluntario.fotoURL;
+      this.voluntarioService.updateVoluntarioSinImagen(formValue);
+      this.openSnackBar("Actualizado Exitosamente", "ocultar");
+      this.router.navigate(["/voluntarios/index"]);
     }
   }
+
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 2000
     });
   }
+
+  imageReceived(image:string){
+    this.imagenPerfil=image;
+  }
+
 }

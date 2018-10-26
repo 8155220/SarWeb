@@ -24,7 +24,6 @@ export class ToolbarComponent implements OnInit {
       // map(result => result.matches)
       map(result => {
         console.log("result:" + result.matches);
-
         return result.matches;
       })
     );

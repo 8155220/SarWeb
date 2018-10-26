@@ -40,30 +40,14 @@ export class VoluntarioService {
   dataBaseType: DatabaseType = DatabaseType.REALTIMEDATABASE;
   voluntariosRef;
 
+  loading = false;
+  VOLUNTARIOS_PATH = "voluntarios2";
   constructor(
     private afs: AngularFirestore,
     private db: AngularFireDatabase,
     private storage: AngularFireStorage
   ) {
-    /*if (environment.production) {
-      this.voluntariosCollection = afs.collection<VoluntarioModel>(
-        "voluntarios",
-        ref => ref.orderBy("timestamp", "desc")
-      );
-      this.voluntarios = this.voluntariosCollection.snapshotChanges().pipe(
-        map(actions =>
-          actions.map(a => {
-            const data = a.payload.doc.data() as VoluntarioModel;
-            const id = a.payload.doc.id;
-            return { id, ...data };
-          })
-        )
-      );
-    } else {
-      this.voluntarios=this.getVoluntarios(); //Mejorar Codigo
-    }*/
-    //this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios");
-    this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios2");
+    this.voluntariosRef = this.db.list<VoluntarioModel>(this.VOLUNTARIOS_PATH);
     this.voluntarios = this.getVoluntarios();
   }
 
@@ -75,7 +59,7 @@ export class VoluntarioService {
     loading = true;
     const formValue = voluntarioForm.value;
     try {
-      await this.afs.collection("voluntarios2").add(formValue);
+      await this.afs.collection(this.VOLUNTARIOS_PATH).add(formValue);
       success = true;
     } catch (err) {
       console.log(err);
@@ -84,50 +68,10 @@ export class VoluntarioService {
   }
 
   getVoluntarios() {
-    if (this.dataBaseType == DatabaseType.FIRESTORE) {
-      if (environment.production) {
-        this.voluntariosCollection = this.afs.collection<VoluntarioModel>(
-          "voluntarios",
-          ref => ref.orderBy("timestamp", "desc")
-        );
-        this.voluntarios = this.voluntariosCollection.snapshotChanges().pipe(
-          map(actions =>
-            actions.map(a => {
-              const data = a.payload.doc.data() as VoluntarioModel;
-              const id = a.payload.doc.id;
-              return { id, ...data };
-            })
-          )
-        );
-        return this.voluntarios;
-      } else {
-        let voluntarios: Array<VoluntarioModel> = JSON.parse(
-          localStorage.getItem("voluntarios") || "[]"
-        );
-        if (voluntarios.length < 10) {
-          voluntariosLocalArrayAny.forEach(e => {
-            voluntarios.push(e as VoluntarioModel);
-          });
-          localStorage.setItem("voluntarios", JSON.stringify(voluntarios));
-        }
-        let voluntariosModel: VoluntarioModel[] = [];
-        for (let voluntario of voluntarios) {
-          voluntariosModel.push(new VoluntarioModel(voluntario));
-        }
-        voluntariosModel.sort((a, b) => {
-          return b.timestamp - a.timestamp;
-        });
-
-        return Observable.create((observer: Subscriber<VoluntarioModel[]>) => {
-          observer.next(voluntariosModel);
-          observer.complete();
-        });
-      }
-    } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
+    if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
       //this.voluntariosRef = this.db.list<VoluntarioModel>("voluntarios");
-
       const data = this.db
-        .list<VoluntarioModel>("voluntarios")
+        .list<VoluntarioModel>(this.VOLUNTARIOS_PATH)
         .snapshotChanges()
         .pipe(
           map(changes =>
@@ -138,19 +82,11 @@ export class VoluntarioService {
       return data;
     }
   }
-  getVoluntario(id: string) {
-    let voluntario: VoluntarioModel;
-    this.voluntarios.subscribe(voluntarios => {
-      voluntarios.forEach(e => {
-        console.log("Entro getVoluntario ForeaCH");
 
-        if (e.id == id) {
-          voluntario = new VoluntarioModel(e);
-        }
-      });
-    });
-    return voluntario;
+  getVoluntario(id: string) {
+    return this.db.object(`${this.VOLUNTARIOS_PATH}/${id}`).valueChanges();
   }
+
   deleteVoluntario(id: string) {
     if (this.dataBaseType == DatabaseType.FIRESTORE) {
       if (environment.production) {
@@ -183,7 +119,26 @@ export class VoluntarioService {
       this.voluntariosRef.set(e.id, e);
     });
   }
-  async addVoluntario(voluntario: VoluntarioModel) {
+  addVoluntario(voluntario: VoluntarioModel) {
+    if (voluntario.fotoURL != "") {
+      const filePath = "/usuarios/dsds454" + voluntario.numeroCarnetIdentidad;
+      const fileRef = this.storage.ref(filePath);
+      const task = fileRef.putString(voluntario.fotoURL, "data_url");
+      return task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe(item => {
+            voluntario.fotoURL = item;
+            this.voluntariosRef.push(voluntario);
+          });
+        })
+      );
+    } else {
+      console.log("antesde enviar");
+      console.log(voluntario);
+      this.voluntariosRef.push(voluntario);
+    }
+  }
+  /* async addVoluntario(voluntario: VoluntarioModel) {
     if (this.dataBaseType == DatabaseType.FIRESTORE) {
       if (environment.production) {
         try {
@@ -208,7 +163,7 @@ export class VoluntarioService {
       const task = this.storage.upload(filePath, voluntario.fotoURL);
       //return task;
 
-      task.snapshotChanges().pipe(
+      return task.snapshotChanges().pipe(
         finalize(()=>{
           console.log('ENVIADO2 ');
           fileRef.getDownloadURL().subscribe(item=>{
@@ -216,39 +171,32 @@ export class VoluntarioService {
             console.log(item);
             this.voluntariosRef.push(voluntario);
             console.log('ENVIADO ');
-          
           });
 
         } )
-      ).subscribe();
+      );
 
-      return true;
+    }
+  }*/
+  updateVoluntario(voluntario: VoluntarioModel) {
+    if (voluntario.fotoURL != "") {
+      const filePath = "/usuarios/gy45hgh" + voluntario.numeroCarnetIdentidad;
+      const fileRef = this.storage.ref(filePath);
+      const task = fileRef.putString(voluntario.fotoURL, "data_url");
+      return task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe(item => {
+            voluntario.fotoURL = item;
+            this.voluntariosRef.update(voluntario.id, voluntario);
+          });
+        })
+      );
+    } else {
+      this.voluntariosRef.update(voluntario.id, voluntario);
     }
   }
-  async updateVoluntario(voluntario: VoluntarioModel) {
-    if (this.dataBaseType == DatabaseType.FIRESTORE) {
-      if (environment.production) {
-        try {
-          console.log(voluntario);
-
-          await this.afs
-            .collection("voluntarios")
-            .doc(voluntario.id)
-            .update(voluntario);
-          //await this.voluntarioDoc
-          return true;
-        } catch (err) {
-          console.log(err);
-          return false;
-        }
-      } else {
-        this.updateVoluntarioLocal(voluntario);
-        return true;
-      }
-    } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
-      this.voluntariosRef.update(voluntario.id, voluntario);
-      return true;
-    }
+  updateVoluntarioSinImagen(voluntario: VoluntarioModel) {
+    this.voluntariosRef.update(voluntario.id, voluntario);
   }
 
   updateVoluntarioLocal(voluntario: VoluntarioModel) {
@@ -376,11 +324,4 @@ export class VoluntarioService {
   // getGrados():any[]{
 
   // }
-
-  uploadFile(file) {
-    const filePath = "/root";
-    const fileRef = this.storage.ref(filePath);
-    const task = this.storage.upload(filePath, file);
-    return task;
-  }
 }

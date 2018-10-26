@@ -3,7 +3,7 @@ import { VoluntarioModel } from "../../../../models/voluntario/voluntario.model"
 import { UiService } from "../../../../services/ui.service";
 import { AngularFirestore } from "angularfire2/firestore";
 import { VoluntarioService } from "../../../../services/voluntario.service";
-import { Observable } from "rxjs";
+import { Observable, Subscriber } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
 import {
@@ -37,9 +37,9 @@ export class VoluntarioCreateComponent implements OnInit {
   filteredOptionsMunicipio: Observable<string[]>;
 
   loading = false;
-  success = false;
   imagenPerfil = "";
   fileReader = new FileReader();
+
   constructor(
     private fb: FormBuilder,
     private voluntarioService: VoluntarioService,
@@ -60,7 +60,7 @@ export class VoluntarioCreateComponent implements OnInit {
       apellidoPaterno: ["", [Validators.required]],
       apellidoMaterno: ["", [Validators.required]],
       sexo: ["", [Validators.required]],
-      fechaNacimiento: "",
+      fechaNacimiento: ["", [Validators.required]],
       tipoSangre: "",
       licenciaConducir: "false",
       direccion: "",
@@ -71,9 +71,9 @@ export class VoluntarioCreateComponent implements OnInit {
       capital: this.capitalFormControl,
       municipio: this.municipioFormControl,
       timestamp: Date.now(),
-      celular: "",
+      celular: ["", [Validators.required]],
       telefonoFijo: "",
-      numeroCarnetIdentidad: "",
+      numeroCarnetIdentidad: ["", [Validators.required]],
       estadoCivil: "",
       email: "",
       idiomas: this.fb.array([]),
@@ -253,112 +253,48 @@ export class VoluntarioCreateComponent implements OnInit {
     this.datosFamiliaresFormArray.removeAt(i);
   }
 
-  preview_image(event) {
-    console.log("EntroPreview_Image");
-
-    let reader = new FileReader();
-    reader.onload = (eventReader: any) => {
-      //let output = document.getElementById('output_image');   //esta linea genera error en typescript solucion abajo
-      let output = <HTMLInputElement>document.getElementById("output_image");
-      output.src = reader.result;
-      //
-      let image = new Image();
-      image.onload = event => {
-        console.log("EntroPreview_Image2");
-        var canvas = document.createElement("canvas");
-        var context = canvas.getContext("2d");
-        canvas.width = 400;
-        canvas.height = 400;
-        context.drawImage(
-          image,
-          0,
-          0,
-          image.width,
-          image.height,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-        output.src = canvas.toDataURL();
-        this.imagenPerfil = canvas.toDataURL();
-        console.log("Entro aqui 2232");
-      };
-      image.src = event.target.result;
-      /*image.onload = function() {
-        var canvas = document.createElement("canvas");
-        var context = canvas.getContext("2d");
-        canvas.width = image.width / 4;
-        canvas.height = image.height / 4;
-        context.drawImage(
-          image,
-          0,
-          0,
-          image.width,
-          image.height,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-        output.src =  canvas.toDataURL();
-        //this.imagenPerfil =  canvas.toDataURL();
-        //this.setImagenPerfil(canvas.toDataURL());
-      };*/
-      //
-    };
-
-    //this.imagenPerfil = event.target.files[0];
-    reader.readAsDataURL(event.target.files[0]);
-  }
-
-  loadImageFile() {
-    var uploadImage = <HTMLInputElement>document.getElementById("upload-Image");
-
-    //check and retuns the length of uploded file.
-    if (uploadImage.files.length === 0) {
+  submitHandler() {
+    //this.loading = true;
+    if(this.voluntarioForm.invalid){
+      this.openSnackBar("Complete los Campos requeridos antes de continuar", "ocultar");
       return;
     }
 
-    //Is Used for validate a valid file.
-    var uploadFile = (<HTMLInputElement>document.getElementById("upload-Image"))
-      .files[0];
-    /*if (!filterType.test(uploadFile.type)) {
-      alert("Please select a valid image.");
-      return;
-    }*/
-
-    this.fileReader.readAsDataURL(uploadFile);
-  }
-
-  /* async submitHandler() {  //original
-    this.loading = true;
     const formValue = this.voluntarioForm.value as VoluntarioModel;
 
-    if(environment.production)
-    {
-      try {
-        await this.afs.collection("voluntarios").add(formValue);
-        this.success = true;
-        this.openSnackBar('Guardado','ocultar')
-        this.router.navigate(['/voluntarios/index']);
-        
-      } catch (err) {
-        console.log(err);
-      }
-      this.loading = false;
+    let dateString = formValue.fechaNacimiento;
+    formValue.fechaNacimiento = new Date(formValue.fechaNacimiento).toISOString();
+    //formValue.fechaNacimiento = 
+    console.log('fechaNacimineto:'+ formValue.fechaNacimiento);
+    // convertir a "2018-10-05T04:00:00.000Z"
+   //console.log(formValue.fechaNacimiento);
+  
+    formValue.fotoURL = this.imagenPerfil;
+
+    if (this.imagenPerfil != "") {
+      this.voluntarioService.addVoluntario(formValue).subscribe(
+        e => {
+          console.log(e);
+          if (e.bytesTransferred == e.totalBytes) {
+            this.loading = false;
+            this.openSnackBar("Registrado Exitosamente", "ocultar");
+            this.router.navigate(["/voluntarios/index"]);
+          }
+        },
+        e => {
+          console.log(e);
+          this.loading = false;
+          this.openSnackBar("Ocurrio un error intente mas tarde", "ocultar");
+        }
+      );
     } else {
       this.voluntarioService.addVoluntario(formValue);
-      this.openSnackBar('Guardado','ocultar')
-        this.router.navigate(['/voluntarios/index']);
+      this.loading = false;
+      this.openSnackBar("Registrado Exitosamente", "ocultar");
+      this.router.navigate(["/voluntarios/index"]);
     }
-    
-  }*/
-  async submitHandler() {
-    this.loading = true;
-    const formValue = this.voluntarioForm.value as VoluntarioModel;
-    formValue.fotoURL = this.imagenPerfil;
-    if (await this.voluntarioService.addVoluntario(formValue)) {
+
+    /*if (await this.voluntarioService.addVoluntario(formValue)) {
       this.success = true;
       this.openSnackBar("Registrado Exitosamente", "ocultar");
       this.router.navigate(["/voluntarios/index"]);
@@ -366,12 +302,16 @@ export class VoluntarioCreateComponent implements OnInit {
       this.success = false;
       this.openSnackBar("Ocurrio un error...", "ocultar");
       this.router.navigate(["/voluntarios/index"]);
-    }
+    }*/
   }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 2000
     });
+  }
+
+  imageReceived(image: string) {
+    this.imagenPerfil = image;
   }
 }
