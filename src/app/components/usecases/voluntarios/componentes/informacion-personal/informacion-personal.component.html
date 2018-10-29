@@ -2,7 +2,7 @@
 
     <mat-card-title>Informacion Personal </mat-card-title>
 
-    {{formGroup.value | json}}
+    <!-- {{formGroup.value | json}} -->
     <mat-card-content>
         <form [formGroup]='formGroup' (ngSubmit)="submitHandler()" *ngIf="!success">
             <div fxLayout="row" fxLayoutAlign="center center">
@@ -144,12 +144,12 @@
                                 Oficial
                             </mat-option>
                             <mat-option value="suboficial">
-                                SUb-Oficial
+                                Sub-Oficial
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline" *ngIf="tipoPersona()!='civil'">
                         <mat-label>Grado</mat-label>
                         <mat-select placeholder="Grado" formControlName="grado">
                             <mat-option value="primerAnio" *ngIf="tipoPersona()=='voluntariosar'">
@@ -230,16 +230,16 @@
                                 General de Fuerza Aérea
                             </mat-option>
 
-                            <mat-option value="civil" *ngIf="tipoPersona()=='civil'">
+                            <!-- <mat-option value="civil" *ngIf="tipoPersona()=='civil'">
                                 Civil
-                            </mat-option>
+                            </mat-option> -->
 
                         </mat-select>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" *ngIf="tipoPersona()=='voluntariosar'">
                         <mat-label>Compañia</mat-label>
-                        <mat-select placeholder="Compañia" formControlName="companiaId">
+                        <mat-select placeholder="Compañia" formControlName="idCompania">
                             <mat-option *ngFor="let compania of companias" [value]="compania.id">
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
                                     <mat-card-subtitle>{{compania.nombre}} </mat-card-subtitle>

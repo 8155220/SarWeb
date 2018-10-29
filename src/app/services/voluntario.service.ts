@@ -1,4 +1,4 @@
-import { Observable, Subscriber, Subject } from "rxjs";
+import { Observable, Subscriber, Subject,from  } from "rxjs";
 import { Injectable } from "@angular/core";
 import {
   paisesArray,
@@ -18,6 +18,7 @@ import { environment } from "../../environments/environment";
 import { VoluntarioModel } from "../models/voluntario/voluntario.model";
 import { AngularFireDatabase } from "angularfire2/database";
 import { AngularFireStorage } from "angularfire2/storage";
+import { CompaniaService } from './compania.service';
 
 enum DatabaseType {
   FIRESTORE,
@@ -39,15 +40,30 @@ export class VoluntarioService {
   voluntariosBusqueda: VoluntarioModel[];
   dataBaseType: DatabaseType = DatabaseType.REALTIMEDATABASE;
   voluntariosRef;
+  familiaresRef;
+  informacionAdicionalRef;
+  datosFisicosRef;
+  companiasRef;
 
   loading = false;
   VOLUNTARIOS_PATH = "voluntarios2";
+  FAMILIARES_PATH = "familiares";
+  INFORMACION_ADICIONAL_PATH = "informacionAdicional";
+  DATOS_FISICOS_PATH = "datosFisicos";
+  COMPANIAS_PATH = "companias";
   constructor(
+    private companiaService:CompaniaService,
     private afs: AngularFirestore,
     private db: AngularFireDatabase,
     private storage: AngularFireStorage
   ) {
     this.voluntariosRef = this.db.list<VoluntarioModel>(this.VOLUNTARIOS_PATH);
+    this.familiaresRef = this.db.list<any>(this.FAMILIARES_PATH);
+    this.informacionAdicionalRef = this.db.list<any>(
+      this.INFORMACION_ADICIONAL_PATH
+    );
+    this.datosFisicosRef = this.db.list<any>(this.DATOS_FISICOS_PATH);
+    this.companiasRef = this.db.list<any>(this.COMPANIAS_PATH);
     this.voluntarios = this.getVoluntarios();
   }
 
@@ -119,8 +135,15 @@ export class VoluntarioService {
       this.voluntariosRef.set(e.id, e);
     });
   }
-  addVoluntario(voluntario: VoluntarioModel) {
-    if (voluntario.fotoURL != "") {
+  addVoluntario(
+    voluntario: any,
+    datosFisicos: any,
+    familiares: any,
+    informacionAdicional: any
+  ) {
+  if ( voluntario.fotoURL && voluntario.fotoURL != "") {
+      console.log(voluntario);
+      
       const filePath = "/usuarios/dsds454" + voluntario.numeroCarnetIdentidad;
       const fileRef = this.storage.ref(filePath);
       const task = fileRef.putString(voluntario.fotoURL, "data_url");
@@ -128,20 +151,36 @@ export class VoluntarioService {
         finalize(() => {
           fileRef.getDownloadURL().subscribe(item => {
             voluntario.fotoURL = item;
-            this.voluntariosRef.push(voluntario);
+            this.voluntariosRef.push(voluntario).then(item => {
+              this.db.object(`${this.DATOS_FISICOS_PATH}/${item.key}`).set(datosFisicos);
+              this.db.object(`${this.FAMILIARES_PATH}/${item.key}`).set(familiares);
+              this.db.object(`${this.INFORMACION_ADICIONAL_PATH}/${item.key}`).set(informacionAdicional);
+              if(voluntario.tipoPersona='voluntariosar'){
+                this.companiaService.addVoluntarioToCompania(item.key,voluntario.idcompania)
+              }
+              //esto deberia llamar a el servicio Compania
+
+            });
           });
         })
       );
-    } else {
-      console.log("antesde enviar");
-      console.log(voluntario);
-      this.voluntariosRef.push(voluntario);
+   } else {
+
+      let promise = this.voluntariosRef.push(voluntario).then(item => {
+        this.db.object(`${this.DATOS_FISICOS_PATH}/${item.key}`).set(datosFisicos);
+        this.db.object(`${this.FAMILIARES_PATH}/${item.key}`).set(familiares);
+        this.db.object(`${this.INFORMACION_ADICIONAL_PATH}/${item.key}`).set(informacionAdicional);
+        if(voluntario.tipoPersona='voluntariosar'){
+          this.companiaService.addVoluntarioToCompania(item.key,voluntario.idCompania)
+        }
+      });
+      return from(promise);
+
     }
   }
-  testPushEmergencia(dato:any){
-    this.voluntariosRef.push(dato).then((item)=>{
+  testPushEmergencia(dato: any) {
+    this.voluntariosRef.push(dato).then(item => {
       console.log(item.key);
-      
     });
   }
   /* async addVoluntario(voluntario: VoluntarioModel) {

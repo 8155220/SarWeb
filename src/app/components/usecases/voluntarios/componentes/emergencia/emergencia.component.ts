@@ -38,7 +38,7 @@ export class EmergenciaComponent implements OnInit {
   }
 
   getValue(){
-    this.emitter.emit(this.formGroup.value);
+    this.emitter.emit(this.formGroup.get("datosFamiliares").value);
   }
 
 }

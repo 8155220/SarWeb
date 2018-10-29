@@ -5,7 +5,7 @@
 </div>
 
 <!-- IP=INFORMACIONPERSONAL -->
-<div class='divPrincipal' fxLayout="column" fxLayoutGap="20px">
+<div class='divPrincipal' fxLayout="column" fxLayoutGap="20px" *ngIf='!loading'>
     <app-informacion-personal #informacionPersonal (IPValue)="IPValue($event)"></app-informacion-personal>
     <app-datos-fisicos #datosFisicos (DFValue)="DFValue($event)"></app-datos-fisicos>
     <app-emergencia #emergencia (EValue)="EValue($event)"></app-emergencia>

@@ -16,9 +16,9 @@ import {
 import { MatSnackBar } from "@angular/material";
 import { Router } from "@angular/router";
 import { InformacionPersonalComponent } from "../componentes/informacion-personal/informacion-personal.component";
-import { DatosFisicosComponent } from '../componentes/datos-fisicos/datos-fisicos.component';
-import { EmergenciaComponent } from '../componentes/emergencia/emergencia.component';
-import { InformacionExtraComponent } from '../componentes/informacion-extra/informacion-extra.component';
+import { DatosFisicosComponent } from "../componentes/datos-fisicos/datos-fisicos.component";
+import { EmergenciaComponent } from "../componentes/emergencia/emergencia.component";
+import { InformacionExtraComponent } from "../componentes/informacion-extra/informacion-extra.component";
 
 @Component({
   selector: "app-voluntario-create",
@@ -28,12 +28,20 @@ import { InformacionExtraComponent } from '../componentes/informacion-extra/info
 export class VoluntarioCreateComponent implements OnInit, AfterViewInit {
   loading = false;
   imagenPerfil = "";
-  @ViewChild("informacionPersonal") informacionPersonal: InformacionPersonalComponent;
-  @ViewChild("datosFisicos") datosFisicos: DatosFisicosComponent;
-  @ViewChild("emergencia") emergencia: EmergenciaComponent;
-  @ViewChild("informacionExtra") infomracionExtra: InformacionExtraComponent;
+  @ViewChild("informacionPersonal")
+  informacionPersonal: InformacionPersonalComponent;
+  @ViewChild("datosFisicos")
+  datosFisicos: DatosFisicosComponent;
+  @ViewChild("emergencia")
+  emergencia: EmergenciaComponent;
+  @ViewChild("informacionExtra")
+  informacionExtra: InformacionExtraComponent;
 
-  emergenciaValue:any;
+  informacionPersonalValue: any;
+  datosFisicosValue: any;
+  familiaresValue: any;
+  informacionAdicionalValue: any;
+
   constructor(
     private fb: FormBuilder,
     private voluntarioService: VoluntarioService,
@@ -48,7 +56,6 @@ export class VoluntarioCreateComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-
   }
 
   submitHandler() {
@@ -114,26 +121,86 @@ export class VoluntarioCreateComponent implements OnInit, AfterViewInit {
 
   IPValue($event) {
     console.log($event);
-    
+    this.informacionPersonalValue = $event;
   }
   DFValue($event) {
     console.log($event);
+    this.datosFisicosValue = $event;
   }
   EValue($event) {
     console.log($event);
-    this.emergenciaValue=$event;
-
+    this.familiaresValue = $event;
   }
   IEValue($event) {
     console.log($event);
+    this.informacionAdicionalValue = $event;
   }
 
-  guardar(){
+  guardar() {
     this.informacionPersonal.getValue();
     this.datosFisicos.getValue();
     this.emergencia.getValue();
-    this.infomracionExtra.getValue();
+    this.informacionExtra.getValue();
+    
 
-    this.voluntarioService.testPushEmergencia(this.emergenciaValue);
+    if (!this.informacionPersonal.formGroup.valid) {
+      this.openSnackBar("Complete Informacion Personal", "ocultar");
+      return;
+    } else {
+      this.loading = true;
+      if (this.informacionAdicionalValue.fotoURL) {
+        this.voluntarioService
+          .addVoluntario(
+            this.informacionPersonalValue,
+            this.datosFisicosValue,
+            this.familiaresValue,
+            this.informacionAdicionalValue
+          )
+          .subscribe(
+            (e: any) => {
+              if (e.bytesTransferred != null) {
+                if (e.bytesTransferred == e.totalBytes) {
+                  this.loading = false;
+                  this.openSnackBar("Registrado Exitosamente", "ocultar");
+                  this.router.navigate(["/voluntarios/index"]);
+                }
+              }
+            },
+            e => {
+              console.log(e);
+              this.loading = false;
+              this.openSnackBar(
+                "Ocurrio un error intente mas tarde",
+                "ocultar"
+              );
+            }
+          );
+      } else {
+        this.voluntarioService
+          .addVoluntario(
+            this.informacionPersonalValue,
+            this.datosFisicosValue,
+            this.familiaresValue,
+            this.informacionAdicionalValue
+          )
+          .subscribe(
+            (e: any) => {
+              this.loading = false;
+              this.openSnackBar("Registrado Exitosamente", "ocultar");
+              this.router.navigate(["/voluntarios/index"]);
+            },
+            e => {
+              console.log(e);
+              this.loading = false;
+              this.openSnackBar(
+                "Ocurrio un error intente mas tarde",
+                "ocultar"
+              );
+            }
+          );
+      }
+    }
+
+    // this.voluntarioService.testPushEmergencia(this.emergenciaValue);
   }
 }

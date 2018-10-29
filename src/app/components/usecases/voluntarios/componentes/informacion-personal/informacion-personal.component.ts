@@ -1,15 +1,20 @@
-import { CompaniaService } from './../../../../../services/compania.service';
-import { map } from 'rxjs/operators';
-import { VoluntarioService } from './../../../../../services/voluntario.service';
-import { Observable } from 'rxjs';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { startWith } from 'rxjs/operators';
+import { CompaniaService } from "./../../../../../services/compania.service";
+import { map } from "rxjs/operators";
+import { VoluntarioService } from "./../../../../../services/voluntario.service";
+import { Observable } from "rxjs";
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators
+} from "@angular/forms";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { startWith } from "rxjs/operators";
 
 @Component({
-  selector: 'app-informacion-personal',
-  templateUrl: './informacion-personal.component.html',
-  styleUrls: ['./informacion-personal.component.scss']
+  selector: "app-informacion-personal",
+  templateUrl: "./informacion-personal.component.html",
+  styleUrls: ["./informacion-personal.component.scss"]
 })
 export class InformacionPersonalComponent implements OnInit {
   formGroup: FormGroup;
@@ -26,11 +31,15 @@ export class InformacionPersonalComponent implements OnInit {
   filteredOptionsMunicipio: Observable<string[]>;
 
   imagenPerfil = "";
-  companias:any[]=[];
+  companias: any[] = [];
 
-  @Output('IPValue') emitter:EventEmitter<any>=new EventEmitter();
-  constructor(private fb: FormBuilder,
-  private voluntarioService: VoluntarioService,private companiaService:CompaniaService) { }
+  @Output("IPValue")
+  emitter: EventEmitter<any> = new EventEmitter();
+  constructor(
+    private fb: FormBuilder,
+    private voluntarioService: VoluntarioService,
+    private companiaService: CompaniaService
+  ) {}
 
   ngOnInit() {
     this.formGroup = this.fb.group({
@@ -51,20 +60,18 @@ export class InformacionPersonalComponent implements OnInit {
       numeroCarnetIdentidad: ["", [Validators.required]],
       nombreTutor: ["", [Validators.required]],
       celularTutor: ["", [Validators.required]],
-      estado:["activo", [Validators.required]],
-      tipoPersona:["civil", [Validators.required]],
-      grado:["", [Validators.required]],
-      companiaId:["", [Validators.required]],
-      // grado: "", 
+      estado: ["activo", [Validators.required]],
+      tipoPersona: ["civil", [Validators.required]],
+      grado: [""],
+      idCompania: [""]
+      // grado: "",
     });
 
-//    this.companiaService.getCompanias().subscribe(e=>this.companias=e);
-    this.companiaService.getCompanias().subscribe(e=>{
-      this.companias=e;
+    //    this.companiaService.getCompanias().subscribe(e=>this.companias=e);
+    this.companiaService.getCompanias().subscribe(e => {
+      this.companias = e;
       console.log(e);
-      
-    }
-    );
+    });
     this.filteredOptions = this.paisFormControl.valueChanges.pipe(
       startWith(""),
       map(value => this._filter(value))
@@ -85,14 +92,31 @@ export class InformacionPersonalComponent implements OnInit {
       map(value => this.filtrar(value, this.getMunicipios()))
     );
 
-    this.formGroup.get('tipoPersona').valueChanges.subscribe(e =>{
-      console.log(e);
-      this.formGroup.get('grado').setValue("");
-      this.formGroup.get('companiaId').setValue("");
-    });
+    this.formGroup.get("tipoPersona").valueChanges.subscribe(e => {
+      this.formGroup.get("grado").setValue("");
+      this.formGroup.get("idCompania").setValue("");
 
+      switch (e) {
+        case "civil": {
+          this.formGroup.get("grado").clearValidators();
+          this.formGroup.get("idCompania").clearValidators();
+        }
+        case "oficial": {
+          this.formGroup.get("grado").setValidators([Validators.required]);
+          this.formGroup.get("idCompania").clearValidators();
+        }
+        case "suboficial": {
+          this.formGroup.get("grado").setValidators([Validators.required]);
+          this.formGroup.get("idCompania").clearValidators();
+        }
+        case "voluntariosar": {
+          this.formGroup.get("grado").setValidators([Validators.required]);
+          this.formGroup.get("idCompania").setValidators([Validators.required]);
+        }
+      }
+    });
   }
- getPaises(): string[] {
+  getPaises(): string[] {
     return this.voluntarioService.getPaises();
   }
   private _filter(value: string): string[] {
@@ -107,8 +131,8 @@ export class InformacionPersonalComponent implements OnInit {
     return array.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  tipoPersona():string{
-    return this.formGroup.get('tipoPersona').value;
+  tipoPersona(): string {
+    return this.formGroup.get("tipoPersona").value;
   }
 
   getDepartamentos(): string[] {
@@ -136,8 +160,19 @@ export class InformacionPersonalComponent implements OnInit {
     return this.voluntarioService.getSituacionLaboral();
   }
 
-
-  getValue(){
+  getValue() {
+    let fecha = this.formGroup.get("fechaNacimiento").value;
+    if (fecha != "") {
+      this.formGroup
+        .get("fechaNacimiento")
+        .setValue(new Date(fecha).toISOString());
+    }
     this.emitter.emit(this.formGroup.value);
+  }
+
+  imageReceived($event) {
+    console.log("imagen recibida");
+    console.log($event);
+    this.formGroup.addControl("fotoURL", new FormControl($event));
   }
 }

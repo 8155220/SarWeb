@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 export class CompaniaService {
   companiasRef;
   COMPANIAS_PATH = "companias";
+  companias:any[]=[];
   constructor(
     private afs:AngularFirestore,
     private db:AngularFireDatabase,
@@ -20,9 +21,17 @@ export class CompaniaService {
     const data = this.companiasRef.snapshotChanges()
     .pipe(
       map((changes:AngularFireAction<DatabaseSnapshot<any>>[])=>
-        changes.map(c=> ({id:c.payload.key,...c.payload.val()}))
+        {
+          return changes.map(c=> ({id:c.payload.key,...c.payload.val()}))
+        }
       )
     );
     return data;
   }
+
+  addVoluntarioToCompania(idpersona:string,idcompania:string){
+    let persona= {'idpersona':idpersona};
+    this.db.object(`${this.COMPANIAS_PATH}/${idcompania}/idpersonas/${idpersona}`).set(persona);
+  }
+
 }
