@@ -1,0 +1,65 @@
+<mat-card class="informacion-personal-card" color='warn'>
+
+    <mat-card-title>Datos Fisicos </mat-card-title>
+    {{formGroup.value | json}}
+    <mat-card-content>
+        <form [formGroup]='formGroup'>
+            <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutGap='5px'>
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Estatura(Metros)</mat-label>
+                        <input matInput type="number" placeholder="Estatura(Metros)" formControlName="estatura">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Color de Piel</mat-label>
+                        <input matInput type="text" placeholder="Color de Piel" formControlName="colorPiel">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Color de Ojos</mat-label>
+                        <input matInput type="text" placeholder="Color de Ojos" formControlName="colorOjos">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cabello</mat-label>
+                        <input matInput type="text" placeholder="Cabello" formControlName="cabello">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Labios</mat-label>
+                        <input matInput type="text" placeholder="Labios" formControlName="labios">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nariz</mat-label>
+                        <input matInput type="text" placeholder="Nariz" formControlName="nariz">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Rasgos Particulares</mat-label>
+                        <input matInput type="text" placeholder="Rasgos Particulares" formControlName="rasgosParticulares">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tipo de Sangre</mat-label>
+                        <mat-select placeholder="Grupo Sanguineo" formControlName="gruposSanguineo">
+                            <mat-option *ngFor="let gs of gruposSanguineos" [value]="gs.value">
+                                {{gs.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- </div> -->
+                <!-- <div fxLayout="column" fxLayoutGap='2px'>
+
+
+
+                </div>
+
+                <div fxLayout="column" fxLayoutGap='2px'>
+
+                </div>
+                <div fxLayout="column" fxLayoutGap='2px'> 
+
+
+            </div> -->
+            </div>
+
+            <!-- <button class='submit-button' mat-flat-button color="primary" type="submit"> Guardar Cambios</button> -->
+        </form>
+    </mat-card-content>
+</mat-card>

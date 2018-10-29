@@ -1,0 +1,116 @@
+<mat-card class="informacion-personal-card">
+
+    <mat-card-title> Informacion Adicional </mat-card-title>
+
+    {{formGroup.value | json}}
+    <mat-card-content>
+        <form [formGroup]='formGroup'>
+            <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutGap='5px'>
+
+                <section>
+                    <label class="label-checkbox">Licencia Conducir    :  </label>
+                    <mat-radio-group formControlName="licenciaConducir">
+                        <mat-radio-button value="true">Si</mat-radio-button>
+                        <mat-radio-button value="false">No</mat-radio-button>
+                    </mat-radio-group>
+                </section>
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>EstadoCivil</mat-label>
+                        <mat-select placeholder="Estado Civil" formControlName="estadoCivil">
+                            <mat-option value="soltero">
+                                Soltero
+                            </mat-option>
+                            <mat-option value="casado">
+                                Casado
+                            </mat-option>
+                            <mat-option value="viudo">
+                                Viudo
+                            </mat-option>
+                            <mat-option value="divorciado">
+                                Divorciado
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>"Profesion</mat-label>
+                    <input matInput type="text" placeholder="Profesion" formControlName="profesion">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Ocupacion</mat-label>
+                    <input matInput type="text" placeholder="Ocupacion" formControlName="ocupacion">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Situacion Laboral</mat-label>
+                    <mat-select placeholder="Situacion Laboral" formControlName="situacionLaboral">
+                        <mat-option *ngFor="let situacion of getSituacionLaboral()" [value]="situacion.value">
+                            {{situacion.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Numero Carnet Militar</mat-label>
+                    <input matInput type="number" placeholder="Numero Carnet Militar" formControlName="numeroCarnetMilitar">
+                </mat-form-field>
+
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutGap='5px'>
+                <div>
+                    <div formArrayName='idiomas'>
+                        <div *ngFor='let idioma of  idiomasFormArray.controls; let i=index ' [formGroupName]='i'>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre Idioma</mat-label>
+                                <input matInput placeholder="nombreIdioma" formControlName="nombreIdioma">
+                            </mat-form-field>
+                            <a mat-raised-button color='warn' (click)='deleteIdioma(i)'>Eliminar</a>
+                        </div>
+                    </div>
+                    <a mat-raised-button color='primary' (click)='addIdioma()'> Agregar Idioma</a>
+
+                </div>
+                <div>
+                    <div formArrayName='hoobies'>
+                        <div *ngFor='let hoobie of  hoobiesFormArray.controls; let i=index ' [formGroupName]='i'>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Hoobie</mat-label>
+                                <input matInput placeholder="Pasatiempo" formControlName="nombreHoobie">
+                            </mat-form-field>
+                            <a mat-raised-button color='warn' (click)='deleteHoobie(i)'>Eliminar</a>
+                        </div>
+                    </div>
+                    <a mat-raised-button color='primary' (click)='addHoobie()'> Agregar Hoobie</a>
+                </div>
+                <div>
+                    <div formArrayName='estudiosRealizados'>
+                        <div *ngFor='let estudioRealizado of  estudioRealizadosFormArray.controls; let i=index ' [formGroupName]='i'>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre Estudio Realizado</mat-label>
+                                <input matInput placeholder="nombreEstudioRealizado" formControlName="nombreEstudioRealizado">
+                            </mat-form-field>
+                            <a mat-raised-button color='warn' (click)='deleteEstudioRealizado(i)'>Eliminar</a>
+                        </div>
+                    </div>
+                    <a mat-raised-button color='primary' (click)='addEstudioRealizado()'> Agregar Estudios Realizados</a>
+                </div>
+                <div>
+                    <div formArrayName='experienciaCampoPrimeraRespuesta'>
+                        <div *ngFor='let experienciaCampoPrimeraRespuesta of  experienciaCampoPrimeraRespuestaFormArray.controls; let i=index ' [formGroupName]='i'>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Experiencia Primera Respuesta</mat-label>
+                                <input matInput placeholder="nombreExperienciaCampoPrimeraRespuesta" formControlName="nombreExperienciaCampoPrimeraRespuesta">
+                            </mat-form-field>
+                            <a mat-raised-button color='warn' (click)='deleteExperienciaCampoPrimeraRespuesta(i)'>Eliminar</a>
+                        </div>
+                    </div>
+                    <a mat-raised-button color='primary' (click)='addExperienciaCampoPrimeraRespuesta()'> Agregar ExperienciaCampoPrimeraRespuesta</a>
+                </div>
+            </div>
+
+        </form>
+    </mat-card-content>
+</mat-card>

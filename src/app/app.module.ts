@@ -1,3 +1,4 @@
+import { CompaniaService } from './services/compania.service';
 import { AngularFireStorage, AngularFireStorageModule } from "angularfire2/storage";
 import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
@@ -35,6 +36,10 @@ import { UploadImageComponent } from "./components/shared/upload-image/upload-im
 import { UploadService } from "./services/upload/upload.service";
 
 import { NoimagePipe } from './pipes/noimage.pipe';
+import { InformacionPersonalComponent } from './components/usecases/voluntarios/componentes/informacion-personal/informacion-personal.component';
+import { EmergenciaComponent } from './components/usecases/voluntarios/componentes/emergencia/emergencia.component';
+import { DatosFisicosComponent } from './components/usecases/voluntarios/componentes/datos-fisicos/datos-fisicos.component';
+import { InformacionExtraComponent } from './components/usecases/voluntarios/componentes/informacion-extra/informacion-extra.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +61,11 @@ import { NoimagePipe } from './pipes/noimage.pipe';
     MenuListItemComponent,
     UploadImageComponent,
     //Pipes
-    NoimagePipe
+    NoimagePipe,
+    InformacionPersonalComponent,
+    EmergenciaComponent,
+    DatosFisicosComponent,
+    InformacionExtraComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +81,7 @@ import { NoimagePipe } from './pipes/noimage.pipe';
     AngularFireStorageModule
   ],
   entryComponents: [BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete],
-  providers: [VoluntarioService, UploadService, AngularFireStorage],
+  providers: [VoluntarioService, UploadService, AngularFireStorage,CompaniaService  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

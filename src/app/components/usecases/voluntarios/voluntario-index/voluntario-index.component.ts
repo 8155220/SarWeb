@@ -80,7 +80,7 @@ export class VoluntarioIndexComponent implements OnInit, OnDestroy {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     this.uiService.useCaseStateChanged.unsubscribe;
-    this.voluntarioService.getVoluntarios().unsubscribe;
+   // this.voluntarioService.getVoluntarios().unsubscribe;
     console.log("VoluntarioIndex Destroyed");
   }
 

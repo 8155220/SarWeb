@@ -138,6 +138,12 @@ export class VoluntarioService {
       this.voluntariosRef.push(voluntario);
     }
   }
+  testPushEmergencia(dato:any){
+    this.voluntariosRef.push(dato).then((item)=>{
+      console.log(item.key);
+      
+    });
+  }
   /* async addVoluntario(voluntario: VoluntarioModel) {
     if (this.dataBaseType == DatabaseType.FIRESTORE) {
       if (environment.production) {
