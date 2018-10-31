@@ -1,24 +1,35 @@
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { OnChanges } from "@angular/core";
+import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  SimpleChanges,
+  SimpleChange
+} from "@angular/core";
 
 @Component({
   selector: "app-informacion-extra",
   templateUrl: "./informacion-extra.component.html",
   styleUrls: ["./informacion-extra.component.scss"]
 })
-export class InformacionExtraComponent implements OnInit {
+export class InformacionExtraComponent implements OnInit, OnChanges {
   formGroup: FormGroup;
-  situacionLaboral:any[] = [
-    {value:"empresario",viewValue:"Empresaria con asalariadas/os"},
-    {value:"autonoma",viewValue:"Autónoma"},
-    {value:"cooperativista",viewValue:"Cooperativista"},
-    {value:"asalariado",viewValue:"Asalariada"},
-    {value:"desempleado",viewValue:"Desempleado"},
-    {value:"trabajoTiempoTotal",viewValue:"Trabajo a tiempo total"},
-    {value:"trabajoTiempoParcial",viewValue:"Trabajo a tiempo parcial"},
+  situacionLaboral: any[] = [
+    { value: "empresario", viewValue: "Empresaria con asalariadas/os" },
+    { value: "autonoma", viewValue: "Autónoma" },
+    { value: "cooperativista", viewValue: "Cooperativista" },
+    { value: "asalariado", viewValue: "Asalariada" },
+    { value: "desempleado", viewValue: "Desempleado" },
+    { value: "trabajoTiempoTotal", viewValue: "Trabajo a tiempo total" },
+    { value: "trabajoTiempoParcial", viewValue: "Trabajo a tiempo parcial" }
   ];
-  @Output('IEValue') emitter:EventEmitter<any>= new EventEmitter();
-
+  @Output("IEValue")
+  emitter: EventEmitter<any> = new EventEmitter();
+  @Input("informacionAdicional")
+  data: any;
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -33,10 +44,23 @@ export class InformacionExtraComponent implements OnInit {
       situacionLaboral: "",
       experienciaCampoPrimeraRespuesta: this.fb.array([]),
       armaEspecialidad: "",
-      numeroCarnetMilitar: "",
+      numeroCarnetMilitar: ""
     });
   }
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.data) {
+      const ipv: SimpleChange = changes.data;
+      console.log("prev value: ", ipv.previousValue);
+      console.log("got name: ", ipv.currentValue);
+      if (this.formGroup) {
+        this.formGroup.patchValue(ipv.currentValue);
+        this.addIdiomaData(ipv.currentValue.idiomas);
+        this.addHoobieData(ipv.currentValue.hoobies);
+        this.addEstudioRealizadoData(ipv.currentValue.estudiosRealizados);
+        this.addExperienciaCampoPrimeraRespuestaData(ipv.currentValue.experienciaCampoPrimeraRespuesta);
+      }
+    }
+  }
 
   get idiomasFormArray() {
     return this.formGroup.get("idiomas") as FormArray;
@@ -80,9 +104,7 @@ export class InformacionExtraComponent implements OnInit {
   }
 
   get experienciaCampoPrimeraRespuestaFormArray() {
-    return this.formGroup.get(
-      "experienciaCampoPrimeraRespuesta"
-    ) as FormArray;
+    return this.formGroup.get("experienciaCampoPrimeraRespuesta") as FormArray;
   }
 
   addExperienciaCampoPrimeraRespuesta() {
@@ -101,8 +123,47 @@ export class InformacionExtraComponent implements OnInit {
     return this.situacionLaboral;
   }
 
-  getValue(){
+  getValue() {
     this.emitter.emit(this.formGroup.value);
   }
 
+  addIdiomaData(data: any[]) {
+    data.forEach(e => {
+      const idioma = this.fb.group({
+        nombreIdioma: [e.nombreIdioma || ""]
+      });
+      this.idiomasFormArray.push(idioma);
+    });
+  }
+
+  addHoobieData(data: any[]) {
+    data.forEach(e => {
+      const hoobie = this.fb.group({
+        nombreHoobie: [e.nombreHoobie || ""]
+      });
+      this.hoobiesFormArray.push(hoobie);
+    });
+  }
+
+  addEstudioRealizadoData(data: any[]) {
+    data.forEach(e => {
+      const estudioRealizado = this.fb.group({
+        nombreEstudioRealizado: [e.nombreEstudioRealizado || ""]
+      });
+      this.estudioRealizadosFormArray.push(estudioRealizado);
+    });
+  }
+
+  addExperienciaCampoPrimeraRespuestaData(data: any[]) {
+    data.forEach(e => {
+      const experienciaCampoPrimeraRespuesta = this.fb.group({
+        nombreExperienciaCampoPrimeraRespuesta: [e.nombreExperienciaCampoPrimeraRespuesta || ""]
+      });
+      this.experienciaCampoPrimeraRespuestaFormArray.push(
+        experienciaCampoPrimeraRespuesta
+      );
+    });
+
+    
+  }
 }

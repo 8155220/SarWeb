@@ -1,12 +1,12 @@
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, SimpleChange, OnChanges } from '@angular/core';
 
 @Component({
   selector: "app-datos-fisicos",
   templateUrl: "./datos-fisicos.component.html",
   styleUrls: ["./datos-fisicos.component.scss"]
 })
-export class DatosFisicosComponent implements OnInit {
+export class DatosFisicosComponent implements OnInit,OnChanges {
   formGroup: FormGroup;
   gruposSanguineos: any[] = [
     { value: "oNegativo", viewValue: "O RH negativo" },
@@ -21,6 +21,8 @@ export class DatosFisicosComponent implements OnInit {
   @Output('DFValue') emitter:EventEmitter<any>=new EventEmitter();
   constructor(private fb: FormBuilder) {}
 
+  @Input("datosFisicos")
+  data: any;
   ngOnInit() {
     this.formGroup = this.fb.group({
       estatura: "",
@@ -36,6 +38,18 @@ export class DatosFisicosComponent implements OnInit {
       gruposSanguineo: ""
     });
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.data) {
+      const ipv: SimpleChange = changes.data;
+     /*  console.log("prev value: ", ipv.previousValue);
+      console.log("got name: ", ipv.currentValue); */
+      if (this.formGroup) {
+        this.formGroup.patchValue(ipv.currentValue);
+      }
+    }
+  }
+
 
   getValue(){
     this.emitter.emit(this.formGroup.value);

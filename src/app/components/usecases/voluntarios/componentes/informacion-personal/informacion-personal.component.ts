@@ -8,7 +8,16 @@ import {
   FormBuilder,
   Validators
 } from "@angular/forms";
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges,
+  SimpleChange,
+  SimpleChanges
+} from "@angular/core";
 import { startWith } from "rxjs/operators";
 
 @Component({
@@ -16,7 +25,7 @@ import { startWith } from "rxjs/operators";
   templateUrl: "./informacion-personal.component.html",
   styleUrls: ["./informacion-personal.component.scss"]
 })
-export class InformacionPersonalComponent implements OnInit {
+export class InformacionPersonalComponent implements OnInit, OnChanges {
   formGroup: FormGroup;
 
   paisFormControl = new FormControl("");
@@ -35,6 +44,9 @@ export class InformacionPersonalComponent implements OnInit {
 
   @Output("IPValue")
   emitter: EventEmitter<any> = new EventEmitter();
+
+  @Input("informacionPersonal")
+  informacionPersonalValue: any;
   constructor(
     private fb: FormBuilder,
     private voluntarioService: VoluntarioService,
@@ -116,6 +128,20 @@ export class InformacionPersonalComponent implements OnInit {
       }
     });
   }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.informacionPersonalValue) {
+      const ipv: SimpleChange = changes.informacionPersonalValue;
+      /* console.log("prev value: ", ipv.previousValue);
+      console.log("got name: ", ipv.currentValue); */
+      if (this.formGroup) {
+        this.formGroup.patchValue(ipv.currentValue);
+        this.imagenPerfil=ipv.currentValue.fotoURL;
+        this.formGroup.get("grado").setValue(ipv.currentValue.grado);
+        this.formGroup.get("idCompania").setValue(ipv.currentValue.idCompania);
+      }
+    }
+  }
+
   getPaises(): string[] {
     return this.voluntarioService.getPaises();
   }
@@ -131,7 +157,71 @@ export class InformacionPersonalComponent implements OnInit {
     return array.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  tipoPersona(): string {
+  set nombre(value: any) {
+    this.formGroup.get("nombre").setValue(value);
+  }
+  set apellidoPaterno(value: any) {
+    this.formGroup.get("apellidoPaterno").setValue(value);
+  }
+  set apellidoMaterno(value: any) {
+    this.formGroup.get("apellidoMaterno").setValue(value);
+  }
+  set fechaNacimiento(value: any) {
+    this.formGroup.get("fechaNacimiento").setValue(value);
+  }
+  set direccion(value: any) {
+    this.formGroup.get("direccion").setValue(value);
+  }
+  set sexo(value: any) {
+    this.formGroup.get("sexo").setValue(value);
+  }
+  set pais(value: any) {
+    this.formGroup.get("pais").setValue(value);
+  }
+  set departamento(value: any) {
+    this.formGroup.get("departamento").setValue(value);
+  }
+  set provincia(value: any) {
+    this.formGroup.get("provincia").setValue(value);
+  }
+  set capital(value: any) {
+    this.formGroup.get("capital").setValue(value);
+  }
+  set municipio(value: any) {
+    this.formGroup.get("municipio").setValue(value);
+  }
+  set timestamp(value: any) {
+    this.formGroup.get("timestamp").setValue(value);
+  }
+  set celular(value: any) {
+    this.formGroup.get("celular").setValue(value);
+  }
+  set telefonoFijo(value: any) {
+    this.formGroup.get("telefonoFijo").setValue(value);
+  }
+  set numeroCarnetIdentidad(value: any) {
+    this.formGroup.get("numeroCarnetIdentidad").setValue(value);
+  }
+  set nombreTutor(value: any) {
+    this.formGroup.get("nombreTutor").setValue(value);
+  }
+  set celularTutor(value: any) {
+    this.formGroup.get("celularTutor").setValue(value);
+  }
+  set estado(value: any) {
+    this.formGroup.get("estado").setValue(value);
+  }
+  // set tipoPersona(value:any){
+  //   this.formGroup.get('tipoPersona').setValue(value);
+  // }
+  set grado(value: any) {
+    this.formGroup.get("grado").setValue(value);
+  }
+  set idCompania(value: any) {
+    this.formGroup.get("idCompania").setValue(value);
+  }
+
+  tipoPersona(): any {
     return this.formGroup.get("tipoPersona").value;
   }
 
@@ -173,6 +263,13 @@ export class InformacionPersonalComponent implements OnInit {
   imageReceived($event) {
     console.log("imagen recibida");
     console.log($event);
-    this.formGroup.addControl("fotoURL", new FormControl($event));
+    if(this.formGroup.get('fotoURL')){
+      console.log('Entroaqui 1');
+      
+      this.formGroup.get('fotoURL').setValue($event);
+    } else {
+      console.log('Entroaqui 2');
+      this.formGroup.addControl("fotoURL", new FormControl($event));
+    }
   }
 }

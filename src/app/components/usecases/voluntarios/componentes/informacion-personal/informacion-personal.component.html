@@ -2,11 +2,11 @@
 
     <mat-card-title>Informacion Personal </mat-card-title>
 
-    <!-- {{formGroup.value | json}} -->
+    <!-- {{formGroup.value | json}} {{informacionPersonal | json}} -->
     <mat-card-content>
         <form [formGroup]='formGroup' (ngSubmit)="submitHandler()" *ngIf="!success">
             <div fxLayout="row" fxLayoutAlign="center center">
-                <app-upload-image (imageBase64)=imageReceived($event)></app-upload-image>
+                <app-upload-image [fotoURL]="imagenPerfil" (imageBase64)=imageReceived($event)></app-upload-image>
             </div>
             <div fxLayout="row" fxLayout.lt-sm='column' fxLayoutGap='2px'>
                 <div>

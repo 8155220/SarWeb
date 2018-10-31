@@ -1,4 +1,4 @@
-import { Observable, Subscriber, Subject,from  } from "rxjs";
+import { Observable, Subscriber, Subject, from } from "rxjs";
 import { Injectable } from "@angular/core";
 import {
   paisesArray,
@@ -18,7 +18,7 @@ import { environment } from "../../environments/environment";
 import { VoluntarioModel } from "../models/voluntario/voluntario.model";
 import { AngularFireDatabase } from "angularfire2/database";
 import { AngularFireStorage } from "angularfire2/storage";
-import { CompaniaService } from './compania.service';
+import { CompaniaService } from "./compania.service";
 
 enum DatabaseType {
   FIRESTORE,
@@ -52,7 +52,7 @@ export class VoluntarioService {
   DATOS_FISICOS_PATH = "datosFisicos";
   COMPANIAS_PATH = "companias";
   constructor(
-    private companiaService:CompaniaService,
+    private companiaService: CompaniaService,
     private afs: AngularFirestore,
     private db: AngularFireDatabase,
     private storage: AngularFireStorage
@@ -141,9 +141,9 @@ export class VoluntarioService {
     familiares: any,
     informacionAdicional: any
   ) {
-  if ( voluntario.fotoURL && voluntario.fotoURL != "") {
+    if (voluntario.fotoURL && voluntario.fotoURL != "") {
       console.log(voluntario);
-      
+
       const filePath = "/usuarios/dsds454" + voluntario.numeroCarnetIdentidad;
       const fileRef = this.storage.ref(filePath);
       const task = fileRef.putString(voluntario.fotoURL, "data_url");
@@ -152,30 +152,42 @@ export class VoluntarioService {
           fileRef.getDownloadURL().subscribe(item => {
             voluntario.fotoURL = item;
             this.voluntariosRef.push(voluntario).then(item => {
-              this.db.object(`${this.DATOS_FISICOS_PATH}/${item.key}`).set(datosFisicos);
-              this.db.object(`${this.FAMILIARES_PATH}/${item.key}`).set(familiares);
-              this.db.object(`${this.INFORMACION_ADICIONAL_PATH}/${item.key}`).set(informacionAdicional);
-              if(voluntario.tipoPersona='voluntariosar'){
-                this.companiaService.addVoluntarioToCompania(item.key,voluntario.idcompania)
+              this.db
+                .object(`${this.DATOS_FISICOS_PATH}/${item.key}`)
+                .set(datosFisicos);
+              this.db
+                .object(`${this.FAMILIARES_PATH}/${item.key}`)
+                .set(familiares);
+              this.db
+                .object(`${this.INFORMACION_ADICIONAL_PATH}/${item.key}`)
+                .set(informacionAdicional);
+              if ((voluntario.tipoPersona = "voluntariosar")) {
+                this.companiaService.addVoluntarioCompania(
+                  item.key,
+                  voluntario.idCompania
+                );
               }
-              //esto deberia llamar a el servicio Compania
-
             });
           });
         })
       );
-   } else {
-
+    } else {
       let promise = this.voluntariosRef.push(voluntario).then(item => {
-        this.db.object(`${this.DATOS_FISICOS_PATH}/${item.key}`).set(datosFisicos);
+        this.db
+          .object(`${this.DATOS_FISICOS_PATH}/${item.key}`)
+          .set(datosFisicos);
         this.db.object(`${this.FAMILIARES_PATH}/${item.key}`).set(familiares);
-        this.db.object(`${this.INFORMACION_ADICIONAL_PATH}/${item.key}`).set(informacionAdicional);
-        if(voluntario.tipoPersona='voluntariosar'){
-          this.companiaService.addVoluntarioToCompania(item.key,voluntario.idCompania)
+        this.db
+          .object(`${this.INFORMACION_ADICIONAL_PATH}/${item.key}`)
+          .set(informacionAdicional);
+        if ((voluntario.tipoPersona = "voluntariosar")) {
+          this.companiaService.addVoluntarioCompania(
+            item.key,
+            voluntario.idCompania
+          );
         }
       });
       return from(promise);
-
     }
   }
   testPushEmergencia(dato: any) {
@@ -223,7 +235,62 @@ export class VoluntarioService {
 
     }
   }*/
-  updateVoluntario(voluntario: VoluntarioModel) {
+  updateVoluntario(
+    id: string,
+    voluntario: any,
+    datosFisicos: any,
+    familiares: any,
+    informacionAdicional: any,
+    informacionPersonalPrevValue: any
+  ) {
+    if (voluntario.fotoURL && voluntario.fotoURL != "") {
+      const filePath = "/usuarios/gy45hgh" + voluntario.numeroCarnetIdentidad;
+      const fileRef = this.storage.ref(filePath);
+      const task = fileRef.putString(voluntario.fotoURL, "data_url");
+      return task.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe(item => {
+            voluntario.fotoURL = item;
+            this.voluntariosRef.update(id, voluntario);
+            this.db
+              .object(`${this.DATOS_FISICOS_PATH}/${id}`)
+              .set(datosFisicos);
+            this.db.object(`${this.FAMILIARES_PATH}/${id}`).set(familiares);
+            this.db
+              .object(`${this.INFORMACION_ADICIONAL_PATH}/${id}`)
+              .set(informacionAdicional);
+            if ((voluntario.tipoPersona = "voluntariosar")) {
+              this.companiaService.updateVoluntarioCompania(
+                id,
+                voluntario.idCompania,
+                informacionPersonalPrevValue.idCompania
+              );
+            }
+            //esto deberia llamar a el servicio Compania
+
+            //
+          });
+        })
+      );
+    } else {
+
+      let promise = this.voluntariosRef.update(id, voluntario);
+      this.db.object(`${this.DATOS_FISICOS_PATH}/${id}`).set(datosFisicos);
+      this.db.object(`${this.FAMILIARES_PATH}/${id}`).set(familiares);
+      this.db
+        .object(`${this.INFORMACION_ADICIONAL_PATH}/${id}`)
+        .set(informacionAdicional);
+      if ((voluntario.tipoPersona = "voluntariosar")) {
+        this.companiaService.updateVoluntarioCompania(
+          id,
+          voluntario.idCompania,
+          informacionPersonalPrevValue.idCompania
+        );
+      }
+      return from(promise);
+    }
+  }
+  /* updateVoluntario(voluntario: VoluntarioModel) {
     if (voluntario.fotoURL != "") {
       const filePath = "/usuarios/gy45hgh" + voluntario.numeroCarnetIdentidad;
       const fileRef = this.storage.ref(filePath);
@@ -239,7 +306,7 @@ export class VoluntarioService {
     } else {
       this.voluntariosRef.update(voluntario.id, voluntario);
     }
-  }
+  } */
   updateVoluntarioSinImagen(voluntario: VoluntarioModel) {
     this.voluntariosRef.update(voluntario.id, voluntario);
   }
@@ -366,7 +433,27 @@ export class VoluntarioService {
     return situacionLaboral;
   }
 
-  // getGrados():any[]{
+  getInformacionPersonal(idpersona: string) {
+    return this.db
+      .object(`${this.VOLUNTARIOS_PATH}/${idpersona}`)
+      .valueChanges();
+  }
 
-  // }
+
+  getDatosFisicos(idpersona:string){
+    return this.db
+      .object(`${this.DATOS_FISICOS_PATH}/${idpersona}`)
+      .valueChanges();
+  }
+  getFamiliares(idpersona:string){
+    return this.db
+    .object(`${this.FAMILIARES_PATH}/${idpersona}`)
+    .valueChanges();
+  }
+  getInformacionAdicional(idpersona:string){
+    return this.db
+    .object(`${this.INFORMACION_ADICIONAL_PATH}/${idpersona}`)
+    .valueChanges();
+  }
+
 }

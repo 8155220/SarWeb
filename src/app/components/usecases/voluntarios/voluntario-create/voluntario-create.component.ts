@@ -59,54 +59,7 @@ export class VoluntarioCreateComponent implements OnInit, AfterViewInit {
   }
 
   submitHandler() {
-    //this.loading = true;
-    /*if(this.voluntarioForm.invalid){
-      this.openSnackBar("Complete los Campos requeridos antes de continuar", "ocultar");
-      return;
-    }
-
-    const formValue = this.voluntarioForm.value as VoluntarioModel;
-
-    let dateString = formValue.fechaNacimiento;
-    formValue.fechaNacimiento = new Date(formValue.fechaNacimiento).toISOString();
-    //formValue.fechaNacimiento = 
-    console.log('fechaNacimineto:'+ formValue.fechaNacimiento);
-    // convertir a "2018-10-05T04:00:00.000Z"
-   //console.log(formValue.fechaNacimiento);
   
-    formValue.fotoURL = this.imagenPerfil;
-
-    if (this.imagenPerfil != "") {
-      this.voluntarioService.addVoluntario(formValue).subscribe(
-        e => {
-          console.log(e);
-          if (e.bytesTransferred == e.totalBytes) {
-            this.loading = false;
-            this.openSnackBar("Registrado Exitosamente", "ocultar");
-            this.router.navigate(["/voluntarios/index"]);
-          }
-        },
-        e => {
-          console.log(e);
-          this.loading = false;
-          this.openSnackBar("Ocurrio un error intente mas tarde", "ocultar");
-        }
-      );
-    } else {
-      this.voluntarioService.addVoluntario(formValue);
-      this.loading = false;
-      this.openSnackBar("Registrado Exitosamente", "ocultar");
-      this.router.navigate(["/voluntarios/index"]);
-    }*/
-    /*if (await this.voluntarioService.addVoluntario(formValue)) {
-      this.success = true;
-      this.openSnackBar("Registrado Exitosamente", "ocultar");
-      this.router.navigate(["/voluntarios/index"]);
-    } else {
-      this.success = false;
-      this.openSnackBar("Ocurrio un error...", "ocultar");
-      this.router.navigate(["/voluntarios/index"]);
-    }*/
   }
 
   openSnackBar(message: string, action: string) {
