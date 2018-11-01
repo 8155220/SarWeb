@@ -18,7 +18,7 @@ import {
 import { MatSnackBar } from "@angular/material";
 import { Router, ActivatedRoute } from "@angular/router";
 import { EmergenciaComponent } from "../componentes/emergencia/emergencia.component";
-import { LoginComponent } from '../../../auth/login/login.component';
+import { LoginComponent } from "../../../auth/login/login.component";
 
 @Component({
   selector: "app-voluntario-update",
@@ -26,7 +26,7 @@ import { LoginComponent } from '../../../auth/login/login.component';
   styleUrls: ["./voluntario-update.component.css"]
 })
 export class VoluntarioUpdateComponent implements OnInit {
-  id:string="";
+  id: string = "";
   loading = false;
   imagenPerfil = "";
   @ViewChild("informacionPersonal")
@@ -43,10 +43,10 @@ export class VoluntarioUpdateComponent implements OnInit {
   familiaresValue: any;
   informacionAdicionalValue: any;
 
-  informacionPersonalPrevValue:any;
-  datosFisicosPrevValue:any;
-  familiaresPrevValue:any;
-  informacionAdicionalPrevValue:any;
+  informacionPersonalPrevValue: any;
+  datosFisicosPrevValue: any;
+  familiaresPrevValue: any;
+  informacionAdicionalPrevValue: any;
 
   constructor(
     private fb: FormBuilder,
@@ -61,19 +61,17 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.uiService.useCaseStateChanged.next("Editar Persona");
     this.activatedRoute.params.subscribe(e => {
       this.id = e["id"];
-      this.voluntarioService
-        .getInformacionPersonal(this.id)
-        .subscribe(e => {
-          this.informacionPersonalPrevValue=e;
-        });
-      this.voluntarioService.getDatosFisicos(this.id).subscribe(e=>{
-        this.datosFisicosPrevValue=e;
+      this.voluntarioService.getInformacionPersonal(this.id).subscribe(e => {
+        this.informacionPersonalPrevValue = e;
       });
-      this.voluntarioService.getFamiliares(this.id).subscribe(e=>{
-        this.familiaresPrevValue=e;
+      this.voluntarioService.getDatosFisicos(this.id).subscribe(e => {
+        this.datosFisicosPrevValue = e;
       });
-      this.voluntarioService.getInformacionAdicional(this.id).subscribe(e=>{
-        this.informacionAdicionalPrevValue=e;
+      this.voluntarioService.getFamiliares(this.id).subscribe(e => {
+        this.familiaresPrevValue = e;
+      });
+      this.voluntarioService.getInformacionAdicional(this.id).subscribe(e => {
+        this.informacionAdicionalPrevValue = e;
       });
     });
   }
@@ -109,8 +107,7 @@ export class VoluntarioUpdateComponent implements OnInit {
   IEValue($event) {
     console.log($event);
     this.informacionAdicionalValue = $event;
-    console.log('noProblem');
-    
+    console.log("noProblem");
   }
 
   guardar() {
@@ -119,8 +116,10 @@ export class VoluntarioUpdateComponent implements OnInit {
     this.emergencia.getValue();
     this.informacionExtra.getValue();
 
-
     if (!this.informacionPersonal.formGroup.valid) {
+      console.log("FOrmGroup");
+
+      console.log(this.informacionPersonal.formGroup);
       this.openSnackBar("Complete Informacion Personal", "ocultar");
       return;
     } else {
@@ -155,16 +154,15 @@ export class VoluntarioUpdateComponent implements OnInit {
             }
           );
       } else {
-        
         this.voluntarioService
-        .updateVoluntario(
-          this.id,
-          this.informacionPersonalValue,
-          this.datosFisicosValue,
-          this.familiaresValue,
-          this.informacionAdicionalValue,
-          this.informacionPersonalPrevValue
-        )
+          .updateVoluntario(
+            this.id,
+            this.informacionPersonalValue,
+            this.datosFisicosValue,
+            this.familiaresValue,
+            this.informacionAdicionalValue,
+            this.informacionPersonalPrevValue
+          )
           .subscribe(
             (e: any) => {
               this.loading = false;

@@ -104,18 +104,16 @@ export class VoluntarioService {
   }
 
   deleteVoluntario(id: string) {
-    if (this.dataBaseType == DatabaseType.FIRESTORE) {
-      if (environment.production) {
-        this.afs
-          .collection("voluntarios")
-          .doc(id)
-          .delete();
-      } else {
-        this.deleteVoluntarioLocal(id);
+    this.getVoluntario(id).subscribe((e:any)=> {
+      this.db.object(`${this.DATOS_FISICOS_PATH}/${id}`).remove();
+      this.db.object(`${this.FAMILIARES_PATH}/${id}`).remove();
+      this.db.object(`${this.INFORMACION_ADICIONAL_PATH}/${id}`).remove();
+      if ((e.tipoPersona = "voluntariosar")) {
+        this.companiaService.deleteVoluntarioCompania(id, e.idCompania);
       }
-    } else if (this.dataBaseType == DatabaseType.REALTIMEDATABASE) {
-      this.voluntariosRef.remove(id);
-    }
+      this.db.object(`${this.VOLUNTARIOS_PATH}/${id}`).remove();
+    });
+
   }
   deleteVoluntarioLocal(id: string) {
     let voluntarios: Array<VoluntarioModel> = JSON.parse(
@@ -273,7 +271,6 @@ export class VoluntarioService {
         })
       );
     } else {
-
       let promise = this.voluntariosRef.update(id, voluntario);
       this.db.object(`${this.DATOS_FISICOS_PATH}/${id}`).set(datosFisicos);
       this.db.object(`${this.FAMILIARES_PATH}/${id}`).set(familiares);
@@ -439,21 +436,19 @@ export class VoluntarioService {
       .valueChanges();
   }
 
-
-  getDatosFisicos(idpersona:string){
+  getDatosFisicos(idpersona: string) {
     return this.db
       .object(`${this.DATOS_FISICOS_PATH}/${idpersona}`)
       .valueChanges();
   }
-  getFamiliares(idpersona:string){
+  getFamiliares(idpersona: string) {
     return this.db
-    .object(`${this.FAMILIARES_PATH}/${idpersona}`)
-    .valueChanges();
+      .object(`${this.FAMILIARES_PATH}/${idpersona}`)
+      .valueChanges();
   }
-  getInformacionAdicional(idpersona:string){
+  getInformacionAdicional(idpersona: string) {
     return this.db
-    .object(`${this.INFORMACION_ADICIONAL_PATH}/${idpersona}`)
-    .valueChanges();
+      .object(`${this.INFORMACION_ADICIONAL_PATH}/${idpersona}`)
+      .valueChanges();
   }
-
 }

@@ -97,6 +97,10 @@ export class VoluntarioCreateComponent implements OnInit, AfterViewInit {
     
 
     if (!this.informacionPersonal.formGroup.valid) {
+      console.log('FOrmGroup');
+      
+      console.log(this.informacionPersonal.formGroup);
+      
       this.openSnackBar("Complete Informacion Personal", "ocultar");
       return;
     } else {

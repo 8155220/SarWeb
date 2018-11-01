@@ -108,22 +108,38 @@ export class InformacionPersonalComponent implements OnInit, OnChanges {
       this.formGroup.get("grado").setValue("");
       this.formGroup.get("idCompania").setValue("");
 
+      console.log("subscribeTP :"+e);
+      
       switch (e) {
         case "civil": {
+          console.log('Entro a civil: con Valor' +e);
           this.formGroup.get("grado").clearValidators();
-          this.formGroup.get("idCompania").clearValidators();
+          this.formGroup.get("grado").updateValueAndValidity();
+          this.formGroup.get("idCompania").clearValidators(); 
+          this.formGroup.get("idCompania").updateValueAndValidity();
+          console.log('validator Grado :');
+          console.log(this.formGroup.get('grado'));
+          break;
         }
         case "oficial": {
-          this.formGroup.get("grado").setValidators([Validators.required]);
-          this.formGroup.get("idCompania").clearValidators();
+          console.log('Entro a Oficial : con Valor' +e);
+           this.formGroup.get("grado").setValidators([Validators.required]);
+          this.formGroup.get("idCompania").clearValidators(); 
+          this.formGroup.get("idCompania").updateValueAndValidity(); 
+          break;
         }
         case "suboficial": {
-          this.formGroup.get("grado").setValidators([Validators.required]);
-          this.formGroup.get("idCompania").clearValidators();
+          console.log('Entro a suboficial : con Valor'  +e);
+           this.formGroup.get("grado").setValidators([Validators.required]);
+          this.formGroup.get("idCompania").clearValidators(); 
+          this.formGroup.get("idCompania").updateValueAndValidity(); 
+          break;
         }
         case "voluntariosar": {
-          this.formGroup.get("grado").setValidators([Validators.required]);
-          this.formGroup.get("idCompania").setValidators([Validators.required]);
+          console.log('Entro a voluntariosar  : con Valor'  +e);
+           this.formGroup.get("grado").setValidators([Validators.required]);
+          this.formGroup.get("idCompania").setValidators([Validators.required]); 
+          break;
         }
       }
     });
@@ -261,14 +277,10 @@ export class InformacionPersonalComponent implements OnInit, OnChanges {
   }
 
   imageReceived($event) {
-    console.log("imagen recibida");
-    console.log($event);
     if(this.formGroup.get('fotoURL')){
-      console.log('Entroaqui 1');
       
       this.formGroup.get('fotoURL').setValue($event);
     } else {
-      console.log('Entroaqui 2');
       this.formGroup.addControl("fotoURL", new FormControl($event));
     }
   }

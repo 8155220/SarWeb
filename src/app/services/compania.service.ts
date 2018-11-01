@@ -40,11 +40,8 @@ export class CompaniaService {
     idCompaniaPre
   ) {
     let persona = { idpersona: idPersona };
-    console.log('Current :'+ idCompaniaCurrent);
-    console.log('prev :'+idCompaniaPre);
     
     if(idCompaniaCurrent!=idCompaniaPre){
-      console.log('Entra');
       this.db
       .object(
         `${this.COMPANIAS_PATH}/${idCompaniaPre}/idpersonas/${idPersona}`
@@ -56,5 +53,12 @@ export class CompaniaService {
       )
       .set(persona);
     }
+  }
+  deleteVoluntarioCompania(idPersona: string,idCompania:string){
+    this.db
+    .object(
+      `${this.COMPANIAS_PATH}/${idCompania}/idpersonas/${idPersona}`
+    )
+    .remove();
   }
 }
