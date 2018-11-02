@@ -1,0 +1,71 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+
+    </mat-spinner>
+</div>
+
+<div class="container">
+    <mat-toolbar fxFlexAlign="center">
+
+
+        <span>Gestionar Especialidad</span>
+
+    </mat-toolbar>
+</div>
+
+
+
+<div fxLayout="row" fxFlexFill fxLayoutAlign="center start" class="mat-elevation-z8" *ngIf="!loading">
+    <!-- <div class="mat-elevation-z8"> -->
+
+    <!--  <div fxLayout="column">-->
+
+    <mat-card>
+        <mat-card-title>
+            Especialidades
+        </mat-card-title>
+        <mat-card-header>
+
+            <button mat-raised-button routerLink="/especialidad/create">  <mat-icon>add</mat-icon>Crear
+             </button>
+
+        </mat-card-header>
+        <mat-card-content>
+            <table mat-table [dataSource]="especialidades">
+
+                <ng-container matColumnDef="imagenURL">
+                    <th mat-header-cell *matHeaderCellDef> Imagen </th>
+                    <td mat-cell *matCellDef="let element">
+                        <img mat-card-avatar [src]="element.imagenURL | noimage" alt="">
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                </ng-container>
+
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="descripcion">
+                    <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+                    <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+                </ng-container>
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-icon-button (click)="onEdit(row)"> <mat-icon>navigate_next</mat-icon></button>
+                        <button mat-icon-button> <mat-icon>launch</mat-icon></button>
+                        <button mat-icon-button (click)="onDelete(row)" color="warn"> <mat-icon>delete_outline</mat-icon></button>
+                    </mat-cell>
+
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+
+</div>

@@ -1,3 +1,5 @@
+import { MatConfirmDialogComponent } from './components/shared/mat-confirm-dialog/mat-confirm-dialog.component';
+import { EspecialidadService } from './services/especialidad.service';
 import { CompaniaService } from './services/compania.service';
 import { AngularFireStorage, AngularFireStorageModule } from "angularfire2/storage";
 import { environment } from "../environments/environment";
@@ -40,6 +42,10 @@ import { InformacionPersonalComponent } from './components/usecases/voluntarios/
 import { EmergenciaComponent } from './components/usecases/voluntarios/componentes/emergencia/emergencia.component';
 import { DatosFisicosComponent } from './components/usecases/voluntarios/componentes/datos-fisicos/datos-fisicos.component';
 import { InformacionExtraComponent } from './components/usecases/voluntarios/componentes/informacion-extra/informacion-extra.component';
+import { EspecialidadIndexComponent } from './components/usecases/especialidad/especialidad-index/especialidad-index.component';
+import { EspecialidadCreateComponent } from './components/usecases/especialidad/especialidad-create/especialidad-create.component';
+import { EspecialidadEditComponent } from './components/usecases/especialidad/especialidad-edit/especialidad-edit.component';
+
 
 @NgModule({
   declarations: [
@@ -66,6 +72,10 @@ import { InformacionExtraComponent } from './components/usecases/voluntarios/com
     EmergenciaComponent,
     DatosFisicosComponent,
     InformacionExtraComponent,
+    EspecialidadIndexComponent,
+    EspecialidadCreateComponent,
+    MatConfirmDialogComponent,
+    EspecialidadEditComponent
   ],
   imports: [
     BrowserModule,
@@ -80,8 +90,8 @@ import { InformacionExtraComponent } from './components/usecases/voluntarios/com
     AngularFireDatabaseModule,
     AngularFireStorageModule
   ],
-  entryComponents: [BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete],
-  providers: [VoluntarioService, UploadService, AngularFireStorage,CompaniaService  ],
+  entryComponents: [BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete,MatConfirmDialogComponent],
+  providers: [VoluntarioService, UploadService, AngularFireStorage,CompaniaService,EspecialidadService  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

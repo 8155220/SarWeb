@@ -1,0 +1,37 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+
+    </mat-spinner>
+</div>
+
+
+<div class="container" fxFlexFill fxLayout='col' fxLayoutAlign="center center" *ngIf='!loading'>
+
+    <mat-card>
+        <mat-card-title>
+            Agregar Especialidad
+        </mat-card-title>
+
+        <app-upload-image (imageBase64)='imageReceived($event)'></app-upload-image>
+        <form [formGroup]="formGroup" (ngSubmit)='onSubmit()'>
+            <mat-card-content>
+                <div fxLayout="column">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre Especialidad</mat-label>
+                        <input matInput placeholder="apellido Paterno" formControlName="nombre">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Descripcion Especialidad</mat-label>
+                        <input matInput placeholder="apellido Paterno" formControlName="descripcion">
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <div fxLayoutAlign="space-between center">
+                    <button mat-flat-button color='primary' type="submit">Guardar</button>
+                    <button mat-flat-button color='warn' routerLink='/especialidad/index'>Cancelar</button>
+                </div>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>

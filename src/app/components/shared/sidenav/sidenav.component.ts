@@ -22,8 +22,9 @@ export class SidenavComponent implements AfterViewInit {
           route: '/voluntarios/index',
         },
         {
-          displayName: 'Sessions',
+          displayName: 'Gestionar Especialidad',
           iconName: 'speaker_notes',
+          route: '/especialidad/index',
         },
         {
           displayName: 'Feedback',
