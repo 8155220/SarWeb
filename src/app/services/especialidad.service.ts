@@ -10,7 +10,8 @@ import { AngularFireStorage } from 'angularfire2/storage';
 export class EspecialidadService {
 
   especialidadesRef;
-  ESPECIALIDADES_PATH='especialidades'
+  ESPECIALIDADES_PATH='especialidades';
+  VOLUNTARIO_ESPECIALIDAD_PATH='voluntarioEspecialidad';
   constructor(private db: AngularFireDatabase,
     private storage: AngularFireStorage) { 
       this.especialidadesRef = this.db.list<any>(this.ESPECIALIDADES_PATH);
@@ -66,5 +67,20 @@ export class EspecialidadService {
       return from(this.db.object(`${this.ESPECIALIDADES_PATH}/${especialidad.id}`).update(especialidad));
     }
   }
+
+  addEspecialidadVoluntario(especialidad:any,persona:any,voluntarioEspecialidad:any){ //AGREGAR PERSONA 
+    this.db.object(`${this.ESPECIALIDADES_PATH}/${especialidad.id}/idpersonas/${persona.id}`).set({idpersona:persona.id});
+    return from(this.db.object(`${this.VOLUNTARIO_ESPECIALIDAD_PATH}/${persona.id}/${especialidad.id}`).set(voluntarioEspecialidad));
+  }
+
+  checkEspecialidadVoluntario(idvoluntario:string,idespecialidad:string){
+    return this.db.object(`${this.VOLUNTARIO_ESPECIALIDAD_PATH}/${idvoluntario}/${idespecialidad}`).valueChanges();
+  }
+
+  deleteVoluntariofromEspecialidad(idvoluntario:string,idespecialidad:string){
+    this.db.object(`${this.ESPECIALIDADES_PATH}/${idespecialidad}/idpersonas/${idvoluntario}`).remove();
+    return from(this.db.object(`${this.VOLUNTARIO_ESPECIALIDAD_PATH}/${idvoluntario}/${idespecialidad}`).remove());
+  }
+
 
 }

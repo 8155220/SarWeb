@@ -75,7 +75,8 @@ export class InformacionPersonalComponent implements OnInit, OnChanges {
       estado: ["activo", [Validators.required]],
       tipoPersona: ["civil", [Validators.required]],
       grado: [""],
-      idCompania: [""]
+      idCompania: [""],
+      nombreCompleto:[""]
       // grado: "",
     });
 
@@ -182,11 +183,31 @@ export class InformacionPersonalComponent implements OnInit, OnChanges {
   set apellidoMaterno(value: any) {
     this.formGroup.get("apellidoMaterno").setValue(value);
   }
+  set nombreCompleto(value: any) {
+    this.formGroup.get("nombreCompleto").setValue(value);
+  }
+
+
+  get nombreCompleto() {
+    return this.formGroup.get("nombreCompleto").value;
+  }
+  get nombre() {
+    return this.formGroup.get("nombre").value;
+  }
+  get apellidoPaterno() {
+    return this.formGroup.get("apellidoPaterno").value;
+  }
+  get apellidoMaterno() {
+    return this.formGroup.get("apellidoMaterno").value;
+  }
   set fechaNacimiento(value: any) {
     this.formGroup.get("fechaNacimiento").setValue(value);
   }
   set direccion(value: any) {
     this.formGroup.get("direccion").setValue(value);
+  }
+  get direccion() {
+    return this.formGroup.get("direccion").value;
   }
   set sexo(value: any) {
     this.formGroup.get("sexo").setValue(value);
@@ -273,6 +294,12 @@ export class InformacionPersonalComponent implements OnInit, OnChanges {
         .get("fechaNacimiento")
         .setValue(new Date(fecha).toISOString());
     }
+    this.nombre=this.nombre.toLowerCase();
+    this.apellidoPaterno=this.apellidoPaterno.toLowerCase();
+    this.apellidoMaterno=this.apellidoMaterno.toLowerCase();
+    this.nombre=this.nombre.toLowerCase();
+    this.direccion=this.direccion.toLowerCase();
+    this.nombreCompleto=this.nombre + " "+this.apellidoPaterno+" "+this.apellidoMaterno;
     this.emitter.emit(this.formGroup.value);
   }
 

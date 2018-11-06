@@ -45,6 +45,13 @@ import { InformacionExtraComponent } from './components/usecases/voluntarios/com
 import { EspecialidadIndexComponent } from './components/usecases/especialidad/especialidad-index/especialidad-index.component';
 import { EspecialidadCreateComponent } from './components/usecases/especialidad/especialidad-create/especialidad-create.component';
 import { EspecialidadEditComponent } from './components/usecases/especialidad/especialidad-edit/especialidad-edit.component';
+import { EspecialidadDetailComponent } from './components/usecases/especialidad/especialidad-detail/especialidad-detail.component';
+import { SearchPersonaComponent } from './components/shared/search-persona/search-persona.component';
+import { AgregarEspecialidadVoluntarioComponent } from './components/shared/agregar-especialidad-voluntario/agregar-especialidad-voluntario.component';
+import { CompaniaIndexComponent } from './components/usecases/compania/compania-index/compania-index.component';
+import { CompaniaCreateComponent } from './components/usecases/compania/compania-create/compania-create.component';
+import { CompaniaEditComponent } from './components/usecases/compania/compania-edit/compania-edit.component';
+import { CompaniaDetailComponent } from './components/usecases/compania/compania-detail/compania-detail.component';
 
 
 @NgModule({
@@ -75,7 +82,14 @@ import { EspecialidadEditComponent } from './components/usecases/especialidad/es
     EspecialidadIndexComponent,
     EspecialidadCreateComponent,
     MatConfirmDialogComponent,
-    EspecialidadEditComponent
+    EspecialidadEditComponent,
+    EspecialidadDetailComponent,
+    SearchPersonaComponent,
+    AgregarEspecialidadVoluntarioComponent,
+    CompaniaIndexComponent,
+    CompaniaCreateComponent,
+    CompaniaEditComponent,
+    CompaniaDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -90,8 +104,8 @@ import { EspecialidadEditComponent } from './components/usecases/especialidad/es
     AngularFireDatabaseModule,
     AngularFireStorageModule
   ],
-  entryComponents: [BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete,MatConfirmDialogComponent],
-  providers: [VoluntarioService, UploadService, AngularFireStorage,CompaniaService,EspecialidadService  ],
+  entryComponents: [BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete,MatConfirmDialogComponent,SearchPersonaComponent,AgregarEspecialidadVoluntarioComponent],
+  providers: [VoluntarioService, UploadService, AngularFireStorage,CompaniaService,EspecialidadService ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

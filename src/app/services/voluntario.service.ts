@@ -100,7 +100,11 @@ export class VoluntarioService {
   }
 
   getVoluntario(id: string) {
-    return this.db.object(`${this.VOLUNTARIOS_PATH}/${id}`).valueChanges();
+    return this.db.object(`${this.VOLUNTARIOS_PATH}/${id}`).snapshotChanges()
+    .pipe(
+      map(c=> ({ id: c.payload.key, ...c.payload.val() })
+      )
+    );
   }
 
   deleteVoluntario(id: string) {
@@ -450,5 +454,15 @@ export class VoluntarioService {
     return this.db
       .object(`${this.INFORMACION_ADICIONAL_PATH}/${idpersona}`)
       .valueChanges();
+  }
+
+  getPersonas(start,end){
+    return this.db.list(this.VOLUNTARIOS_PATH,ref=> ref.orderByChild('nombreCompleto').startAt(start).endAt(end).limitToFirst(10))
+    .snapshotChanges()
+        .pipe(
+          map(changes =>
+            changes.map(c => ({ id: c.payload.key, ...c.payload.val() }))
+          )
+        );
   }
 }

@@ -27,9 +27,9 @@ export class SidenavComponent implements AfterViewInit {
           route: '/especialidad/index',
         },
         {
-          displayName: 'Feedback',
+          displayName: 'Gestionar Companias',
           iconName: 'feedback',
-          route: 'feedback'
+          route: '/compania/index'
         }
       ]
     },

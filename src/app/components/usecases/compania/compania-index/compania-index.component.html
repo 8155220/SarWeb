@@ -9,29 +9,26 @@
     <mat-toolbar fxFlexAlign="center">
 
 
-        <span>Gestionar Especialidad</span>
+        <span>Gestionar Compania</span>
 
     </mat-toolbar>
 </div>
 
 
 <div fxLayout="row" fxFlexFill fxLayoutAlign="center start" class="mat-elevation-z8" *ngIf="!loading">
-    <!-- <div class="mat-elevation-z8"> -->
-
-    <!--  <div fxLayout="column">-->
 
     <mat-card>
         <mat-card-title>
-            Especialidades
+            Companias
         </mat-card-title>
         <mat-card-header>
 
-            <button mat-raised-button routerLink="/especialidad/create">  <mat-icon>add</mat-icon>Crear
-             </button>
+            <button mat-raised-button routerLink="/compania/create">  <mat-icon>add</mat-icon>Crear
+           </button>
 
         </mat-card-header>
         <mat-card-content>
-            <table mat-table [dataSource]="especialidades">
+            <table mat-table [dataSource]="companias">
 
                 <ng-container matColumnDef="imagenURL">
                     <th mat-header-cell *matHeaderCellDef> Imagen </th>

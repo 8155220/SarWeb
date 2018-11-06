@@ -1,25 +1,26 @@
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from "@angular/material";
 import { Validators } from "@angular/forms";
 import { FormControl } from "@angular/forms";
 import { FormBuilder } from "@angular/forms";
-import { EspecialidadService } from "./../../../../services/especialidad.service";
+import { CompaniaService } from "./../../../../services/compania.service";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
+import { UiService } from "../../../../services/ui.service";
 
 @Component({
-  selector: "app-especialidad-create",
-  templateUrl: "./especialidad-create.component.html",
-  styleUrls: ["./especialidad-create.component.scss"]
+  selector: "app-compania-create",
+  templateUrl: "./compania-create.component.html",
+  styleUrls: ["./compania-create.component.scss"]
 })
-export class EspecialidadCreateComponent implements OnInit {
+export class CompaniaCreateComponent implements OnInit {
   formGroup: FormGroup;
   loading = false;
   constructor(
-    private especilidadService: EspecialidadService,
+    private companiaService: CompaniaService,
     private fb: FormBuilder,
-    public snackBar: MatSnackBar,
-    private router:Router
+    public uiService: UiService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -39,53 +40,39 @@ export class EspecialidadCreateComponent implements OnInit {
   }
   onSubmit() {
     if (this.formGroup.invalid) {
-      this.openSnackBar('Complete los campos requeridos','ocultar');
+      this.uiService.success("Complete los campos requeridos");
       return;
     }
-    this.loading=true;
-    if(this.formGroup.get("imagenURL").value!='')
-    {
-      this.especilidadService.addEspecialidad(this.formGroup.value).subscribe(
+    this.loading = true;
+    if (this.formGroup.get("imagenURL").value != "") {
+      this.companiaService.addCompania(this.formGroup.value).subscribe(
         (e: any) => {
           if (e.bytesTransferred != null) {
             if (e.bytesTransferred == e.totalBytes) {
               this.loading = false;
-              this.openSnackBar("Registrado Exitosamente", "ocultar");
+              this.uiService.success("Registrado Exitosamente");
               this.router.navigate(["/compania/index"]);
             }
           }
         },
         e => {
           this.loading = false;
-          this.openSnackBar(
-            "Ocurrio un error intente mas tarde",
-            "ocultar"
-          );
+          this.uiService.success("Ocurrio un error intente mas tarde");
         }
       );
     } else {
-      this.especilidadService.addEspecialidad(this.formGroup.value).subscribe(
+      this.companiaService.addCompania(this.formGroup.value).subscribe(
         (e: any) => {
           this.loading = false;
-          this.openSnackBar("Guardado Exitosamente", "ocultar");
+          this.uiService.success("Guardado Exitosamente");
           this.router.navigate(["/compania/index"]);
         },
         e => {
           console.log(e);
           this.loading = false;
-          this.openSnackBar(
-            "Ocurrio un error intente mas tarde",
-            "ocultar"
-          );
+          this.uiService.success("Ocurrio un error intente mas tarde");
         }
       );
     }
-    
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2000
-    });
   }
 }

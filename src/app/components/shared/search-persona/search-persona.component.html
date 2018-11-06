@@ -1,0 +1,36 @@
+<mat-dialog-content>
+    <h2 mat-dialog-title>Seleccione un voluntario</h2>
+    <mat-form-field>
+        <input matInput type="text" (keydown)='search($event)' placeholder="Nombre" [(ngModel)]="searchText">
+        <button mat-button *ngIf="searchText" matSuffix mat-icon-button (click)="searchText=''">
+            <mat-icon>close</mat-icon>
+          </button>
+    </mat-form-field>
+
+    <div fxLayout="column">
+        <div *ngFor="let persona of personas ; let i = index">
+            <!-- <h4>{{persona.nombreCompleto || ""}}</h4> -->
+            <mat-card [tabindex]="0">
+                <mat-card-content>
+                    <mat-card-header (click)='onClick(persona)'>
+                        <img mat-card-avatar [src]="persona.fotoURL | noimage">
+                        <mat-card-title> {{persona.nombreCompleto}} </mat-card-title>
+                        <mat-card-subtitle> {{persona.grado}}</mat-card-subtitle>
+                    </mat-card-header>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+    <div *ngIf="(personas?.length < 1) && searchDirty ">
+        <p>
+            No se encontraron resultados :(
+        </p>
+    </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="space-around end">
+    <button mat-raised-button color='primary' mat-dialog-close [disabled]='!personaSelected' (click)="onSelect()"> Seleccionar</button>
+    <button mat-raised-button color='warn' (click)="onCancel()"> Cancelar</button>
+</mat-dialog-actions>

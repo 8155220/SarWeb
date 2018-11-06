@@ -1,3 +1,5 @@
+import { CompaniaCreateComponent } from './components/usecases/compania/compania-create/compania-create.component';
+import { EspecialidadDetailComponent } from './components/usecases/especialidad/especialidad-detail/especialidad-detail.component';
 import { EspecialidadEditComponent } from './components/usecases/especialidad/especialidad-edit/especialidad-edit.component';
 import { EspecialidadCreateComponent } from './components/usecases/especialidad/especialidad-create/especialidad-create.component';
 
@@ -12,6 +14,9 @@ import { VoluntarioCreateComponent } from './components/usecases/voluntarios/vol
 import { VoluntarioUpdateComponent } from './components/usecases/voluntarios/voluntario-update/voluntario-update.component';
 import { VoluntarioIndexComponent } from './components/usecases/voluntarios/voluntario-index/voluntario-index.component';
 import { EspecialidadIndexComponent } from './components/usecases/especialidad/especialidad-index/especialidad-index.component';
+import { CompaniaIndexComponent } from './components/usecases/compania/compania-index/compania-index.component';
+import { CompaniaEditComponent } from './components/usecases/compania/compania-edit/compania-edit.component';
+import { CompaniaDetailComponent } from './components/usecases/compania/compania-detail/compania-detail.component';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
@@ -26,6 +31,14 @@ const routes:Routes = [
     {path:'especialidad/create',component:EspecialidadCreateComponent},
     {path:'especialidad/index',component:EspecialidadIndexComponent},
     {path:'especialidad/update/:id',component:EspecialidadEditComponent},
+    {path:'especialidad/detail/:id',component:EspecialidadDetailComponent},
+
+    {path:'compania/create',component:CompaniaCreateComponent},
+    {path:'compania/index',component:CompaniaIndexComponent},
+    {path:'compania/update/:id',component:CompaniaEditComponent},
+    {path:'compania/detail/:id',component:CompaniaDetailComponent},
+
+
     {path:'signup',component:SingupComponent},
     {path:'login',component:LoginComponent},
     {path:'login',component:LoginComponent},

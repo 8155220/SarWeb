@@ -1,11 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { EspecialidadService } from "../../../../services/especialidad.service";
 import { UiService } from "../../../../services/ui.service";
 
 @Component({
   selector: "app-especialidad-index",
   templateUrl: "./especialidad-index.component.html",
-  styleUrls: ["./especialidad-index.component.scss"]
+  styleUrls: ["./especialidad-index.component.scss"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class EspecialidadIndexComponent implements OnInit {
   loading = true;
@@ -29,6 +30,9 @@ export class EspecialidadIndexComponent implements OnInit {
     console.log(row);
     this.uiService.router.navigate(['/especialidad/update',row.id]);
 
+  }
+  onDetail(row:any){
+    this.uiService.router.navigate(['/especialidad/detail',row.id]);
   }
   onDelete(row: any) {
     this.uiService
