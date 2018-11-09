@@ -1,0 +1,49 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+    </mat-spinner>
+</div>
+<div class="container">
+    <mat-toolbar fxFlexAlign="center">
+        <span>Gestionar Merito</span>
+    </mat-toolbar>
+</div>
+<div fxLayout="row" fxFlexFill fxLayoutAlign="center start" class="mat-elevation-z8" *ngIf="!loading">
+    <mat-card fxFlexFill>
+        <mat-card-title>
+            Meritos
+        </mat-card-title>
+        <mat-card-header>
+
+            <button mat-raised-button routerLink="/merito/create">  <mat-icon>add</mat-icon>Crear
+                 </button>
+
+        </mat-card-header>
+        <mat-card-content>
+            <table mat-table [dataSource]="meritos">
+                <ng-container matColumnDef="nombreCompleto">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombreCompleto}} </td>
+                </ng-container>
+                <ng-container matColumnDef="descripcion">
+                    <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+                    <td mat-cell *matCellDef="let element"> {{element.descripcion | slice:0:20}} </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha">
+                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                    <td mat-cell *matCellDef="let element"> {{element.fecha | date}} </td>
+                </ng-container>
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-icon-button (click)="onEdit(row)"> <mat-icon  matTooltip="Editar" >navigate_next</mat-icon></button>
+                        <button mat-icon-button (click)="onDelete(row)" color="warn"> <mat-icon matTooltip="Eliminar" matTooltipClass='tooltip-red'>delete_outline</mat-icon></button>
+                    </mat-cell>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+        </mat-card-content>
+    </mat-card>
+
+</div>

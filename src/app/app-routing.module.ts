@@ -1,3 +1,10 @@
+import { BajaDetailComponent } from './components/usecases/baja/baja-detail/baja-detail.component';
+import { IncorporacionCreateComponent } from './components/usecases/incorporacion/incorporacion-create/incorporacion-create.component';
+import { BajaindexComponent } from './components/usecases/baja/bajaindex/bajaindex.component';
+import { BajaCreateComponent } from './components/usecases/baja/baja-create/baja-create.component';
+import { DemeritoIndexComponent } from './components/usecases/demerito/demerito-index/demerito-index.component';
+import { DemeritoCreateComponent } from './components/usecases/demerito/demerito-create/demerito-create.component';
+import { MeritoEditComponent } from './components/usecases/merito/merito-edit/merito-edit.component';
 import { CompaniaCreateComponent } from './components/usecases/compania/compania-create/compania-create.component';
 import { EspecialidadDetailComponent } from './components/usecases/especialidad/especialidad-detail/especialidad-detail.component';
 import { EspecialidadEditComponent } from './components/usecases/especialidad/especialidad-edit/especialidad-edit.component';
@@ -17,6 +24,10 @@ import { EspecialidadIndexComponent } from './components/usecases/especialidad/e
 import { CompaniaIndexComponent } from './components/usecases/compania/compania-index/compania-index.component';
 import { CompaniaEditComponent } from './components/usecases/compania/compania-edit/compania-edit.component';
 import { CompaniaDetailComponent } from './components/usecases/compania/compania-detail/compania-detail.component';
+import { MeritoCreateComponent } from './components/usecases/merito/merito-create/merito-create.component';
+import { MeritoIndexComponent } from './components/usecases/merito/merito-index/merito-index.component';
+import { DemeritoEditComponent } from './components/usecases/demerito/demerito-edit/demerito-edit.component';
+import { IncorporacionIndexComponent } from './components/usecases/incorporacion/incorporacion-index/incorporacion-index.component';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
@@ -37,6 +48,21 @@ const routes:Routes = [
     {path:'compania/index',component:CompaniaIndexComponent},
     {path:'compania/update/:id',component:CompaniaEditComponent},
     {path:'compania/detail/:id',component:CompaniaDetailComponent},
+
+    {path:'merito/create',component:MeritoCreateComponent},
+    {path:'merito/index',component:MeritoIndexComponent},
+    {path:'merito/update/:id',component:MeritoEditComponent},
+
+    {path:'demerito/create',component:DemeritoCreateComponent},
+    {path:'demerito/index',component:DemeritoIndexComponent},
+    {path:'demerito/update/:id',component:DemeritoEditComponent},
+
+    {path:'baja/create',component:BajaCreateComponent},
+    {path:'baja/index',component:BajaindexComponent},
+    {path:'baja/detail/:id',component:BajaDetailComponent},
+
+    {path:'incorporacion/create',component:IncorporacionCreateComponent},
+    {path:'incorporacion/index',component:IncorporacionIndexComponent},
 
 
     {path:'signup',component:SingupComponent},

@@ -1,0 +1,52 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+
+    </mat-spinner>
+</div>
+
+
+<div class="container" fxFlexFill fxLayout='col' fxLayoutAlign="center center" *ngIf='!loading'>
+
+    <mat-card>
+        <mat-card-title>
+            Agregar Demerito
+        </mat-card-title>
+
+        <mat-card-actions>
+            <button mat-raised-button color='accent' (click)="openDialog()"> Seleccionar Voluntario</button>
+        </mat-card-actions>
+
+        <form [formGroup]="formGroup" (ngSubmit)='onSubmit()' *ngIf="persona">
+            <mat-card-content>
+                <div fxLayout="column">
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre Completo</mat-label>
+                        <input matInput [value]="persona.nombreCompleto" disabled='true'>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Grado</mat-label>
+                        <input matInput [value]="persona.grado | grado" disabled='true'>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Descripcion Demerito</mat-label>
+                        <input matInput formControlName="descripcion">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Fecha</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha" placeholder="Fecha">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-hint>Formato : #mes/#dia/#año Ejemplo: 10/18/2018 </mat-hint>
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <div fxLayoutAlign="space-between center">
+                    <button mat-flat-button color='primary' type="submit">Guardar</button>
+                    <button mat-flat-button color='warn' routerLink='/demerito/index'>Cancelar</button>
+                </div>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>

@@ -1,0 +1,45 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+
+    </mat-spinner>
+</div>
+
+
+<div class="container" fxFlexFill fxLayout='col' fxLayoutAlign="center center" *ngIf='!loading'>
+
+    <mat-card>
+        <mat-card-title>
+            Detalle de Baja
+        </mat-card-title>
+        <mat-card-content *ngIf="persona">
+            <div fxLayout="column">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre Completo</mat-label>
+                    <input matInput [value]="persona.nombreCompleto" disabled='true'>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Grado</mat-label>
+                    <input matInput [value]="persona.grado" disabled='true'>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Descripcion Motivo</mat-label>
+                    <input matInput [value]='baja.descripcion' disabled='true'>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha</mat-label>
+                    <input matInput [matDatepicker]="picker" [value]='baja.fecha' placeholder="Fecha" disabled='true'>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-hint>Formato : #mes/#dia/#año Ejemplo: 10/18/2018 </mat-hint>
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <div fxLayoutAlign="space-between center">
+                <button mat-flat-button color='warn' routerLink='/baja/index'>Volver</button>
+            </div>
+        </mat-card-actions>
+
+    </mat-card>
+</div>

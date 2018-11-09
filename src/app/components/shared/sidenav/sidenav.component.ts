@@ -30,6 +30,29 @@ export class SidenavComponent implements AfterViewInit {
           displayName: 'Gestionar Companias',
           iconName: 'feedback',
           route: '/compania/index'
+        },
+        {
+          displayName: 'Meritos',
+          iconName: 'feedback',
+          route: '/merito/index'
+        }
+        ,
+        {
+          displayName: 'Demeritos',
+          iconName: 'feedback',
+          route: '/demerito/index'
+        }
+        ,
+        {
+          displayName: 'Bajas',
+          iconName: 'feedback',
+          route: '/baja/index'
+        }
+        ,
+        {
+          displayName: 'Incorporaciones',
+          iconName: 'feedback',
+          route: '/incorporacion/index'
         }
       ]
     },

@@ -1,3 +1,6 @@
+import { DemeritoCreateComponent } from './components/usecases/demerito/demerito-create/demerito-create.component';
+import { DemeritoIndexComponent } from './components/usecases/demerito/demerito-index/demerito-index.component';
+import { MeritoService } from './services/merito.service';
 import { MatConfirmDialogComponent } from './components/shared/mat-confirm-dialog/mat-confirm-dialog.component';
 import { EspecialidadService } from './services/especialidad.service';
 import { CompaniaService } from './services/compania.service';
@@ -52,6 +55,18 @@ import { CompaniaIndexComponent } from './components/usecases/compania/compania-
 import { CompaniaCreateComponent } from './components/usecases/compania/compania-create/compania-create.component';
 import { CompaniaEditComponent } from './components/usecases/compania/compania-edit/compania-edit.component';
 import { CompaniaDetailComponent } from './components/usecases/compania/compania-detail/compania-detail.component';
+import { MeritoIndexComponent } from './components/usecases/merito/merito-index/merito-index.component';
+import { MeritoCreateComponent } from './components/usecases/merito/merito-create/merito-create.component';
+import { MeritoEditComponent } from './components/usecases/merito/merito-edit/merito-edit.component';
+import { DemeritoEditComponent } from './components/usecases/demerito/demerito-edit/demerito-edit.component';
+import { BajaindexComponent } from './components/usecases/baja/bajaindex/bajaindex.component';
+import { BajaCreateComponent } from './components/usecases/baja/baja-create/baja-create.component';
+import { IncorporacionCreateComponent } from './components/usecases/incorporacion/incorporacion-create/incorporacion-create.component';
+import { IncorporacionIndexComponent } from './components/usecases/incorporacion/incorporacion-index/incorporacion-index.component';
+import { GradoPipe } from './pipes/grado.pipe';
+import { BajaDetailComponent } from './components/usecases/baja/baja-detail/baja-detail.component';
+
+
 
 
 @NgModule({
@@ -75,6 +90,7 @@ import { CompaniaDetailComponent } from './components/usecases/compania/compania
     UploadImageComponent,
     //Pipes
     NoimagePipe,
+    GradoPipe,
     InformacionPersonalComponent,
     EmergenciaComponent,
     DatosFisicosComponent,
@@ -89,7 +105,19 @@ import { CompaniaDetailComponent } from './components/usecases/compania/compania
     CompaniaIndexComponent,
     CompaniaCreateComponent,
     CompaniaEditComponent,
-    CompaniaDetailComponent
+    CompaniaDetailComponent,
+    MeritoIndexComponent,
+    MeritoCreateComponent,
+    MeritoEditComponent,
+    DemeritoIndexComponent,
+    DemeritoCreateComponent,
+    DemeritoEditComponent,
+    BajaindexComponent,
+    BajaCreateComponent,
+    IncorporacionCreateComponent,
+    IncorporacionIndexComponent,
+    BajaDetailComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -105,7 +133,7 @@ import { CompaniaDetailComponent } from './components/usecases/compania/compania
     AngularFireStorageModule
   ],
   entryComponents: [BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete,MatConfirmDialogComponent,SearchPersonaComponent,AgregarEspecialidadVoluntarioComponent],
-  providers: [VoluntarioService, UploadService, AngularFireStorage,CompaniaService,EspecialidadService ],
+  providers: [VoluntarioService, UploadService, AngularFireStorage,CompaniaService,EspecialidadService,MeritoService ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
