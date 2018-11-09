@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { IncorporacionService } from './../../../../services/Incorporacion.service';
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { UiService } from "../../../../services/ui.service";
 
 @Component({
   selector: 'app-incorporacion-index',
@@ -6,10 +8,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./incorporacion-index.component.scss']
 })
 export class IncorporacionIndexComponent implements OnInit {
+  loading = true;
+  displayedColumns: string[] = ["nombreCompleto","descripcion", "fecha", "acciones"];
+  Incorporaciones: any[] = [];
+  constructor(
+    private IncorporacionService: IncorporacionService,
+    private uiService: UiService
+  ) {
+    
+  }
 
-  constructor() { }
+  ngOnInit() { 
+    this.IncorporacionService.getIncorporaciones().subscribe(e => {
+      this.Incorporaciones = e;
+      this.loading = false;
+    });
+  }
 
-  ngOnInit() {
+  onDetail(row:any){
+    this.uiService.router.navigate(['/incorporacion/detail',row.id]);
   }
 
 }

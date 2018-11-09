@@ -65,6 +65,7 @@ import { IncorporacionCreateComponent } from './components/usecases/incorporacio
 import { IncorporacionIndexComponent } from './components/usecases/incorporacion/incorporacion-index/incorporacion-index.component';
 import { GradoPipe } from './pipes/grado.pipe';
 import { BajaDetailComponent } from './components/usecases/baja/baja-detail/baja-detail.component';
+import { IncorporacionDetailComponent } from './components/usecases/incorporacion/incorporacion-detail/incorporacion-detail.component';
 
 
 
@@ -117,6 +118,7 @@ import { BajaDetailComponent } from './components/usecases/baja/baja-detail/baja
     IncorporacionCreateComponent,
     IncorporacionIndexComponent,
     BajaDetailComponent,
+    IncorporacionDetailComponent,
 
   ],
   imports: [

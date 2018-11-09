@@ -1,8 +1,7 @@
-import { map, first, switchMap , concat} from 'rxjs/operators';
-import { Observable, Subscriber, from } from "rxjs";
+import { map, first , concat} from 'rxjs/operators';
+import { Observable, from } from "rxjs";
 import { AngularFireDatabase } from "angularfire2/database";
 import { Injectable } from "@angular/core";
-import { AngularFireStorage } from "angularfire2/storage";
 
 @Injectable({
   providedIn: 'root'
