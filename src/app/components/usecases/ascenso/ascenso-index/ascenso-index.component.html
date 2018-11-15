@@ -1,0 +1,62 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+    </mat-spinner>
+</div>
+
+<div class="container">
+    <mat-toolbar fxFlexAlign="center">
+        <section class="mat-small">
+            <h1> Lista de Ascendidos</h1>
+            <span>(ultimamente)</span>
+        </section>
+
+    </mat-toolbar>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+    <div fxLayoutGap="10px">
+        <button mat-flat-button (click)="ascenderGradoClicked=true" *ngIf="!ascenderGradoClicked"> Ascender por Grado</button>
+        <div *ngIf="ascenderGradoClicked" fxLayoutGap="10px">
+            <mat-form-field>
+                <mat-select placeholder="Seleccione grado" [(ngModel)]="selectedValue">
+                    <mat-option *ngFor="let grado of grados" [value]="grado.value">
+                        {{grado.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-flat-button color='accent' (click)="onNext()">Siguiente</button>
+            <button mat-flat-button color='warn' (click)="ascenderGradoClicked=false">Cancelar</button>
+        </div>
+    </div>
+    <button mat-flat-button (click)="ascenderVoluntario()"> Ascender un voluntario</button>
+</div>
+<div fxLayout="row" fxFlexFill fxLayoutAlign="center start" class="mat-elevation-z8" *ngIf="!loading">
+    <mat-card fxFlexFill>
+        <mat-card-content>
+            <table mat-table [dataSource]="ascensos">
+                <ng-container matColumnDef="nombreCompleto">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombreCompleto}} </td>
+                </ng-container>
+                <ng-container matColumnDef="gradoAntiguo">
+                    <th mat-header-cell *matHeaderCellDef> Grado Actual </th>
+                    <td mat-cell *matCellDef="let element"> {{element.gradoAntiguo | grado}} </td>
+                </ng-container>
+                <ng-container matColumnDef="gradoNuevo">
+                    <th mat-header-cell *matHeaderCellDef> Nuevo Grado </th>
+                    <td mat-cell *matCellDef="let element"> {{element.gradoNuevo | grado}} </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha">
+                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                    <td mat-cell *matCellDef="let element"> {{element.fecha |date}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+        </mat-card-content>
+
+    </mat-card>
+
+
+</div>

@@ -29,6 +29,8 @@ import { MeritoIndexComponent } from './components/usecases/merito/merito-index/
 import { DemeritoEditComponent } from './components/usecases/demerito/demerito-edit/demerito-edit.component';
 import { IncorporacionIndexComponent } from './components/usecases/incorporacion/incorporacion-index/incorporacion-index.component';
 import { IncorporacionDetailComponent } from './components/usecases/incorporacion/incorporacion-detail/incorporacion-detail.component';
+import { AscensoGradoComponent } from './components/usecases/ascenso/ascenso-grado/ascenso-grado.component';
+import { AscensoIndexComponent } from './components/usecases/ascenso/ascenso-index/ascenso-index.component';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
@@ -65,6 +67,9 @@ const routes:Routes = [
     {path:'incorporacion/create',component:IncorporacionCreateComponent},
     {path:'incorporacion/index',component:IncorporacionIndexComponent},
     {path:'incorporacion/detail/:id',component:IncorporacionDetailComponent},
+
+    {path:'ascenso/grado/:grado',component:AscensoGradoComponent},
+    {path:'ascenso/index',component:AscensoIndexComponent},
 
     {path:'signup',component:SingupComponent},
     {path:'login',component:LoginComponent},

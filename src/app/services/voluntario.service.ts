@@ -457,7 +457,17 @@ export class VoluntarioService {
   }
 
   getPersonas(start,end){
-    return this.db.list(this.VOLUNTARIOS_PATH,ref=> ref.orderByChild('nombreCompleto').startAt(start).endAt(end).limitToFirst(10))
+    return this.db.list(this.VOLUNTARIOS_PATH,ref=> ref.orderByChild('nombreCompleto').startAt(start).endAt(end).limitToFirst(20))
+    .snapshotChanges()
+        .pipe(
+          map(changes =>
+            changes.map(c => ({ id: c.payload.key, ...c.payload.val() }))
+          )
+        );
+  }
+
+  getVoluntariosGrado(grado:string){
+    return this.db.list(this.VOLUNTARIOS_PATH,ref=> ref.orderByChild('grado').equalTo(grado))
     .snapshotChanges()
         .pipe(
           map(changes =>

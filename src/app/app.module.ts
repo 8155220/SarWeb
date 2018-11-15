@@ -1,10 +1,15 @@
-import { DemeritoCreateComponent } from './components/usecases/demerito/demerito-create/demerito-create.component';
-import { DemeritoIndexComponent } from './components/usecases/demerito/demerito-index/demerito-index.component';
-import { MeritoService } from './services/merito.service';
-import { MatConfirmDialogComponent } from './components/shared/mat-confirm-dialog/mat-confirm-dialog.component';
-import { EspecialidadService } from './services/especialidad.service';
-import { CompaniaService } from './services/compania.service';
-import { AngularFireStorage, AngularFireStorageModule } from "angularfire2/storage";
+import { AscensoVoluntarioComponent } from './components/usecases/ascenso/ascenso-voluntario/ascenso-voluntario.component';
+import { CompaniaPipe } from "./pipes/compania.pipe";
+import { DemeritoCreateComponent } from "./components/usecases/demerito/demerito-create/demerito-create.component";
+import { DemeritoIndexComponent } from "./components/usecases/demerito/demerito-index/demerito-index.component";
+import { MeritoService } from "./services/merito.service";
+import { MatConfirmDialogComponent } from "./components/shared/mat-confirm-dialog/mat-confirm-dialog.component";
+import { EspecialidadService } from "./services/especialidad.service";
+import { CompaniaService } from "./services/compania.service";
+import {
+  AngularFireStorage,
+  AngularFireStorageModule
+} from "angularfire2/storage";
 import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
@@ -40,35 +45,35 @@ import { MenuListItemComponent } from "./components/shared/sidenav/menu-list-ite
 import { UploadImageComponent } from "./components/shared/upload-image/upload-image.component";
 import { UploadService } from "./services/upload/upload.service";
 
-import { NoimagePipe } from './pipes/noimage.pipe';
-import { InformacionPersonalComponent } from './components/usecases/voluntarios/componentes/informacion-personal/informacion-personal.component';
-import { EmergenciaComponent } from './components/usecases/voluntarios/componentes/emergencia/emergencia.component';
-import { DatosFisicosComponent } from './components/usecases/voluntarios/componentes/datos-fisicos/datos-fisicos.component';
-import { InformacionExtraComponent } from './components/usecases/voluntarios/componentes/informacion-extra/informacion-extra.component';
-import { EspecialidadIndexComponent } from './components/usecases/especialidad/especialidad-index/especialidad-index.component';
-import { EspecialidadCreateComponent } from './components/usecases/especialidad/especialidad-create/especialidad-create.component';
-import { EspecialidadEditComponent } from './components/usecases/especialidad/especialidad-edit/especialidad-edit.component';
-import { EspecialidadDetailComponent } from './components/usecases/especialidad/especialidad-detail/especialidad-detail.component';
-import { SearchPersonaComponent } from './components/shared/search-persona/search-persona.component';
-import { AgregarEspecialidadVoluntarioComponent } from './components/shared/agregar-especialidad-voluntario/agregar-especialidad-voluntario.component';
-import { CompaniaIndexComponent } from './components/usecases/compania/compania-index/compania-index.component';
-import { CompaniaCreateComponent } from './components/usecases/compania/compania-create/compania-create.component';
-import { CompaniaEditComponent } from './components/usecases/compania/compania-edit/compania-edit.component';
-import { CompaniaDetailComponent } from './components/usecases/compania/compania-detail/compania-detail.component';
-import { MeritoIndexComponent } from './components/usecases/merito/merito-index/merito-index.component';
-import { MeritoCreateComponent } from './components/usecases/merito/merito-create/merito-create.component';
-import { MeritoEditComponent } from './components/usecases/merito/merito-edit/merito-edit.component';
-import { DemeritoEditComponent } from './components/usecases/demerito/demerito-edit/demerito-edit.component';
-import { BajaindexComponent } from './components/usecases/baja/bajaindex/bajaindex.component';
-import { BajaCreateComponent } from './components/usecases/baja/baja-create/baja-create.component';
-import { IncorporacionCreateComponent } from './components/usecases/incorporacion/incorporacion-create/incorporacion-create.component';
-import { IncorporacionIndexComponent } from './components/usecases/incorporacion/incorporacion-index/incorporacion-index.component';
-import { GradoPipe } from './pipes/grado.pipe';
-import { BajaDetailComponent } from './components/usecases/baja/baja-detail/baja-detail.component';
-import { IncorporacionDetailComponent } from './components/usecases/incorporacion/incorporacion-detail/incorporacion-detail.component';
-
-
-
+import { NoimagePipe } from "./pipes/noimage.pipe";
+import { InformacionPersonalComponent } from "./components/usecases/voluntarios/componentes/informacion-personal/informacion-personal.component";
+import { EmergenciaComponent } from "./components/usecases/voluntarios/componentes/emergencia/emergencia.component";
+import { DatosFisicosComponent } from "./components/usecases/voluntarios/componentes/datos-fisicos/datos-fisicos.component";
+import { InformacionExtraComponent } from "./components/usecases/voluntarios/componentes/informacion-extra/informacion-extra.component";
+import { EspecialidadIndexComponent } from "./components/usecases/especialidad/especialidad-index/especialidad-index.component";
+import { EspecialidadCreateComponent } from "./components/usecases/especialidad/especialidad-create/especialidad-create.component";
+import { EspecialidadEditComponent } from "./components/usecases/especialidad/especialidad-edit/especialidad-edit.component";
+import { EspecialidadDetailComponent } from "./components/usecases/especialidad/especialidad-detail/especialidad-detail.component";
+import { SearchPersonaComponent } from "./components/shared/search-persona/search-persona.component";
+import { AgregarEspecialidadVoluntarioComponent } from "./components/shared/agregar-especialidad-voluntario/agregar-especialidad-voluntario.component";
+import { CompaniaIndexComponent } from "./components/usecases/compania/compania-index/compania-index.component";
+import { CompaniaCreateComponent } from "./components/usecases/compania/compania-create/compania-create.component";
+import { CompaniaEditComponent } from "./components/usecases/compania/compania-edit/compania-edit.component";
+import { CompaniaDetailComponent } from "./components/usecases/compania/compania-detail/compania-detail.component";
+import { MeritoIndexComponent } from "./components/usecases/merito/merito-index/merito-index.component";
+import { MeritoCreateComponent } from "./components/usecases/merito/merito-create/merito-create.component";
+import { MeritoEditComponent } from "./components/usecases/merito/merito-edit/merito-edit.component";
+import { DemeritoEditComponent } from "./components/usecases/demerito/demerito-edit/demerito-edit.component";
+import { BajaindexComponent } from "./components/usecases/baja/bajaindex/bajaindex.component";
+import { BajaCreateComponent } from "./components/usecases/baja/baja-create/baja-create.component";
+import { IncorporacionCreateComponent } from "./components/usecases/incorporacion/incorporacion-create/incorporacion-create.component";
+import { IncorporacionIndexComponent } from "./components/usecases/incorporacion/incorporacion-index/incorporacion-index.component";
+import { GradoPipe } from "./pipes/grado.pipe";
+import { BajaDetailComponent } from "./components/usecases/baja/baja-detail/baja-detail.component";
+import { IncorporacionDetailComponent } from "./components/usecases/incorporacion/incorporacion-detail/incorporacion-detail.component";
+import { AscensoGradoComponent } from "./components/usecases/ascenso/ascenso-grado/ascenso-grado.component";
+import { GradoAscenderPipe } from "./pipes/grado-ascender.pipe";
+import { AscensoIndexComponent } from "./components/usecases/ascenso/ascenso-index/ascenso-index.component";
 
 @NgModule({
   declarations: [
@@ -92,6 +97,8 @@ import { IncorporacionDetailComponent } from './components/usecases/incorporacio
     //Pipes
     NoimagePipe,
     GradoPipe,
+    CompaniaPipe,
+    GradoAscenderPipe,
     InformacionPersonalComponent,
     EmergenciaComponent,
     DatosFisicosComponent,
@@ -119,7 +126,10 @@ import { IncorporacionDetailComponent } from './components/usecases/incorporacio
     IncorporacionIndexComponent,
     BajaDetailComponent,
     IncorporacionDetailComponent,
-
+    AscensoGradoComponent,
+    AscensoIndexComponent,
+    AscensoVoluntarioComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -134,8 +144,23 @@ import { IncorporacionDetailComponent } from './components/usecases/incorporacio
     AngularFireDatabaseModule,
     AngularFireStorageModule
   ],
-  entryComponents: [BottomSheetOverviewVoluntarioSheet, DialogConfirmDelete,MatConfirmDialogComponent,SearchPersonaComponent,AgregarEspecialidadVoluntarioComponent],
-  providers: [VoluntarioService, UploadService, AngularFireStorage,CompaniaService,EspecialidadService,MeritoService ],
+  entryComponents: [
+    BottomSheetOverviewVoluntarioSheet,
+    DialogConfirmDelete,
+    MatConfirmDialogComponent,
+    SearchPersonaComponent,
+    AgregarEspecialidadVoluntarioComponent,
+    AscensoVoluntarioComponent,
+    
+  ],
+  providers: [
+    VoluntarioService,
+    UploadService,
+    AngularFireStorage,
+    CompaniaService,
+    EspecialidadService,
+    MeritoService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

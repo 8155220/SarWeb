@@ -42,7 +42,8 @@ export class AgregarEspecialidadVoluntarioComponent implements OnInit {
         .setValue(new Date(fecha).toISOString());
     }
 
-    this.especialidadService.addEspecialidadVoluntario(this.especialidad,this.persona,this.formGroup.value)
+    if(this.formGroup.valid){
+      this.especialidadService.addEspecialidadVoluntario(this.especialidad,this.persona,this.formGroup.value)
     .subscribe(e=>{
       this.uiService.success("Agregado Exitosamente");
       this.dialogRef.close();
@@ -50,6 +51,9 @@ export class AgregarEspecialidadVoluntarioComponent implements OnInit {
       this.uiService.warn("Ocurrio Un Error Contacte al Administrador del sistema");
       this.dialogRef.close();
     });
+    }else {
+      this.uiService.warn("Complete los campos requeridos");
+    }
     
   }
 

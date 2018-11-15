@@ -1,8 +1,7 @@
-import { finalize, map } from "rxjs/operators";
-import { Observable, Subscriber, from } from "rxjs";
+import {  map } from "rxjs/operators";
+import { Observable, from } from "rxjs";
 import { AngularFireDatabase } from "angularfire2/database";
 import { Injectable } from "@angular/core";
-import { AngularFireStorage } from "angularfire2/storage";
 
 @Injectable({
   providedIn: "root"
@@ -10,7 +9,6 @@ import { AngularFireStorage } from "angularfire2/storage";
 export class MeritoService {
   MeritosRef;
   MERITOS_PATH = "meritos";
-  VOLUNTARIO_merito_PATH = "voluntariomerito";
 
   constructor(private db: AngularFireDatabase) {
     this.MeritosRef = this.db.list<any>(this.MERITOS_PATH);

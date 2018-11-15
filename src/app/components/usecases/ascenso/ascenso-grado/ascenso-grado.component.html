@@ -1,0 +1,67 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+    </mat-spinner>
+</div>
+
+<div class="container">
+    <mat-toolbar fxFlexAlign="center">
+        <section class="mat-small">
+            <h1> Ascender por Grado</h1>
+            <span>(Solo activos)</span>
+        </section>
+
+    </mat-toolbar>
+</div>
+
+<div fxLayout="row" fxFlexFill fxLayoutAlign="center start" class="mat-elevation-z8" *ngIf="!loading">
+    <mat-card fxFlexFill>
+        <mat-card-content>
+            <table mat-table [dataSource]="voluntarios">
+                <ng-container matColumnDef="nombreCompleto">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombreCompleto}} </td>
+                </ng-container>
+                <ng-container matColumnDef="grado">
+                    <th mat-header-cell *matHeaderCellDef> Grado Actual </th>
+                    <td mat-cell *matCellDef="let element"> {{element.grado | grado}} </td>
+                </ng-container>
+                <ng-container matColumnDef="gradoAscender">
+                    <th mat-header-cell *matHeaderCellDef> Nuevo Grado </th>
+                    <td mat-cell *matCellDef="let element"> {{element.grado | gradoAscender | grado}} </td>
+                </ng-container>
+                <ng-container matColumnDef="compania">
+                    <th mat-header-cell *matHeaderCellDef> Compania </th>
+                    <td mat-cell *matCellDef="let element"> {{element.idCompania | compania | async}} </td>
+                </ng-container>
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef> Ascender </th>
+                    <mat-cell *matCellDef="let row">
+                        <mat-slide-toggle checked='true' (change)='onChange(row,$event)'></mat-slide-toggle>
+                    </mat-cell>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="center center">
+
+            <form [formGroup]='formGroup' fxLayout="column" fxLayoutAlign="space-around center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha </mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName='fecha' placeholder="Fecha">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-hint>Formato: mes/dia/año Ej:10/18/2018 </mat-hint>
+                </mat-form-field>
+
+                <div fxLayout="row" fxFlexFill fxLayoutAlign="space-between center">
+                    <button mat-flat-button (click)="onAscender()">ASCENDER</button>
+                    <button mat-flat-button color='warn' routerLink='/ascenso/index'>Cancelar</button>
+                </div>
+            </form>
+        </mat-card-actions>
+    </mat-card>
+
+
+</div>

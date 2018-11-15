@@ -54,6 +54,13 @@ export class SidenavComponent implements AfterViewInit {
           iconName: 'feedback',
           route: '/incorporacion/index'
         }
+        ,
+        {
+          displayName: 'Ascensos',
+          iconName: 'feedback',
+          route: '/ascenso/index'
+        }
+        ,
       ]
     },
     {
