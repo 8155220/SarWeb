@@ -1,3 +1,4 @@
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AscensoVoluntarioComponent } from './components/usecases/ascenso/ascenso-voluntario/ascenso-voluntario.component';
 import { CompaniaPipe } from "./pipes/compania.pipe";
 import { DemeritoCreateComponent } from "./components/usecases/demerito/demerito-create/demerito-create.component";
@@ -74,6 +75,11 @@ import { IncorporacionDetailComponent } from "./components/usecases/incorporacio
 import { AscensoGradoComponent } from "./components/usecases/ascenso/ascenso-grado/ascenso-grado.component";
 import { GradoAscenderPipe } from "./pipes/grado-ascender.pipe";
 import { AscensoIndexComponent } from "./components/usecases/ascenso/ascenso-index/ascenso-index.component";
+import { MisionCreateComponent } from './components/usecases/mision/mision-create/mision-create.component';
+import { DisableControlDirective } from './directives/disable-control.directive';
+import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { MisionIndexComponent } from './components/usecases/mision/mision-index/mision-index.component';
+import { MisionEditComponent } from './components/usecases/mision/mision-edit/mision-edit.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +135,10 @@ import { AscensoIndexComponent } from "./components/usecases/ascenso/ascenso-ind
     AscensoGradoComponent,
     AscensoIndexComponent,
     AscensoVoluntarioComponent,
+    MisionCreateComponent,
+    DisableControlDirective,
+    MisionIndexComponent,
+    MisionEditComponent,
     
   ],
   imports: [
@@ -159,8 +169,15 @@ import { AscensoIndexComponent } from "./components/usecases/ascenso/ascenso-ind
     AngularFireStorage,
     CompaniaService,
     EspecialidadService,
-    MeritoService
+    MeritoService,
+    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private adapter:DateAdapter<any>) { 
+      this.adapter.setLocale('es');
+    }
+}

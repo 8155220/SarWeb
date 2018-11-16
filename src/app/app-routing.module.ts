@@ -1,3 +1,4 @@
+import { MisionEditComponent } from './components/usecases/mision/mision-edit/mision-edit.component';
 import { BajaDetailComponent } from './components/usecases/baja/baja-detail/baja-detail.component';
 import { IncorporacionCreateComponent } from './components/usecases/incorporacion/incorporacion-create/incorporacion-create.component';
 import { BajaindexComponent } from './components/usecases/baja/bajaindex/bajaindex.component';
@@ -31,6 +32,8 @@ import { IncorporacionIndexComponent } from './components/usecases/incorporacion
 import { IncorporacionDetailComponent } from './components/usecases/incorporacion/incorporacion-detail/incorporacion-detail.component';
 import { AscensoGradoComponent } from './components/usecases/ascenso/ascenso-grado/ascenso-grado.component';
 import { AscensoIndexComponent } from './components/usecases/ascenso/ascenso-index/ascenso-index.component';
+import { MisionCreateComponent } from './components/usecases/mision/mision-create/mision-create.component';
+import { MisionIndexComponent } from './components/usecases/mision/mision-index/mision-index.component';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
@@ -74,6 +77,10 @@ const routes:Routes = [
     {path:'signup',component:SingupComponent},
     {path:'login',component:LoginComponent},
     {path:'login',component:LoginComponent},
+
+    {path:'mision/create',component:MisionCreateComponent},
+    {path:'mision/index',component:MisionIndexComponent},
+    {path:'mision/update/:id',component:MisionEditComponent},
 ];
 @NgModule({
     imports:[RouterModule.forRoot(routes)],

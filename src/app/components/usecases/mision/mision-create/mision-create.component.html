@@ -1,0 +1,280 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+
+    </mat-spinner>
+</div>
+
+<div class="container" *ngIf='!loading'>
+    <mat-toolbar fxFlexAlign="center">
+        <span>SOLICITUD DE OPERATIVO  Y/O  MISIÓN SAR FAB SC.</span>
+    </mat-toolbar>
+</div>
+
+<div class='divPrincipal' fxLayout="column" fxLayoutGap="20px" *ngIf='!loading'>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <mat-card>
+            <mat-card-title> SECC. STRÍA GRUPO SAR FAB SC. Nº 05/18 </mat-card-title>
+            <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha Solicitud</mat-label>
+                    <input matInput [matDatepicker]="picker1" formControlName="fechaSolicitud">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha OPER.</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="fechaOperacion">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-title> TIPO DE OPERATIVO/MISIÓN</mat-card-title>
+            <mat-card-content>
+                <mat-form-field class='formFieldLarge' appearance="outline">
+                    <mat-label>Tipo Operativo/Mision</mat-label>
+                    <mat-select placeholder="tipoMision" formControlName="tipoOperativoMision">
+                        <mat-option value="busquedaRescatePerdidos">
+                            BÚSQUEDA Y RESCATE(PERDIDOS)
+                        </mat-option>
+                        <mat-option value="busquedaRescateAhogadosAguaDetenida">
+                            BÚSQUEDA Y RESCATE(AHOGADOS/AGUA DETENIDA)
+                        </mat-option>
+                        <mat-option value="busquedaRescateAhogadosAguaRapida">
+                            BÚSQUEDA Y RESCATE(AHOGADOS/AGUA RAPIDA)
+                        </mat-option>
+                        <mat-option value="accionCivica">
+                            ACCIÓN CÍVICA
+                        </mat-option>
+                        <mat-option value="defensaCivil">
+                            DEFENSA CIVIL
+                        </mat-option>
+                        <mat-option value="entrenamiento">
+                            ENTRENAMIENTO
+                        </mat-option>
+                        <mat-option value="seguridad">
+                            SEGURIDAD
+                        </mat-option>
+                        <mat-option value="accidenteAereo">
+                            ACCIDENTE AÉREO
+                        </mat-option>
+                        <mat-option value="otros">
+                            OTROS
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card formGroupName='lugarEvento'>
+            <mat-card-title>Lugar Evento</mat-card-title>
+            <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Ciudad</mat-label>
+                    <input matInput type="text" formControlName="ciudad">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Provincia</mat-label>
+                    <input matInput type="text" formControlName="provincia">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Localidad</mat-label>
+                    <input matInput type="text" formControlName="localidad">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Comunidad</mat-label>
+                    <input matInput type="text" formControlName="comunidad">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Zona/Avenida</mat-label>
+                    <input matInput type="text" formControlName="zonaAvenida">
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card formGroupName="medioTransporte">
+            <mat-card-title>Medio De Transporte</mat-card-title>
+            <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo de Vehiculo</mat-label>
+                    <input matInput type="text" formControlName="tipoVehiculo">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Propietario</mat-label>
+                    <input matInput type="text" formControlName="propietario">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Matricula</mat-label>
+                    <input matInput type="text" formControlName="matricula">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Conducido Por:</mat-label>
+                    <input matInput type="text" formControlName="conducidoPor">
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+            <mat-card-title>
+                Comentarios (Del Operativo que Asiste)
+                <a mat-icon-button color='primary' (click)='addComentario()'>
+                    <mat-icon>add_circle</mat-icon>
+                </a>
+            </mat-card-title>
+            <mat-card-subtitle>
+
+            </mat-card-subtitle>
+            <mat-card-content>
+                <div>
+                    <div formArrayName='comentarios'>
+                        <div *ngFor='let comentario of  comentariosFormArray.controls; let i=index ' [formGroupName]='i'>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Comentario</mat-label>
+                                <input matInput placeholder="descripcion" formControlName="descripcion">
+                            </mat-form-field>
+                            <a mat-icon-button color='warn' (click)='deleteComentario(i)'>
+                                <mat-icon>remove_circle</mat-icon>
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card formGroupName='estimado'>
+            <mat-card-title>Estimado</mat-card-title>
+            <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Lugar de Salida</mat-label>
+                    <input matInput type="text" formControlName="salidaLugar">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha Salida(DIA/MES/AÑO)</mat-label>
+                    <input matInput [matDatepicker]="picker3" formControlName="salidaFecha">
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Arribo lugar</mat-label>
+                    <input matInput type="text" formControlName="arriboLugar">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Arribo Fecha</mat-label>
+                    <input matInput [matDatepicker]="picker4" formControlName="arriboFecha">
+                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                    <mat-datepicker #picker4></mat-datepicker>
+                </mat-form-field>
+
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card formGroupName='datosSolicitante'>
+            <mat-card-title>Datos del Solicitante</mat-card-title>
+            <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput type="text" formControlName="nombre">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Nº Telefono</mat-label>
+                    <input matInput type="number" formControlName="numeroTelefono">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Atencion(Refrigerio/Combustible y otros)</mat-label>
+                    <input matInput type="text" formControlName="atencion">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Intercambio(servicio/costo/convenio Economico y otros)</mat-label>
+                    <input matInput type="text" formControlName="intercambio">
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card formGroupName='oficialAlMando'>
+            <mat-card-title>
+                Personal de cuadro al mando
+                <a mat-button color='primary' (click)="onClickPersonalCuadro()">Seleccionar</a>
+            </mat-card-title>
+            <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Grado</mat-label>
+                    <input matInput type="text" [value]='oficialGrado | grado' disabled='true'>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre y Apellido</mat-label>
+                    <input matInput type="text" [value]='oficialNombreCompleto ' disabled='true'>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label> C.M.</mat-label>
+                    <input matInput type="text" formControlName="CM">
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-title> Rescatistas Voluntarios
+                <a mat-icon-button color='primary' (click)='addVoluntarioMision()'>
+                    <mat-icon>add_circle</mat-icon>
+                </a>
+            </mat-card-title>
+            <mat-card-content>
+                <div>
+                    <div formArrayName='voluntarios'>
+                        <div *ngFor='let voluntario of  voluntariosFormArray.controls; let i=index ' [formGroupName]='i'>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Grado</mat-label>
+                                <input matInput placeholder="Grado" formControlName="grado">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput placeholder="Grado" formControlName="nombreCompleto">
+                            </mat-form-field>
+                            <a mat-icon-button color='warn' (click)='deleteVoluntario(i)'>
+                                <mat-icon>remove_circle</mat-icon>
+                            </a>
+                        </div>
+                    </div>
+                    <mat-form-field appearance="outline">
+                        <mat-label> Observaciones</mat-label>
+                        <input matInput type="text" formControlName="observaciones">
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card formGroupName='solicitudPor'>
+
+            <mat-card-title>Solicitud Por</mat-card-title>
+            <mat-card-content>
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre Completo 1</mat-label>
+                    <input matInput placeholder="nombre" formControlName="persona1NombreCompleto">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Cargo 1 </mat-label>
+                    <input matInput placeholder="cargo" formControlName="persona1Cargo">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre Completo 1 </mat-label>
+                    <input matInput placeholder="Nombre" formControlName="persona2NombreCompleto">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Cargo 1</mat-label>
+                    <input matInput placeholder="Cargo" formControlName="persona2Cargo">
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+        <div fxLayoutAlign="space-between center">
+            <button mat-flat-button color='primary' type="submit">Guardar</button>
+            <button mat-flat-button color='warn' routerLink='/mision/index'>Cancelar</button>
+        </div>
+    </form>
+
+    {{formGroup.value | json}}
+</div>
