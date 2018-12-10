@@ -11,6 +11,7 @@ import {
   AngularFireStorage,
   AngularFireStorageModule
 } from "angularfire2/storage";
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
@@ -80,6 +81,8 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MisionIndexComponent } from './components/usecases/mision/mision-index/mision-index.component';
 import { MisionEditComponent } from './components/usecases/mision/mision-edit/mision-edit.component';
+import { RootComponent } from './components/root/root/root.component';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -139,6 +142,7 @@ import { MisionEditComponent } from './components/usecases/mision/mision-edit/mi
     DisableControlDirective,
     MisionIndexComponent,
     MisionEditComponent,
+    RootComponent,
     
   ],
   imports: [
@@ -152,7 +156,8 @@ import { MisionEditComponent } from './components/usecases/mision/mision-edit/mi
     AngularFireModule.initializeApp(environment.firebaseConfig, "SARFAB"),
     AngularFirestoreModule,
     AngularFireDatabaseModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    AngularFireAuthModule
   ],
   entryComponents: [
     BottomSheetOverviewVoluntarioSheet,
@@ -170,6 +175,7 @@ import { MisionEditComponent } from './components/usecases/mision/mision-edit/mi
     CompaniaService,
     EspecialidadService,
     MeritoService,
+    AuthService,
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},

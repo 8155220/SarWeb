@@ -8,6 +8,7 @@ import { Observable, Subject, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import { UiService } from "../../../services/ui.service";
 import { Location } from "@angular/common";
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: "app-toolbar",
@@ -30,7 +31,7 @@ export class ToolbarComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    public uiService: UiService,private location:Location
+    public uiService: UiService,private location:Location,public auth:AuthService
   ) {}
 
   ngOnInit() {

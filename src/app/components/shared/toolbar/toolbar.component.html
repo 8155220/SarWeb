@@ -15,64 +15,23 @@
         </div>
 
         <div fxFlex fxLayoutAlign="flex-end" fxHide.xs>
-            <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
-
-                <li><a routerLink="/signup">Registrarse</a></li>
+            <button mat-button (click)="auth.googleLogin()" *ngIf="!(auth.user | async)">Iniciar Session</button>
+            <button mat-button (click)="auth.logOut()" *ngIf="auth.user | async">Cerrar Session</button>
+            <!-- <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
+                <li>
+                    <button mat-button routerLink="/signup">Registrarse</button>
+                </li>
+                <li>
+                    <h1 class="mat-display-1" routerLink="/signup">Registrarse</h1>
+                </li>
+                <li><a mat-tab-link class="mat-display-1" routerLink="/signup">Registrarse</a></li>
 
                 <li> <a routerLink="/login">Iniciar Session</a></li>
 
-            </ul>
+            </ul> -->
         </div>
         <div class='backspace-toolbar' fxHide.gt-xs>
             <mat-icon (click)='cancel()' size='50px'>keyboard_backspace</mat-icon>
         </div>
     </div>
 </mat-toolbar>
-
-
-
-
-<!-- <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
-        <mat-toolbar color="primary">Menu</mat-toolbar>
-
-
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <mat-toolbar color="primary">
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
-                  <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-                </button>
-            <div fxLayout="row">
-                <div fxLayoutAlign="start start" fxHide.gt-xs>
-                    <span>{{title}}</span>
-                </div>
-
-                <div fxFlex fxLayoutAlign="flex-end" fxHide.xs>
-                    <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
-
-                        <li><a routerLink="/signup">Registrarse</a></li>
-
-                        <li> <a routerLink="/login">Iniciar Session</a></li>
-
-                    </ul>
-                </div>
-                <div class='backspace-toolbar' fxHide.gt-xs>
-                    <mat-icon (click)='cancel()' size='50px'>keyboard_backspace</mat-icon>
-                </div>
-            </div>
-        </mat-toolbar>
-
-
-
-        <main>
-            <router-outlet></router-outlet>
-
-        </main>
-    </mat-sidenav-content>
-
-
-
-
-
-</mat-sidenav-container> -->

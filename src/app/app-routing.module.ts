@@ -34,11 +34,13 @@ import { AscensoGradoComponent } from './components/usecases/ascenso/ascenso-gra
 import { AscensoIndexComponent } from './components/usecases/ascenso/ascenso-index/ascenso-index.component';
 import { MisionCreateComponent } from './components/usecases/mision/mision-create/mision-create.component';
 import { MisionIndexComponent } from './components/usecases/mision/mision-index/mision-index.component';
+import { RootComponent } from './components/root/root/root.component';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
     
-    {path:'voluntarios/index',component:VoluntarioIndexComponent},
+    {path:'dashboard',component:RootComponent,children:[
+    //{path:'',component:RootComponent},
     {path:'voluntarios/create',component:VoluntarioCreateComponent},
     {path:'voluntarios/read',component:VoluntarioReadComponent},
     {path:'voluntarios/update/:id',component:VoluntarioUpdateComponent},
@@ -74,13 +76,16 @@ const routes:Routes = [
     {path:'ascenso/grado/:grado',component:AscensoGradoComponent},
     {path:'ascenso/index',component:AscensoIndexComponent},
 
+    {path:'mision/create',component:MisionCreateComponent},
+    {path:'mision/index',component:MisionIndexComponent},
+    {path:'mision/update/:id',component:MisionEditComponent},
+    ]},
+
     {path:'signup',component:SingupComponent},
     {path:'login',component:LoginComponent},
     {path:'login',component:LoginComponent},
 
-    {path:'mision/create',component:MisionCreateComponent},
-    {path:'mision/index',component:MisionIndexComponent},
-    {path:'mision/update/:id',component:MisionEditComponent},
+   
 ];
 @NgModule({
     imports:[RouterModule.forRoot(routes)],

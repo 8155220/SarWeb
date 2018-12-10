@@ -19,7 +19,7 @@ import { VoluntarioModel } from "../models/voluntario/voluntario.model";
 import { AngularFireDatabase } from "angularfire2/database";
 import { AngularFireStorage } from "angularfire2/storage";
 import { CompaniaService } from "./compania.service";
-
+import * as faker from 'faker/locale/es_MX'
 enum DatabaseType {
   FIRESTORE,
   REALTIMEDATABASE
@@ -474,5 +474,40 @@ export class VoluntarioService {
             changes.map(c => ({ id: c.payload.key, ...c.payload.val() }))
           )
         );
+  }
+
+  generarVoluntarios(){
+    //let r = Math.random().toString(36).substring(7);
+  //console.log("random", r);
+    let persona:any={};
+    //var nombre:String ="",
+     for(let i = 0 ; i<2000;i++){
+      persona.nombre = faker.name.findName();
+      persona.apellidoPaterno= faker.name.lastName();
+      persona.apellidoMaterno= faker.name.lastName();
+      persona.sexo= "masculino";
+      persona.fechaNacimiento= Date.now();
+      persona.numeroCarnetIdentidad= faker.phone.phoneNumber();
+      persona.direccion= faker.address.streetAddress();
+      persona.celular=Date.now();
+      persona.telefonoFijo=Date.now();
+      persona.pais= faker.address.country();
+      persona.departamento= faker.address.country();
+      persona.provincia=faker.address.country();
+      persona.capital= faker.address.country();
+      persona.municipio= faker.address.country();
+      persona.nombreTutor= faker.name.findName();;
+      persona.celularTutor=Date.now();
+      persona.estado= "activo";
+      persona.tipoPersona= "civil";
+      persona.grado= "grad";
+      persona.idCompania= "-LQ8S6nv208-wao0QjB8"; //Peticion para compnia
+      persona.fotoURL= faker.image.avatar();
+      persona.nombreCompleto= `${persona.nombre} ${persona.apellidoPaterno} ${persona.apellidoMaterno}` ;
+      persona.timestamp=Date.now();
+      //this.voluntariosRef.push(persona)
+      this.db.list<VoluntarioModel>('personas').push(persona);
+     }
+
   }
 }

@@ -109,6 +109,12 @@ export class VoluntarioIndexComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  cargarDatos(){
+   // let r = Math.random().toString(36).substring(1);
+  //console.log("random", r);
+     this.voluntarioService.generarVoluntarios()
+  }
 }
 
 @Component({

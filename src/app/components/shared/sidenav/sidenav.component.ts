@@ -19,46 +19,46 @@ export class SidenavComponent implements AfterViewInit {
         {
           displayName: 'Gestionar Voluntarios',
           iconName: 'group',
-          route: '/voluntarios/index',
+          route: '/dashboard/voluntarios/index',
         },
         {
           displayName: 'Gestionar Especialidad',
           iconName: 'speaker_notes',
-          route: '/especialidad/index',
+          route: '/dashboard/especialidad/index',
         },
         {
           displayName: 'Gestionar Companias',
           iconName: 'feedback',
-          route: '/compania/index'
+          route: '/dashboard/compania/index'
         },
         {
           displayName: 'Meritos',
           iconName: 'feedback',
-          route: '/merito/index'
+          route: '/dashboard/merito/index'
         }
         ,
         {
           displayName: 'Demeritos',
           iconName: 'feedback',
-          route: '/demerito/index'
+          route: '/dashboard/demerito/index'
         }
         ,
         {
           displayName: 'Bajas',
           iconName: 'feedback',
-          route: '/baja/index'
+          route: '/dashboard/baja/index'
         }
         ,
         {
           displayName: 'Incorporaciones',
           iconName: 'feedback',
-          route: '/incorporacion/index'
+          route: '/dashboard/incorporacion/index'
         }
         ,
         {
           displayName: 'Ascensos',
           iconName: 'feedback',
-          route: '/ascenso/index'
+          route: '/dashboard/ascenso/index'
         }
         ,
       ]
@@ -70,7 +70,7 @@ export class SidenavComponent implements AfterViewInit {
         {
           displayName: 'Gestionar Voluntarios',
           iconName: 'group',
-          route: '/voluntarios/index',
+          route: '/dashboard/voluntarios/index',
         },
         {
           displayName: 'Sessions',
