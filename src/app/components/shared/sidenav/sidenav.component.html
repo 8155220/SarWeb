@@ -4,28 +4,23 @@
     <mat-sidenav class="mat-elevation-z4" fixedInViewport="false" #appDrawer [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
 
 
-        <div fxLayout="column">
+        <div fxLayout="column" *ngIf="usuarioLogeado">
             <mat-card class="example-card" color='accent'>
                 <mat-card-header>
-                    <img mat-card-avatar src="http://franquia.globalmedclinica.com.br/wp-content/uploads/2016/01/investidores-img-02-01.png" alt="">
-
-                    <mat-card-title>Alfredo Chusgo Soliz</mat-card-title>
-                    <mat-card-subtitle>alfredochsoliz@gmail.com</mat-card-subtitle>
+                    <img mat-card-avatar [src]="usuarioLogeado.fotoURL | noimage " alt="">
+                    <mat-card-title>{{usuarioLogeado.nombreCompleto }}</mat-card-title>
+                    <mat-card-subtitle>{{usuarioLogeado.email }}</mat-card-subtitle>
                 </mat-card-header>
-                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-                <mat-card-content>
-                    <p>
-                        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
-                    </p>
-                </mat-card-content> -->
-                <!-- <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions> -->
+
             </mat-card>
             <mat-nav-list>
                 <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item>
 
+                <a mat-list-item [routerLink]="['/routePath']">
+                    <mat-icon>recent_actors</mat-icon>
+                    Caso USo1
+
+                </a>
             </mat-nav-list>
         </div>
 

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Observable,from } from 'rxjs';
 //import { from } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -19,7 +20,7 @@ interface User{
 export class AuthService {
   user:Observable<User>
 
-  constructor(private afAuth:AngularFireAuth) { 
+  constructor(private afAuth:AngularFireAuth,private router:Router) { 
     this.user = afAuth.authState
   }
 
@@ -34,13 +35,16 @@ export class AuthService {
     })
   }
   private updateUserData(user){
-    console.log(user);
+    this.router.navigate(["/dashboard/voluntarios/index"])
     
     //user = from(user)
   }
 
   logOut(){
-    this.afAuth.auth.signOut();
+    this.afAuth.auth.signOut().then(e => 
+      this.router.navigate(["/welcome"])
+    )
+    
   }
 
 }

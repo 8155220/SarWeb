@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { Observable, Subscriber, Subject, from } from "rxjs";
 import { Injectable } from "@angular/core";
 import {
@@ -13,7 +14,7 @@ import {
   AngularFirestoreDocument
 } from "angularfire2/firestore";
 import { FormGroup } from "@angular/forms";
-import { map, finalize } from "rxjs/operators";
+import { map, finalize, switchMap } from 'rxjs/operators';
 import { environment } from "../../environments/environment";
 import { VoluntarioModel } from "../models/voluntario/voluntario.model";
 import { AngularFireDatabase } from "angularfire2/database";
@@ -46,7 +47,7 @@ export class VoluntarioService {
   companiasRef;
 
   loading = false;
-  VOLUNTARIOS_PATH = "voluntarios2";
+  VOLUNTARIOS_PATH = "personas";
   FAMILIARES_PATH = "familiares";
   INFORMACION_ADICIONAL_PATH = "informacionAdicional";
   DATOS_FISICOS_PATH = "datosFisicos";
@@ -55,7 +56,8 @@ export class VoluntarioService {
     private companiaService: CompaniaService,
     private afs: AngularFirestore,
     private db: AngularFireDatabase,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private auth:AuthService
   ) {
     this.voluntariosRef = this.db.list<VoluntarioModel>(this.VOLUNTARIOS_PATH);
     this.familiaresRef = this.db.list<any>(this.FAMILIARES_PATH);
@@ -105,6 +107,63 @@ export class VoluntarioService {
       map(c=> ({ id: c.payload.key, ...c.payload.val() })
       )
     );
+  }
+  getPersonaLogInData():Observable<any> {
+   /* if(this.auth.user){
+      return this.db.list(`${this.VOLUNTARIOS_PATH}`,ref=> ref.orderByChild('email').equalTo(email).limitToFirst(1))
+      .snapshotChanges()
+      .pipe(
+        map(changes =>
+          changes.map(c => ({ id: c.payload.key, ...c.payload.val() }))
+        )
+        );
+    }*/
+   /* this.auth.user.subscribe(e=>{
+      console.log("Estado Auth");
+      console.log(e);
+      
+      
+      return this.db.list(`${this.VOLUNTARIOS_PATH}`,ref=> ref.orderByChild('email').equalTo(e.email).limitToFirst(1))
+      .snapshotChanges()
+      .pipe(
+        map(changes =>{
+          console.log('Changes');
+          console.log(changes);
+          return  changes.map(c => ({ id: c.payload.key, ...c.payload.val() }))
+        }
+        )
+        );
+    })*/
+
+    return this.auth.user.pipe
+    (switchMap(e=> this.db.list(`${this.VOLUNTARIOS_PATH}`,ref=> ref.orderByChild('email').equalTo(e.email).limitToFirst(1))
+    .snapshotChanges()
+    .pipe(
+      map(changes =>{
+        console.log('Changes');
+        console.log(changes);
+        return  changes.map(c => ({ id: c.payload.key, ...c.payload.val() }))
+        }
+      )
+      )))
+
+
+   /* this.auth.user.subscribe(e=>{
+      console.log("Estado Auth");
+      console.log(e);
+      
+      
+      return this.db.list(`${this.VOLUNTARIOS_PATH}`,ref=> ref.orderByChild('email').equalTo(e.email).limitToFirst(1))
+      .snapshotChanges()
+      .pipe(
+        map(changes =>{
+          console.log('Changes');
+          console.log(changes);
+          return  changes.map(c => ({ id: c.payload.key, ...c.payload.val() }))
+        }
+        )
+        );
+    })*/
   }
 
   deleteVoluntario(id: string) {
@@ -479,7 +538,8 @@ export class VoluntarioService {
   generarVoluntarios(){
     //let r = Math.random().toString(36).substring(7);
   //console.log("random", r);
-    let persona:any={};
+  this.db.list<VoluntarioModel>('personas').remove();
+    /*let persona:any={};
     //var nombre:String ="",
      for(let i = 0 ; i<2000;i++){
       persona.nombre = faker.name.findName();
@@ -506,7 +566,7 @@ export class VoluntarioService {
       persona.nombreCompleto= `${persona.nombre} ${persona.apellidoPaterno} ${persona.apellidoMaterno}` ;
       persona.timestamp=Date.now();
       //this.voluntariosRef.push(persona)
-      this.db.list<VoluntarioModel>('personas').push(persona);
+      this.db.list<VoluntarioModel>('personas').push(persona);*/
      }
 
   }

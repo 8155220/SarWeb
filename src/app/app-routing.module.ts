@@ -35,55 +35,56 @@ import { AscensoIndexComponent } from './components/usecases/ascenso/ascenso-ind
 import { MisionCreateComponent } from './components/usecases/mision/mision-create/mision-create.component';
 import { MisionIndexComponent } from './components/usecases/mision/mision-index/mision-index.component';
 import { RootComponent } from './components/root/root/root.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
     
     {path:'dashboard',component:RootComponent,children:[
     //{path:'',component:RootComponent},
-    {path:'voluntarios/create',component:VoluntarioCreateComponent},
-    {path:'voluntarios/read',component:VoluntarioReadComponent},
-    {path:'voluntarios/update/:id',component:VoluntarioUpdateComponent},
-    {path:'voluntarios/card',component:VoluntarioCardComponent},
+    {path:'voluntarios/index',component:VoluntarioIndexComponent,canActivate:[AuthGuard]},
+    {path:'voluntarios/create',component:VoluntarioCreateComponent,canActivate:[AuthGuard]},
+    {path:'voluntarios/read',component:VoluntarioReadComponent,canActivate:[AuthGuard]},
+    {path:'voluntarios/update/:id',component:VoluntarioUpdateComponent,canActivate:[AuthGuard]},
+    {path:'voluntarios/card',component:VoluntarioCardComponent,canActivate:[AuthGuard]},
 
 
-    {path:'especialidad/create',component:EspecialidadCreateComponent},
-    {path:'especialidad/index',component:EspecialidadIndexComponent},
-    {path:'especialidad/update/:id',component:EspecialidadEditComponent},
-    {path:'especialidad/detail/:id',component:EspecialidadDetailComponent},
+    {path:'especialidad/create',component:EspecialidadCreateComponent,canActivate:[AuthGuard]},
+    {path:'especialidad/index',component:EspecialidadIndexComponent,canActivate:[AuthGuard]},
+    {path:'especialidad/update/:id',component:EspecialidadEditComponent,canActivate:[AuthGuard]},
+    {path:'especialidad/detail/:id',component:EspecialidadDetailComponent,canActivate:[AuthGuard]},
 
-    {path:'compania/create',component:CompaniaCreateComponent},
-    {path:'compania/index',component:CompaniaIndexComponent},
-    {path:'compania/update/:id',component:CompaniaEditComponent},
-    {path:'compania/detail/:id',component:CompaniaDetailComponent},
+    {path:'compania/create',component:CompaniaCreateComponent,canActivate:[AuthGuard]},
+    {path:'compania/index',component:CompaniaIndexComponent,canActivate:[AuthGuard]},
+    {path:'compania/update/:id',component:CompaniaEditComponent,canActivate:[AuthGuard]},
+    {path:'compania/detail/:id',component:CompaniaDetailComponent,canActivate:[AuthGuard]},
 
-    {path:'merito/create',component:MeritoCreateComponent},
-    {path:'merito/index',component:MeritoIndexComponent},
-    {path:'merito/update/:id',component:MeritoEditComponent},
+    {path:'merito/create',component:MeritoCreateComponent,canActivate:[AuthGuard]},
+    {path:'merito/index',component:MeritoIndexComponent,canActivate:[AuthGuard]},
+    {path:'merito/update/:id',component:MeritoEditComponent,canActivate:[AuthGuard]},
 
-    {path:'demerito/create',component:DemeritoCreateComponent},
-    {path:'demerito/index',component:DemeritoIndexComponent},
-    {path:'demerito/update/:id',component:DemeritoEditComponent},
+    {path:'demerito/create',component:DemeritoCreateComponent,canActivate:[AuthGuard]},
+    {path:'demerito/index',component:DemeritoIndexComponent,canActivate:[AuthGuard]},
+    {path:'demerito/update/:id',component:DemeritoEditComponent,canActivate:[AuthGuard]},
 
-    {path:'baja/create',component:BajaCreateComponent},
-    {path:'baja/index',component:BajaindexComponent},
-    {path:'baja/detail/:id',component:BajaDetailComponent},
+    {path:'baja/create',component:BajaCreateComponent,canActivate:[AuthGuard]},
+    {path:'baja/index',component:BajaindexComponent,canActivate:[AuthGuard]},
+    {path:'baja/detail/:id',component:BajaDetailComponent,canActivate:[AuthGuard]},
 
-    {path:'incorporacion/create',component:IncorporacionCreateComponent},
-    {path:'incorporacion/index',component:IncorporacionIndexComponent},
-    {path:'incorporacion/detail/:id',component:IncorporacionDetailComponent},
+    {path:'incorporacion/create',component:IncorporacionCreateComponent,canActivate:[AuthGuard]},
+    {path:'incorporacion/index',component:IncorporacionIndexComponent,canActivate:[AuthGuard]},
+    {path:'incorporacion/detail/:id',component:IncorporacionDetailComponent,canActivate:[AuthGuard]},
 
-    {path:'ascenso/grado/:grado',component:AscensoGradoComponent},
-    {path:'ascenso/index',component:AscensoIndexComponent},
+    {path:'ascenso/grado/:grado',component:AscensoGradoComponent,canActivate:[AuthGuard]},
+    {path:'ascenso/index',component:AscensoIndexComponent,canActivate:[AuthGuard]},
 
-    {path:'mision/create',component:MisionCreateComponent},
-    {path:'mision/index',component:MisionIndexComponent},
-    {path:'mision/update/:id',component:MisionEditComponent},
+    {path:'mision/create',component:MisionCreateComponent,canActivate:[AuthGuard]},
+    {path:'mision/index',component:MisionIndexComponent,canActivate:[AuthGuard]},
+    {path:'mision/update/:id',component:MisionEditComponent,canActivate:[AuthGuard]},
     ]},
 
-    {path:'signup',component:SingupComponent},
-    {path:'login',component:LoginComponent},
-    {path:'login',component:LoginComponent},
+
+    {path:'welcome',component:WelcomeComponent},
 
    
 ];

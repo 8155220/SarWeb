@@ -44,6 +44,10 @@ export class ToolbarComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
+  onLogOut(){
+    this.auth.logOut()
+    this.ngOnInit()
+  }
   
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.

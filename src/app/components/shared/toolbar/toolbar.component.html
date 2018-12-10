@@ -16,7 +16,7 @@
 
         <div fxFlex fxLayoutAlign="flex-end" fxHide.xs>
             <button mat-button (click)="auth.googleLogin()" *ngIf="!(auth.user | async)">Iniciar Session</button>
-            <button mat-button (click)="auth.logOut()" *ngIf="auth.user | async">Cerrar Session</button>
+            <button mat-button (click)="onLogOut()" *ngIf="auth.user | async">Cerrar Session</button>
             <!-- <ul fxLayout="row" fxLayoutGap="10px" class="navigation-items">
                 <li>
                     <button mat-button routerLink="/signup">Registrarse</button>

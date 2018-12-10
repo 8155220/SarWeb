@@ -9,7 +9,7 @@ import { Injectable } from "@angular/core";
 export class AscensoService {
   AscensosRef;
   ASCENSOS_PATH = "ascensos";
-  VOLUNTARIOS_PATH = "voluntarios2";
+  VOLUNTARIOS_PATH = "personas";
   constructor(private db: AngularFireDatabase) {
     this.AscensosRef = this.db.list<any>(this.ASCENSOS_PATH);
   }

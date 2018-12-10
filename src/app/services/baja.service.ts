@@ -9,7 +9,7 @@ import { Injectable } from "@angular/core";
 export class BajaService {
   BajasRef;
   BAJAS_PATH = "bajas";
-  PERSONAS_PATH = 'voluntarios2';
+  PERSONAS_PATH = 'personas';
   constructor(private db: AngularFireDatabase) {
     this.BajasRef = this.db.list<any>(this.BAJAS_PATH);
   }

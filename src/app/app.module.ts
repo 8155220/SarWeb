@@ -18,8 +18,6 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { MaterialModule } from "./material.module";
-import { SingupComponent } from "./components/auth/singup/singup.component";
-import { LoginComponent } from "./components/auth/login/login.component";
 
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { WelcomeComponent } from "./components/welcome/welcome.component";
@@ -87,8 +85,6 @@ import { AuthService } from './services/auth.service';
 @NgModule({
   declarations: [
     AppComponent,
-    SingupComponent,
-    LoginComponent,
     WelcomeComponent,
     ToolbarComponent,
     FooterComponent,
