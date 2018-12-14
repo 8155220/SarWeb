@@ -1,4 +1,4 @@
-import { PrivilegiosService } from './../services/privilegios.service';
+import { PrivilegiosService } from '../services/privilegios.service';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
@@ -10,7 +10,7 @@ import { UiService } from '../services/ui.service';
 @Injectable({
   providedIn: 'root'
 })
-export class EspecialidadEditGuard implements CanActivate {
+export class AscensoEditGuard implements CanActivate {
   constructor(private auth:AuthService,private router:Router,private ps:PrivilegiosService,private uiService:UiService){}
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -18,7 +18,7 @@ export class EspecialidadEditGuard implements CanActivate {
       return this.auth.user.pipe(take(1),switchMap((e:any)=> 
       this.ps.getPrivilegiosPersonaFromEmail(e.email)
       ),map((e:any)=>{
-        return e.especialidades.edit
+        return e.ascensos.edit
       }),tap(permiso=>{
         if(!permiso){
             this.uiService.warn("Privilegios insuficientes")

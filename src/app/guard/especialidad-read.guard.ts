@@ -5,12 +5,13 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angul
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { PrivilegiosService } from '../services/privilegios.service';
+import { UiService } from '../services/ui.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EspecialidadReadGuard implements CanActivate {
-  constructor(private auth:AuthService,private router:Router,private ps:PrivilegiosService){}
+  constructor(private auth:AuthService,private router:Router,private ps:PrivilegiosService,private uiService:UiService){}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
@@ -20,7 +21,11 @@ export class EspecialidadReadGuard implements CanActivate {
         console.log("ValorE:");
         
         return this.ps.getPrivilegiosPersonaFromEmail(e.email)
-      }),map((e:any)=>e.especialidades.read))
+      }),map((e:any)=>e.especialidades.read),tap(permiso=>{
+        if(!permiso){
+            this.uiService.warn("Privilegios insuficientes")
+        }
+      }))
       //return this.auth.userPrivileges.especialidades.read
       /*if(!this.auth.userPrivileges.especialidades.read){
         

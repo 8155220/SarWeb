@@ -55,7 +55,7 @@ export class AscensoIndexComponent implements OnInit {
     if(this.selectedValue==""){
       this.uiService.warn("seleccione una opcion valida");
     } else {
-        this.router.navigate(["dashboard/ascenso/grado",this.selectedValue])
+        this.router.navigate(["/dashboard/ascenso/grado",this.selectedValue])
     }
   }
   ascenderVoluntario(){
