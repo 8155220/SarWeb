@@ -52,6 +52,7 @@ export class VoluntarioService {
   INFORMACION_ADICIONAL_PATH = "informacionAdicional";
   DATOS_FISICOS_PATH = "datosFisicos";
   COMPANIAS_PATH = "companias";
+  PRIVILEGIOS_PATH = "privilegios";
   constructor(
     private companiaService: CompaniaService,
     private afs: AngularFirestore,
@@ -535,6 +536,12 @@ export class VoluntarioService {
         );
   }
 
+ /* getPrivilegiosPersonaFromEmail(email:string){
+    return this.db.list(this.VOLUNTARIOS_PATH,ref=> ref.orderByChild('email').equalTo(email).limitToFirst(1))
+    .valueChanges()
+    .pipe(switchMap((e:any)=>this.db.object(`${this.PRIVILEGIOS_PATH}/${e.privilegioId}`).valueChanges()))
+  }*/
+
   generarVoluntarios(){
     //let r = Math.random().toString(36).substring(7);
   //console.log("random", r);
@@ -569,5 +576,5 @@ export class VoluntarioService {
       this.db.list<VoluntarioModel>('personas').push(persona);*/
      }
 
-  }
 }
+

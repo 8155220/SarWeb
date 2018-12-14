@@ -65,7 +65,7 @@ export class CompaniaEditComponent implements OnInit {
             if (e.bytesTransferred == e.totalBytes) {
               this.loading = false;
               this.uiService.success("Registrado Exitosamente");
-              this.router.navigate(["/compania/index"]);
+              this.router.navigate(["/dashboard/compania/index"]);
             }
           }
         },
@@ -82,7 +82,7 @@ export class CompaniaEditComponent implements OnInit {
         (e: any) => {
           this.loading = false;
           this.uiService.success("Registrado Exitosamente");
-          this.router.navigate(["/compania/index"]);
+          this.router.navigate(["/dashboard/compania/index"]);
         }
         ,(e:any)=>{
           e => {

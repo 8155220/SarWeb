@@ -104,7 +104,7 @@ export class VoluntarioIndexComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result == "yes") {
         this.voluntarioService.deleteVoluntario(voluntario.id);
-        this._router.navigate(["/voluntarios/index"]);
+        this._router.navigate(["/dashboard/voluntarios/index"]);
         this.ngOnInit();
       }
     });

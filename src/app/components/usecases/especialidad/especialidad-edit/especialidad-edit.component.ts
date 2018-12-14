@@ -64,7 +64,7 @@ export class EspecialidadEditComponent implements OnInit {
             if (e.bytesTransferred == e.totalBytes) {
               this.loading = false;
               this.uiService.success("Registrado Exitosamente");
-              this.router.navigate(["/especialidad/index"]);
+              this.router.navigate(["/dashboard/especialidad/index"]);
             }
           }
         },
@@ -81,7 +81,7 @@ export class EspecialidadEditComponent implements OnInit {
         (e: any) => {
           this.loading = false;
           this.uiService.success("Registrado Exitosamente");
-          this.router.navigate(["/especialidad/index"]);
+          this.router.navigate(["/dashboard/especialidad/index"]);
         }
         ,(e:any)=>{
           e => {

@@ -330,12 +330,12 @@ export class MisionEditComponent implements OnInit {
           console.log(error);
           
           this.uiService.warn("Ocurrio un error, intente mas tarde");
-          this.router.navigate(["mision/index"]);
+          this.router.navigate(["/dashboard/mision/index"]);
         },
         () => {
           this.loading = false;
           this.uiService.success("Mision Editada Correctamente");
-          this.router.navigate(["mision/index"]);
+          this.router.navigate(["/dashboard/mision/index"]);
         }
       );
     }

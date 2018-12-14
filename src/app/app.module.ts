@@ -81,6 +81,9 @@ import { MisionIndexComponent } from './components/usecases/mision/mision-index/
 import { MisionEditComponent } from './components/usecases/mision/mision-edit/mision-edit.component';
 import { RootComponent } from './components/root/root/root.component';
 import { AuthService } from './services/auth.service';
+import { PrivilegiosEditComponent } from './components/usecases/privilegios/privilegios-edit/privilegios-edit.component';
+import { PrivilegiosCreateComponent } from './components/usecases/privilegios/privilegios-create/privilegios-create.component';
+import { PrivilegiosIndexComponent } from './components/usecases/privilegios/privilegios-index/privilegios-index.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +142,9 @@ import { AuthService } from './services/auth.service';
     MisionIndexComponent,
     MisionEditComponent,
     RootComponent,
+    PrivilegiosEditComponent,
+    PrivilegiosCreateComponent,
+    PrivilegiosIndexComponent,
     
   ],
   imports: [
@@ -166,12 +172,12 @@ import { AuthService } from './services/auth.service';
   ],
   providers: [
     VoluntarioService,
+    AuthService,
     UploadService,
     AngularFireStorage,
-    CompaniaService,
-    EspecialidadService,
-    MeritoService,
-    AuthService,
+    //CompaniaService,
+   // EspecialidadService,
+    //MeritoService,
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},

@@ -75,7 +75,7 @@ export class IncorporacionCreateComponent implements OnInit {
       e => {
         this.loading = false;
         this.uiService.success("Incorporado Exitosamente");
-        this.router.navigate(["incorporacion/index"]);
+        this.router.navigate(["/dashboard/incorporacion/index"]);
       },
       (e: any) => console.log(e)
     );

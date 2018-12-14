@@ -26,11 +26,11 @@ export class MeritoIndexComponent implements OnInit {
 
   onEdit(row: any) {
     console.log(row);
-    this.uiService.router.navigate(['/merito/update',row.id]);
+    this.uiService.router.navigate(['/dashboard/merito/update',row.id]);
 
   }
   onDetail(row:any){
-    this.uiService.router.navigate(['/merito/detail',row.id]);
+    this.uiService.router.navigate(['/dashboard/merito/detail',row.id]);
   }
   onDelete(row: any) {
     this.uiService

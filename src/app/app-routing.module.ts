@@ -1,3 +1,7 @@
+import { EspecialidadReadGuard } from './guard/especialidad-read.guard';
+import { PrivilegiosEditComponent } from './components/usecases/privilegios/privilegios-edit/privilegios-edit.component';
+import { PrivilegiosCreateComponent } from './components/usecases/privilegios/privilegios-create/privilegios-create.component';
+
 import { MisionEditComponent } from './components/usecases/mision/mision-edit/mision-edit.component';
 import { BajaDetailComponent } from './components/usecases/baja/baja-detail/baja-detail.component';
 import { IncorporacionCreateComponent } from './components/usecases/incorporacion/incorporacion-create/incorporacion-create.component';
@@ -36,6 +40,7 @@ import { MisionCreateComponent } from './components/usecases/mision/mision-creat
 import { MisionIndexComponent } from './components/usecases/mision/mision-index/mision-index.component';
 import { RootComponent } from './components/root/root/root.component';
 import { AuthGuard } from './guard/auth.guard';
+import { PrivilegiosIndexComponent } from './components/usecases/privilegios/privilegios-index/privilegios-index.component';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
@@ -50,7 +55,7 @@ const routes:Routes = [
 
 
     {path:'especialidad/create',component:EspecialidadCreateComponent,canActivate:[AuthGuard]},
-    {path:'especialidad/index',component:EspecialidadIndexComponent,canActivate:[AuthGuard]},
+    {path:'especialidad/index',component:EspecialidadIndexComponent,canActivate:[AuthGuard,EspecialidadReadGuard]},
     {path:'especialidad/update/:id',component:EspecialidadEditComponent,canActivate:[AuthGuard]},
     {path:'especialidad/detail/:id',component:EspecialidadDetailComponent,canActivate:[AuthGuard]},
 
@@ -81,6 +86,10 @@ const routes:Routes = [
     {path:'mision/create',component:MisionCreateComponent,canActivate:[AuthGuard]},
     {path:'mision/index',component:MisionIndexComponent,canActivate:[AuthGuard]},
     {path:'mision/update/:id',component:MisionEditComponent,canActivate:[AuthGuard]},
+
+    {path:'privilegios/index',component:PrivilegiosIndexComponent,canActivate:[AuthGuard]},
+    {path:'privilegios/create',component:PrivilegiosCreateComponent,canActivate:[AuthGuard]},
+    {path:'privilegios/update/:id',component:PrivilegiosEditComponent,canActivate:[AuthGuard]},
     ]},
 
 

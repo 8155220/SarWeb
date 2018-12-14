@@ -119,7 +119,7 @@ export class VoluntarioCreateComponent implements OnInit, AfterViewInit {
                 if (e.bytesTransferred == e.totalBytes) {
                   this.loading = false;
                   this.openSnackBar("Registrado Exitosamente", "ocultar");
-                  this.router.navigate(["/voluntarios/index"]);
+                  this.router.navigate(["/dashboard/voluntarios/index"]);
                 }
               }
             },
@@ -144,7 +144,7 @@ export class VoluntarioCreateComponent implements OnInit, AfterViewInit {
             (e: any) => {
               this.loading = false;
               this.openSnackBar("Registrado Exitosamente", "ocultar");
-              this.router.navigate(["/voluntarios/index"]);
+              this.router.navigate(["/dashboard/voluntarios/index"]);
             },
             e => {
               console.log(e);

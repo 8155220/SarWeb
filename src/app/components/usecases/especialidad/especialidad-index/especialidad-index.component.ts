@@ -28,11 +28,11 @@ export class EspecialidadIndexComponent implements OnInit {
 
   onEdit(row: any) {
     console.log(row);
-    this.uiService.router.navigate(['/especialidad/update',row.id]);
+    this.uiService.router.navigate(['/dashboard/especialidad/update',row.id]);
 
   }
   onDetail(row:any){
-    this.uiService.router.navigate(['/especialidad/detail',row.id]);
+    this.uiService.router.navigate(['/dashboard/especialidad/detail',row.id]);
   }
   onDelete(row: any) {
     this.uiService

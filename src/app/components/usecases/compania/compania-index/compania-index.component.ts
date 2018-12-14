@@ -29,11 +29,11 @@ export class CompaniaIndexComponent implements OnInit {
 
   onEdit(row: any) {
     console.log(row);
-    this.uiService.router.navigate(['/compania/update',row.id]);
+    this.uiService.router.navigate(['/dashboard/compania/update',row.id]);
 
   }
   onDetail(row:any){
-    this.uiService.router.navigate(['/compania/detail',row.id]);
+    this.uiService.router.navigate(['/dashboard/compania/detail',row.id]);
   }
   onDelete(row: any) {
     this.uiService

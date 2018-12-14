@@ -230,11 +230,11 @@ export class MisionCreateComponent implements OnInit {
       },error=>{
         this.loading = false;
         this.uiService.warn("Ocurrio un error, intente mas tarde");
-        this.router.navigate(['mision/index']);
+        this.router.navigate(['/dashboard/mision/index']);
       },()=>{
         this.loading = false;
         this.uiService.success("Mision Creada Correctamente");
-        this.router.navigate(['mision/index']);
+        this.router.navigate(['/dashboard/mision/index']);
       });
     }
   }

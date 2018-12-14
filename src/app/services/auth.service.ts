@@ -1,9 +1,11 @@
+import { VoluntarioService } from './voluntario.service';
 import { Router } from '@angular/router';
 import { Observable,from } from 'rxjs';
 //import { from } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {AngularFireAuth} from 'angularfire2/auth'
 import * as firebase from 'firebase';
+import { PrivilegiosService } from './privilegios.service';
 
 interface User{
   uid:string;
@@ -11,16 +13,13 @@ interface User{
   photoURL?:string;
   displayName?:string; 
 }
-
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   user:Observable<User>
-
-  constructor(private afAuth:AngularFireAuth,private router:Router) { 
+  userPrivileges:Observable<any>
+  constructor(private afAuth:AngularFireAuth,private router:Router,private privilegiosService:PrivilegiosService) { 
     this.user = afAuth.authState
   }
 
@@ -35,7 +34,19 @@ export class AuthService {
     })
   }
   private updateUserData(user){
-    this.router.navigate(["/dashboard/voluntarios/index"])
+    //this.router.navigate(["/dashboard/voluntarios/index"])
+    console.log('Email:')
+    console.log(user.email)
+    this.privilegiosService.getPrivilegiosPersonaFromEmail(user.email).subscribe((e:any)=>
+      {
+        console.log('Resultado')
+        console.log(e)
+        this.userPrivileges=e
+        this.router.navigate(["/dashboard/voluntarios/index"])
+      }
+      
+
+    )
     
     //user = from(user)
   }

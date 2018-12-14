@@ -26,7 +26,7 @@ export class IncorporacionIndexComponent implements OnInit {
   }
 
   onDetail(row:any){
-    this.uiService.router.navigate(['/incorporacion/detail',row.id]);
+    this.uiService.router.navigate(['/dashboard/incorporacion/detail',row.id]);
   }
 
 }

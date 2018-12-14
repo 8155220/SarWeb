@@ -95,7 +95,7 @@ export class AscensoGradoComponent implements OnInit {
         .subscribe(e => console.log(e), undefined, () => {
           this.loading = false;
           this.uiService.success("Se ascendio a los voluntarios seleccionados correctamente");
-          this.router.navigate(["ascenso/index"]);
+          this.router.navigate(["/dashboard/ascenso/index"]);
         });
     }
   }

@@ -73,7 +73,7 @@ export class MeritoCreateComponent implements OnInit {
         e => {
           this.loading = false;
           this.uiService.success('Guardaro Exitosamente');
-          this.router.navigate(["merito/index"]);
+          this.router.navigate(["/dashboard/merito/index"]);
         },
         (e: any) => console.log(e),
         () => console.log("Complete")

@@ -93,7 +93,7 @@ export class DemeritoEditComponent implements OnInit {
       e => {
         this.loading = false;
         this.uiService.success('Guardaro Exitosamente');
-          this.router.navigate(["demerito/index"]);
+          this.router.navigate(["/dashboard/demerito/index"]);
       },
       (e: any) => console.log(e),
       () => console.log("Complete")

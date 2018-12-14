@@ -26,11 +26,11 @@ export class MisionIndexComponent implements OnInit {
   }
 
   onEdit(row: any) {
-    this.uiService.router.navigate(['/mision/update',row.id]);
+    this.uiService.router.navigate(['/dashboard/mision/update',row.id]);
 
   }
   onDetail(row:any){
-    this.uiService.router.navigate(['/mision/detail',row.id]);
+    this.uiService.router.navigate(['/dashboard/mision/detail',row.id]);
   }
   onDelete(row: any) {
     this.uiService

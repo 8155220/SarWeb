@@ -26,11 +26,11 @@ export class DemeritoIndexComponent implements OnInit {
 
   onEdit(row: any) {
     console.log(row);
-    this.uiService.router.navigate(['/demerito/update',row.id]);
+    this.uiService.router.navigate(['/dashboard/demerito/update',row.id]);
 
   }
   onDetail(row:any){
-    this.uiService.router.navigate(['/demerito/detail',row.id]);
+    this.uiService.router.navigate(['/dashboard/demerito/detail',row.id]);
   }
   onDelete(row: any) {
     this.uiService

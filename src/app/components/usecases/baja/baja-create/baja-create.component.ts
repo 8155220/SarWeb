@@ -75,7 +75,7 @@ export class BajaCreateComponent implements OnInit {
       e => {
         this.loading = false;
         this.uiService.success("Guardaro Exitosamente");
-        this.router.navigate(["baja/index"]);
+        this.router.navigate(["/dashboard/baja/index"]);
       },
       (e: any) => console.log(e),
       () => console.log("Complete")

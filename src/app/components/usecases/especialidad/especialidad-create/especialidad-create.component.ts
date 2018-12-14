@@ -51,7 +51,7 @@ export class EspecialidadCreateComponent implements OnInit {
             if (e.bytesTransferred == e.totalBytes) {
               this.loading = false;
               this.openSnackBar("Registrado Exitosamente", "ocultar");
-              this.router.navigate(["/compania/index"]);
+              this.router.navigate(["/dashboard/compania/index"]);
             }
           }
         },
@@ -68,7 +68,7 @@ export class EspecialidadCreateComponent implements OnInit {
         (e: any) => {
           this.loading = false;
           this.openSnackBar("Guardado Exitosamente", "ocultar");
-          this.router.navigate(["/compania/index"]);
+          this.router.navigate(["/dashboard/compania/index"]);
         },
         e => {
           console.log(e);

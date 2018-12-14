@@ -1,0 +1,203 @@
+<div fxLayout="row" *ngIf='loading' fxFlexFill fxLayoutAlign="center center">
+    <mat-spinner>
+
+    </mat-spinner>
+</div>
+<div class="container" fxFlexFill fxLayout='col' fxLayoutAlign="center center" *ngIf='!loading'>
+
+    <mat-card>
+        <mat-card-title>
+            Agregar Privilegio
+        </mat-card-title>
+
+        <form [formGroup]="formGroup" (ngSubmit)='onSubmit()' *ngIf="privilegios">
+            <mat-card-content>
+                <div fxLayout="column">
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre Privilegio</mat-label>
+                        <input matInput formControlName="nombre">
+                    </mat-form-field>
+                    <table style="width:100%">
+                        <tr>
+                            <th>Caso de Uso</th>
+                            <th>Leer</th>
+                            <th>Crear</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                        <tr formGroupName="personas">
+
+                            <td>Personas</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="especialidades">
+
+                            <td>especialidades</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="companias">
+
+                            <td>companias</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="meritos">
+
+                            <td>meritos</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="demeritos">
+
+                            <td>demeritos</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="bajas">
+
+                            <td>bajas</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="incorporaciones">
+
+                            <td>incorporaciones</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="ascensos">
+
+                            <td>ascensos</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="misiones">
+
+                            <td>misiones</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+                        <tr formGroupName="privilegios">
+
+                            <td>privilegios</td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="read"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="create"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="edit"> </mat-slide-toggle>
+                            </td>
+                            <td>
+                                <mat-slide-toggle class="example-margin" formControlName="delete"> </mat-slide-toggle>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <div fxLayoutAlign="space-between center">
+                    <button mat-flat-button color='primary' type="submit">Guardar</button>
+                    <button mat-flat-button color='warn' (click)="onCancel()">Cancelar</button>
+                </div>
+
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>

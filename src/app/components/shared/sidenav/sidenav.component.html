@@ -14,13 +14,28 @@
 
             </mat-card>
             <mat-nav-list>
-                <app-menu-list-item *ngFor="let item of navItems" [item]="item"></app-menu-list-item>
 
-                <a mat-list-item [routerLink]="['/routePath']">
-                    <mat-icon>recent_actors</mat-icon>
-                    Caso USo1
 
-                </a>
+                <a mat-list-item [routerLink]="['/dashboard/voluntarios/index']">
+                    <mat-icon class="margin">people</mat-icon>Personas</a>
+                <a mat-list-item [routerLink]="['/dashboard/especialidad/index']">
+                    <mat-icon class="margin">pool</mat-icon>Especialidad</a>
+                <a mat-list-item [routerLink]="['/dashboard/compania/index']">
+                    <mat-icon class="margin">pets</mat-icon>Compañias</a>
+                <a mat-list-item [routerLink]="['/dashboard/merito/index']">
+                    <mat-icon class="margin">mood</mat-icon>Meritos</a>
+                <a mat-list-item [routerLink]="['/dashboard/demerito/index']">
+                    <mat-icon class="margin">mood_bad</mat-icon>Demeritos</a>
+                <a mat-list-item [routerLink]="['/dashboard/baja/index']">
+                    <mat-icon class="margin">block</mat-icon>Bajas</a>
+                <a mat-list-item [routerLink]="['/dashboard/incorporacion/index']">
+                    <mat-icon class="margin">how_to_reg</mat-icon>Incorporaciones</a>
+                <a mat-list-item [routerLink]="['/dashboard/ascenso/index']">
+                    <mat-icon class="margin">trending_up</mat-icon>Ascensos</a>
+                <a mat-list-item [routerLink]="['/dashboard/mision/index']">
+                    <mat-icon class="margin">explore</mat-icon>Misiones</a>
+                <a mat-list-item [routerLink]="['/dashboard/privilegios/index']">
+                    <mat-icon class="margin">settings</mat-icon>Privilegios</a>
             </mat-nav-list>
         </div>
 

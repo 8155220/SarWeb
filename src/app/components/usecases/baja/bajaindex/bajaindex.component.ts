@@ -27,7 +27,7 @@ export class BajaindexComponent implements OnInit {
   }
 
   onDetail(row:any){
-    this.uiService.router.navigate(['/baja/detail',row.id]);
+    this.uiService.router.navigate(['/dashboard/baja/detail',row.id]);
   }
 
 }
