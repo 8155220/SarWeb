@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { DemeritoService } from "../../../../services/demerito.service";
 import { UiService } from "../../../../services/ui.service";
+import { CanAccessService } from '../../../../services/can-access.service';
 @Component({
   selector: 'app-demerito-index',
   templateUrl: './demerito-index.component.html',
@@ -12,7 +13,8 @@ export class DemeritoIndexComponent implements OnInit {
   demeritos: any[] = [];
   constructor(
     private demeritoService: DemeritoService,
-    private uiService: UiService
+    private uiService: UiService,
+    private ca:CanAccessService
   ) {
     this.demeritoService.getDemeritos().subscribe(e => {
       this.demeritos = e;
@@ -33,18 +35,25 @@ export class DemeritoIndexComponent implements OnInit {
     this.uiService.router.navigate(['/dashboard/demerito/detail',row.id]);
   }
   onDelete(row: any) {
-    this.uiService
-      .openConfirmDialog(
-        "Esta seguro que desea eliminar el demerito de :"+row.nombreCompleto
 
-      )
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.demeritoService.deleteDemerito(row.id);
-          this.uiService.warn('Eliminado Exitosamente');
-        }
-      });
+    this.ca.demeritosCanDelete().subscribe(e=>{
+      if(e){
+        this.uiService
+        .openConfirmDialog(
+          "Esta seguro que desea eliminar el demerito de :"+row.nombreCompleto
+  
+        )
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            this.demeritoService.deleteDemerito(row.id);
+            this.uiService.warn('Eliminado Exitosamente');
+          }
+        });
+      }
+    })
+
+    
 
 
   }

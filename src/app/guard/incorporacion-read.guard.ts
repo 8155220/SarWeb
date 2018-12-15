@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { take, map,tap, switchMap } from 'rxjs/operators';
+import { take, map, tap, switchMap, first } from 'rxjs/operators';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
@@ -18,7 +18,7 @@ export class IncorporacionReadGuard implements CanActivate {
       
       return this.auth.user.pipe(take(1),switchMap((e:any)=> {
         return this.ps.getPrivilegiosPersonaFromEmail(e.email)
-      }),map((e:any)=>e.incorporaciones.read),tap(permiso=>{
+      }),map((e:any)=>e.incorporaciones.read),first(),tap(permiso=>{
         if(!permiso){
             this.uiService.warn("Privilegios insuficientes")
         }

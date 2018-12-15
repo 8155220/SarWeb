@@ -1,6 +1,7 @@
 import { UiService } from './../../../../services/ui.service';
 import { Component, OnInit } from '@angular/core';
 import { CompaniaService } from '../../../../services/compania.service';
+import { CanAccessService } from '../../../../services/can-access.service';
 
 @Component({
   selector: 'app-compania-index',
@@ -15,7 +16,8 @@ export class CompaniaIndexComponent implements OnInit {
 
   constructor(
     private companiaService: CompaniaService,
-    private uiService: UiService
+    private uiService: UiService,
+    private ca:CanAccessService
   ) {
     this.companiaService.getCompanias().subscribe(e => {
       this.companias = e;
@@ -36,7 +38,9 @@ export class CompaniaIndexComponent implements OnInit {
     this.uiService.router.navigate(['/dashboard/compania/detail',row.id]);
   }
   onDelete(row: any) {
-    this.uiService
+    this.ca.companiasCanDelete().subscribe(e=>{
+      if(e){
+        this.uiService
       .openConfirmDialog(
         "Esta seguro que desea eliminar la compania :"+row.nombre
       )
@@ -47,6 +51,9 @@ export class CompaniaIndexComponent implements OnInit {
           this.uiService.warn('Eliminado Exitosamente');
         }
       });
+      }
+    })
+    
 
 
   }

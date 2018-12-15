@@ -1,3 +1,9 @@
+import { MeritoReadGuard } from './guard/merito-read.guard';
+import { PersonaEditGuard } from './guard/persona-edit.guard';
+import { PersonaReadGuard } from './guard/persona-read.guard';
+import { MeritoEditGuard } from './guard/merito-edit.guard';
+import { MeritoCreateGuard } from './guard/merito-create.guard';
+import { PrivilegioReadGuard } from './guard/privilegio-read.guard';
 import { AscensoCreateGuard } from './guard/ascenso-create.guard';
 import { BajaReadGuard } from './guard/baja-read.guard';
 import { DemeritoReadGuard } from './guard/demerito-read.guard';
@@ -55,32 +61,39 @@ import { DemeritoCreateGuard } from './guard/demerito-create.guard';
 import { DemeritoEditGuard } from './guard/demerito-edit.guard';
 import { IncorporacionReadGuard } from './guard/incorporacion-read.guard';
 import { IncorporacionCreateGuard } from './guard/incorporacion-create.guard';
+import { PrivilegioCreateGuard } from './guard/privilegio-create.guard';
+import { PrivilegioEditGuard } from './guard/privilegio-edit.guard';
+import { MisionCreateGuard } from './guard/mision-create.guard';
+import { MisionReadGuard } from './guard/mision-read.guard';
+import { MisionEditGuard } from './guard/mision-edit.guard';
+import { PersonaCreateGuard } from './guard/persona-create.guard';
 
 const routes:Routes = [
     {path:'',component:WelcomeComponent},
     
+    
     {path:'dashboard',component:RootComponent,children:[
     //{path:'',component:RootComponent},
-    {path:'voluntarios/index',component:VoluntarioIndexComponent,canActivate:[AuthGuard]},
-    {path:'voluntarios/create',component:VoluntarioCreateComponent,canActivate:[AuthGuard]},
-    {path:'voluntarios/read',component:VoluntarioReadComponent,canActivate:[AuthGuard]},
-    {path:'voluntarios/update/:id',component:VoluntarioUpdateComponent,canActivate:[AuthGuard]},
+    {path:'voluntarios/index',component:VoluntarioIndexComponent,canActivate:[AuthGuard,PersonaReadGuard]},
+    {path:'voluntarios/create',component:VoluntarioCreateComponent,canActivate:[AuthGuard,PersonaCreateGuard]},
+    {path:'voluntarios/read',component:VoluntarioReadComponent,canActivate:[AuthGuard,PersonaReadGuard]},
+    {path:'voluntarios/update/:id',component:VoluntarioUpdateComponent,canActivate:[AuthGuard,PersonaEditGuard]},
     {path:'voluntarios/card',component:VoluntarioCardComponent,canActivate:[AuthGuard]},
 
 
     {path:'especialidad/create',component:EspecialidadCreateComponent,canActivate:[AuthGuard,EspecialidadCreateGuard]},
     {path:'especialidad/index',component:EspecialidadIndexComponent,canActivate:[AuthGuard,EspecialidadReadGuard]},
     {path:'especialidad/update/:id',component:EspecialidadEditComponent,canActivate:[AuthGuard,EspecialidadEditGuard]},
-    {path:'especialidad/detail/:id',component:EspecialidadDetailComponent,canActivate:[AuthGuard]},
+    {path:'especialidad/detail/:id',component:EspecialidadDetailComponent,canActivate:[AuthGuard,EspecialidadReadGuard]},
 
     {path:'compania/create',component:CompaniaCreateComponent,canActivate:[AuthGuard,CompaniaCreateGuard]},
     {path:'compania/index',component:CompaniaIndexComponent,canActivate:[AuthGuard,CompaniaReadGuard]},
     {path:'compania/update/:id',component:CompaniaEditComponent,canActivate:[AuthGuard,CompaniaEditGuard]},
     {path:'compania/detail/:id',component:CompaniaDetailComponent,canActivate:[AuthGuard,CompaniaReadGuard]},
 
-    {path:'merito/create',component:MeritoCreateComponent,canActivate:[AuthGuard]},
-    {path:'merito/index',component:MeritoIndexComponent,canActivate:[AuthGuard]},
-    {path:'merito/update/:id',component:MeritoEditComponent,canActivate:[AuthGuard]},
+    {path:'merito/create',component:MeritoCreateComponent,canActivate:[AuthGuard,MeritoCreateGuard]},
+    {path:'merito/index',component:MeritoIndexComponent,canActivate:[AuthGuard,MeritoReadGuard]},
+    {path:'merito/update/:id',component:MeritoEditComponent,canActivate:[AuthGuard,MeritoEditGuard]},
 
     {path:'demerito/create',component:DemeritoCreateComponent,canActivate:[AuthGuard,DemeritoCreateGuard]},
     {path:'demerito/index',component:DemeritoIndexComponent,canActivate:[AuthGuard,DemeritoReadGuard]},
@@ -97,13 +110,13 @@ const routes:Routes = [
     {path:'ascenso/grado/:grado',component:AscensoGradoComponent,canActivate:[AuthGuard,AscensoCreateGuard]},
     {path:'ascenso/index',component:AscensoIndexComponent,canActivate:[AuthGuard,AscensoReadGuard]},
 
-    {path:'mision/create',component:MisionCreateComponent,canActivate:[AuthGuard]},
-    {path:'mision/index',component:MisionIndexComponent,canActivate:[AuthGuard]},
-    {path:'mision/update/:id',component:MisionEditComponent,canActivate:[AuthGuard]},
+    {path:'mision/create',component:MisionCreateComponent,canActivate:[AuthGuard,MisionCreateGuard]},
+    {path:'mision/index',component:MisionIndexComponent,canActivate:[AuthGuard,MisionReadGuard]},
+    {path:'mision/update/:id',component:MisionEditComponent,canActivate:[AuthGuard,MisionEditGuard]},
 
-    {path:'privilegios/index',component:PrivilegiosIndexComponent,canActivate:[AuthGuard]},
-    {path:'privilegios/create',component:PrivilegiosCreateComponent,canActivate:[AuthGuard]},
-    {path:'privilegios/update/:id',component:PrivilegiosEditComponent,canActivate:[AuthGuard]},
+    {path:'privilegios/index',component:PrivilegiosIndexComponent,canActivate:[AuthGuard,PrivilegioReadGuard]},
+    {path:'privilegios/create',component:PrivilegiosCreateComponent,canActivate:[AuthGuard,PrivilegioCreateGuard]},
+    {path:'privilegios/update/:id',component:PrivilegiosEditComponent,canActivate:[AuthGuard,PrivilegioEditGuard]},
     ]},
 
 

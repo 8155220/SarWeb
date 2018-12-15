@@ -1,3 +1,4 @@
+import { CanAccessService } from './../../../../services/can-access.service';
 import { MisionService } from './../../../../services/mision.service';
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { UiService } from "../../../../services/ui.service";
@@ -13,7 +14,8 @@ export class MisionIndexComponent implements OnInit {
   misiones: any[] = [];
   constructor(
     private misionService: MisionService,
-    private uiService: UiService
+    private uiService: UiService,
+    private ca:CanAccessService
   ) {
     this.misionService.getMisiones().subscribe(e => {
       this.misiones = e;
@@ -33,18 +35,23 @@ export class MisionIndexComponent implements OnInit {
     this.uiService.router.navigate(['/dashboard/mision/detail',row.id]);
   }
   onDelete(row: any) {
-    this.uiService
-      .openConfirmDialog(
-        "Esta seguro que desea eliminar el mision de :"+row.nombreCompleto
-
-      )
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.misionService.deleteMision(row.id);
-          this.uiService.warn('Eliminado Exitosamente');
-        }
-      });
+    this.ca.misionesCanDelete().subscribe(e=>{
+      if(e){
+        this.uiService
+        .openConfirmDialog(
+          "Esta seguro que desea eliminar el mision de :"+row.nombreCompleto
+  
+        )
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            this.misionService.deleteMision(row.id);
+            this.uiService.warn('Eliminado Exitosamente');
+          }
+        });
+      }
+    })
+    
 
 
   }

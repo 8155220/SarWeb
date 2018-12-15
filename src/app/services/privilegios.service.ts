@@ -2,6 +2,7 @@ import { map, switchMap, first } from 'rxjs/operators';
 import { Observable, from } from "rxjs";
 import { AngularFireDatabase } from "angularfire2/database";
 import { Injectable } from "@angular/core";
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +53,16 @@ export class PrivilegiosService {
       console.log(e);
       return this.db.object(`${this.PRIVILEGIOS_PATH}/${e[0].privilegioId}`).valueChanges()
     }))
+  }
+
+
+  canDeleteCompania(){
+    /*return this.auth.user.pipe(take(1),switchMap((e:any)=> {
+      return this.ps.getPrivilegiosPersonaFromEmail(e.email)
+    }),map((e:any)=>e.privilegios.read),tap(permiso=>{
+      if(!permiso){
+          this.uiService.warn("Privilegios insuficientes")
+      }
+    }))*/
   }
 }

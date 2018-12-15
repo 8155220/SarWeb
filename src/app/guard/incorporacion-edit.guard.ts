@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { switchMap, take, map, tap } from 'rxjs/operators';
+import { switchMap, take, map, tap, first } from 'rxjs/operators';
 import { UiService } from '../services/ui.service';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class IncorporacionEditGuard implements CanActivate {
       this.ps.getPrivilegiosPersonaFromEmail(e.email)
       ),map((e:any)=>{
         return e.incorporaciones.edit
-      }),tap(permiso=>{
+      }),first(),tap(permiso=>{
         if(!permiso){
             this.uiService.warn("Privilegios insuficientes")
         }

@@ -1,3 +1,4 @@
+import { CanAccessService } from './../../../../services/can-access.service';
 import { VoluntarioModel } from "../../../../models/voluntario/voluntario.model";
 import { Component, OnInit, ViewChild, Inject, OnDestroy } from "@angular/core";
 import { VoluntarioService } from "../../../../services/voluntario.service";
@@ -57,7 +58,8 @@ export class VoluntarioIndexComponent implements OnInit, OnDestroy {
     private bottomSheet: MatBottomSheet,
     private _router: Router,
     private uiService: UiService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public canAccess:CanAccessService
   ) {}
 
 
@@ -97,17 +99,24 @@ export class VoluntarioIndexComponent implements OnInit, OnDestroy {
   }
 
   openDialog(voluntario: VoluntarioModel): void {
-    const dialogRef = this.dialog.open(DialogConfirmDelete, {
-      width: "250px",
-      data: voluntario
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == "yes") {
-        this.voluntarioService.deleteVoluntario(voluntario.id);
-        this._router.navigate(["/dashboard/voluntarios/index"]);
-        this.ngOnInit();
+
+    this.canAccess.personasCanDelete().subscribe(e=>{
+      if(e){
+        const dialogRef = this.dialog.open(DialogConfirmDelete, {
+          width: "250px",
+          data: voluntario
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result == "yes") {
+                this.voluntarioService.deleteVoluntario(voluntario.id);
+                this._router.navigate(["/dashboard/voluntarios/index"]);
+                this.ngOnInit();
+          }
+        });
       }
-    });
+    })
+     
+    
   }
 
   cargarDatos(){

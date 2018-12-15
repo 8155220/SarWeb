@@ -6,6 +6,7 @@ import { UiService } from '../../../../services/ui.service';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { SearchPersonaComponent } from '../../../shared/search-persona/search-persona.component';
 import { AscensoVoluntarioComponent } from '../ascenso-voluntario/ascenso-voluntario.component';
+import { CanAccessService } from '../../../../services/can-access.service';
 
 @Component({
   selector: 'app-ascenso-index',
@@ -39,7 +40,8 @@ export class AscensoIndexComponent implements OnInit {
     private uiService: UiService,
     private ascensoService: AscensoService,
     private router:Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ca:CanAccessService
   ) {}
 
   ngOnInit() {
@@ -59,22 +61,27 @@ export class AscensoIndexComponent implements OnInit {
     }
   }
   ascenderVoluntario(){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    const dialogRef = this.dialog.open(SearchPersonaComponent, dialogConfig);
-    dialogRef
-      .afterClosed()
-      .pipe(first())
-      .subscribe((data: any) => {
-        if(data.grado=='rescatistaComando')
-        {
-          this.uiService.warn("Se encuentra en el rango mas alto");
-        }else{
-          dialogConfig.data={persona:data};
-          this.dialog.open(AscensoVoluntarioComponent,dialogConfig);
-        }
-      });
+    this.ca.ascensosCanAscender().subscribe(e=>{
+      if(e){
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        const dialogRef = this.dialog.open(SearchPersonaComponent, dialogConfig);
+        dialogRef
+          .afterClosed()
+          .pipe(first())
+          .subscribe((data: any) => {
+            if(data.grado=='rescatistaComando')
+            {
+              this.uiService.warn("Se encuentra en el rango mas alto");
+            }else{
+              dialogConfig.data={persona:data};
+              this.dialog.open(AscensoVoluntarioComponent,dialogConfig);
+            }
+          });
+      }
+    })
+    
   }
 
 }

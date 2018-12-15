@@ -1,3 +1,4 @@
+import { CanAccessService } from './../../../../services/can-access.service';
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { EspecialidadService } from "../../../../services/especialidad.service";
 import { UiService } from "../../../../services/ui.service";
@@ -14,7 +15,8 @@ export class EspecialidadIndexComponent implements OnInit {
   especialidades: any[] = [];
   constructor(
     private especialidadService: EspecialidadService,
-    private uiService: UiService
+    private uiService: UiService,
+    private ca:CanAccessService
   ) {
     this.especialidadService.getEspecialidades().subscribe(e => {
       this.especialidades = e;
@@ -35,19 +37,21 @@ export class EspecialidadIndexComponent implements OnInit {
     this.uiService.router.navigate(['/dashboard/especialidad/detail',row.id]);
   }
   onDelete(row: any) {
-    this.uiService
-      .openConfirmDialog(
-        "Esta seguro que desea eliminar la especialidad :"+row.nombre
-
-      )
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.especialidadService.deleteEspecialidad(row.id);
-          this.uiService.warn('Eliminado Exitosamente');
-        }
-      });
-
-
+    this.ca.especialidadesCanDelete().subscribe(e=>{
+      if(e){
+        this.uiService
+        .openConfirmDialog(
+          "Esta seguro que desea eliminar la especialidad :"+row.nombre
+        )
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            this.especialidadService.deleteEspecialidad(row.id);
+            this.uiService.warn('Eliminado Exitosamente');
+          }
+        });
+      }
+    })
+    
   }
 }

@@ -1,3 +1,4 @@
+import { CanAccessService } from './../../../../services/can-access.service';
 import { element } from "protractor";
 import { ActivatedRoute } from "@angular/router";
 import { UiService } from "./../../../../services/ui.service";
@@ -24,7 +25,8 @@ export class EspecialidadDetailComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private voluntarioService: VoluntarioService,
     private uiService: UiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ca:CanAccessService
   ) {
     activateRoute.params.subscribe(data => {
       this.especialidadService.getEspecialidad(data["id"]).subscribe(e => {
@@ -41,38 +43,44 @@ export class EspecialidadDetailComponent implements OnInit {
 
   ngOnInit() {}
   openDialog() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    const dialogRef = this.dialog.open(SearchPersonaComponent, dialogConfig);
-    dialogRef
-      .afterClosed()
-      .pipe(first())
-      .subscribe((data: any) => {
-        if (data) {
-          this.especialidadService
-            .checkEspecialidadVoluntario(data.id, this.especialidad.id)
-            .pipe(first())
-            .subscribe(e => {
-              if (e) {
-                //si el voluntario ya tiene la especialidad
-                this.uiService.warn(
-                  "El voluntario ya tiene la especialidad " +
-                    this.especialidad.nombre
-                );
-              } else {
-                dialogConfig.data = {
-                  especialidad: this.especialidad,
-                  persona: data
-                };
-                this.dialog.open(
-                  AgregarEspecialidadVoluntarioComponent,
-                  dialogConfig
-                );
-              }
-            });
-        }
-      });
+
+    this.ca.especialidadesCanAddVoluntario().subscribe(e=>{
+      if(e){
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        const dialogRef = this.dialog.open(SearchPersonaComponent, dialogConfig);
+        dialogRef
+          .afterClosed()
+          .pipe(first())
+          .subscribe((data: any) => {
+            if (data) {
+              this.especialidadService
+                .checkEspecialidadVoluntario(data.id, this.especialidad.id)
+                .pipe(first())
+                .subscribe(e => {
+                  if (e) {
+                    //si el voluntario ya tiene la especialidad
+                    this.uiService.warn(
+                      "El voluntario ya tiene la especialidad " +
+                        this.especialidad.nombre
+                    );
+                  } else {
+                    dialogConfig.data = {
+                      especialidad: this.especialidad,
+                      persona: data
+                    };
+                    this.dialog.open(
+                      AgregarEspecialidadVoluntarioComponent,
+                      dialogConfig
+                    );
+                  }
+                });
+            }
+          });
+      }
+    })
+    
   }
 
   getVoluntario(id: string) {
@@ -90,7 +98,9 @@ export class EspecialidadDetailComponent implements OnInit {
   }
 
   onDelete(persona: any) {
-    this.uiService
+    this.ca.especialidadesCanDelete().subscribe(e=>{
+      if(e){
+        this.uiService
       .openConfirmDialog(
         "Esta seguro que desea al Voluntario : " + persona.nombreCompleto + " de la especialidad : " +this.especialidad.nombre
       )
@@ -107,5 +117,11 @@ export class EspecialidadDetailComponent implements OnInit {
             }, undefined);
         }
       });
+      }
+    }
+    )
+
+    
+    
   }
 }

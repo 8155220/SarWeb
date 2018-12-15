@@ -10,7 +10,7 @@ import { UiService } from '../services/ui.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DemeritoCreateGuard implements CanActivate {
+export class MisionEditGuard implements CanActivate {
   constructor(private auth:AuthService,private router:Router,private ps:PrivilegiosService,private uiService:UiService){}
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -18,7 +18,7 @@ export class DemeritoCreateGuard implements CanActivate {
       return this.auth.user.pipe(take(1),switchMap((e:any)=> 
       this.ps.getPrivilegiosPersonaFromEmail(e.email)
       ),map((e:any)=>{
-        return e.demeritos.create
+        return e.misiones.edit
       }),first(),tap(permiso=>{
         if(!permiso){
             this.uiService.warn("Privilegios insuficientes")

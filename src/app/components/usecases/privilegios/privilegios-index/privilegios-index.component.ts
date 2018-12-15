@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrivilegiosService } from '../../../../services/privilegios.service';
 import { UiService } from '../../../../services/ui.service';
+import { CanAccessService } from '../../../../services/can-access.service';
 
 @Component({
   selector: 'app-privilegios-index',
@@ -13,7 +14,8 @@ export class PrivilegiosIndexComponent implements OnInit {
   privilegios: any[] = [];
   constructor(
     private privilegioService: PrivilegiosService,
-    private uiService: UiService
+    private uiService: UiService,
+    private ca:CanAccessService
   ) {
     this.privilegioService.getPrivilegios().subscribe(e => {
       this.privilegios = e;
@@ -34,18 +36,23 @@ export class PrivilegiosIndexComponent implements OnInit {
     this.uiService.router.navigate(['/dashboard/privilegios/detail',row.id]);
   }
   onDelete(row: any) {
-    this.uiService
-      .openConfirmDialog(
-        "Esta seguro que desea eliminar el privilegio de :"+row.nombre
-
-      )
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.privilegioService.deletePrivilegio(row.id);
-          this.uiService.warn('Eliminado Exitosamente');
-        }
-      });
+    this.ca.privilegiosCanDelete().subscribe(e=>{
+      if(e){
+        this.uiService
+        .openConfirmDialog(
+          "Esta seguro que desea eliminar el privilegio de :"+row.nombre
+  
+        )
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            this.privilegioService.deletePrivilegio(row.id);
+            this.uiService.warn('Eliminado Exitosamente');
+          }
+        });
+      }
+    })
+    
 
 
   }

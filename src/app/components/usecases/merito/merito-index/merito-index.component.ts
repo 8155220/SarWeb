@@ -1,3 +1,4 @@
+import { CanAccessService } from './../../../../services/can-access.service';
 import { MeritoService } from './../../../../services/merito.service';
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { UiService } from "../../../../services/ui.service";
@@ -12,7 +13,8 @@ export class MeritoIndexComponent implements OnInit {
   meritos: any[] = [];
   constructor(
     private meritoService: MeritoService,
-    private uiService: UiService
+    private uiService: UiService,
+    private ca:CanAccessService
   ) {
     this.meritoService.getMeritos().subscribe(e => {
       this.meritos = e;
@@ -33,18 +35,23 @@ export class MeritoIndexComponent implements OnInit {
     this.uiService.router.navigate(['/dashboard/merito/detail',row.id]);
   }
   onDelete(row: any) {
-    this.uiService
-      .openConfirmDialog(
-        "Esta seguro que desea eliminar el merito de :"+row.nombreCompleto
-
-      )
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.meritoService.deleteMerito(row.id);
-          this.uiService.warn('Eliminado Exitosamente');
-        }
-      });
+    this.ca.meritosCanDelete().subscribe(e=>{
+      if(e){
+        this.uiService
+        .openConfirmDialog(
+          "Esta seguro que desea eliminar el merito de :"+row.nombreCompleto
+  
+        )
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            this.meritoService.deleteMerito(row.id);
+            this.uiService.warn('Eliminado Exitosamente');
+          }
+        });
+      }
+    })
+    
 
 
   }
